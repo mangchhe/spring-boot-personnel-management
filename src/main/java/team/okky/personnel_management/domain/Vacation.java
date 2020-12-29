@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -20,7 +19,7 @@ public class Vacation{
     @Temporal(TemporalType.TIMESTAMP)
     private Date vac_end_date;
 
-    @ManyToOne(TemporalType.TIMESTAMP)
+    @ManyToOne()
     @JoinColumn(name="emp_id")
     private Employee employee;
 }

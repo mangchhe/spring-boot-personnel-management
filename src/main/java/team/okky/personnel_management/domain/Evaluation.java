@@ -15,4 +15,6 @@ public class Evaluation {
 
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "dept_id")
     Work work;
+    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "emp_id")
+    Employee employee;
 }

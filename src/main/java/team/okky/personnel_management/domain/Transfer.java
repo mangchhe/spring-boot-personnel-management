@@ -17,4 +17,6 @@ public class Transfer {
 
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "dept_id")
     Department department;
+    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "emp_id")
+    Employee employee;
 }

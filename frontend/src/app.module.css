@@ -1,0 +1,12 @@
+.app {
+  display: flex;
+}
+
+.app .sidebar {
+  flex: 1;
+}
+
+.app .body {
+  flex: 4;
+  margin: 2em;
+}

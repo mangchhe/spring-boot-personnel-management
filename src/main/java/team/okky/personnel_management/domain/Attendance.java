@@ -8,7 +8,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Date;
 
-@Enabled
+@Entity
 @Getter @Setter
 public class Attendance {
     @Id @GeneratedValue

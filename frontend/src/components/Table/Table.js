@@ -1,4 +1,5 @@
 import React from 'react';
+import styles from './table.module.css';
 
 const AttendanceRow = ({ data }) => {
   return (
@@ -17,17 +18,23 @@ const AttendanceRow = ({ data }) => {
 
 function Table({ page, headerArr, dataArr }) {
   return (
-    <table>
-      <tr>
-        {headerArr.map((header) => (
-          <th>{header}</th>
-        ))}
-      </tr>
-      {dataArr.map((data) => {
-        if (page === 'attendance') {
-          return <AttendanceRow data={data} />;
-        }
-      })}
+    <table className={styles.table}>
+      <thead>
+        <tr>
+          {headerArr.map((header, i) => (
+            <th key={i}>{header}</th>
+          ))}
+        </tr>
+      </thead>
+      <tbody>
+        {page === 'attendance' ? (
+          dataArr.map((data, i) => {
+            return <AttendanceRow data={data} key={i} />;
+          })
+        ) : (
+          <></>
+        )}
+      </tbody>
     </table>
   );
 }

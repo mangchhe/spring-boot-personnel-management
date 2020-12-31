@@ -1,0 +1,30 @@
+.numBoxContainer {
+  display: flex;
+}
+
+.numBox {
+  flex: 1;
+  display: flex;
+}
+
+.numBox svg {
+  font-size: 3em;
+}
+
+/* numBox color styling */
+
+.normal {
+  color: #2d93f0;
+}
+
+.late {
+  color: #ff3b30;
+}
+
+.off {
+  color: #a9a9a9;
+}
+
+.numBox .text p {
+  margin: 0;
+}

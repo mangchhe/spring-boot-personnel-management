@@ -1,0 +1,23 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 3em;
+}
+
+.title {
+  font-size: 20px;
+  margin: 0;
+  color: #2d93f0;
+}
+
+.button {
+  width: 100px;
+  padding: 0.6em;
+  border: none;
+  border-radius: 5px;
+  background-color: #2d93f0;
+  color: white;
+  outline: none;
+  cursor: pointer;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}

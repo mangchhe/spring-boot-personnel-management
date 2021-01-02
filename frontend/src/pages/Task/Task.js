@@ -3,8 +3,13 @@ import Block from '../../components/Block/Block.js'
 import styles from './task.module.css'
 
 function TaskInput(){
+  const [inputs, setInput] = useState('')
+
+  const onChange = (e) => {
+    setInput(e.target.value)
+  }
   return(
-    <input type="text"/>
+    <input value = {inputs} placeholder = '검색어를 입력하세요' onChange={onChange}/>
   )
 }
 
@@ -53,6 +58,7 @@ function Task() {
   ]);
   return (
     <div className = {styles.container}>
+      <TaskInput/>
       <Block datas = {datas} className = {styles.block}/>    
     </div>
   )

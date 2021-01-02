@@ -1,4 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
+/* :root{
+  --color-blue: #2d93f0;
+  --color-lightblue: #c9def0;
+  --color-lightgray: #f4f5f9;
+  --color-red:#ff3b30;
+} */
 
 * {
   margin: 0;

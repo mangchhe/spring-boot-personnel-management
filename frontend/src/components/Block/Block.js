@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styles from './block.module.css';
 import { FaPen } from 'react-icons/fa';
 

@@ -1,8 +1,8 @@
-import React from 'react';
+import React, {} from 'react';
 import styles from './block.module.css';
 import { FaPen } from 'react-icons/fa';
 
-function BlockElements({ data, is_completed }) {
+const BlockElements = React.memo(function ({ data, is_completed}) {
   return (
     <div
       className={!is_completed ? styles.blockElements : styles.blockCompleted}
@@ -20,12 +20,12 @@ function BlockElements({ data, is_completed }) {
       {!is_completed ? <i className={styles.icon}><FaPen /></i> : null}
     </div>
   );
-}
+})
 
-function Block({datas}) {
+const Block = function({searchResult}) {
   return (
     <>
-      {datas.map((data) => {
+      {searchResult.map((data) => {
         return (
           <BlockElements
             data={data}
@@ -38,4 +38,4 @@ function Block({datas}) {
   );
 }
 
-export default Block;
+export default React.memo(Block);

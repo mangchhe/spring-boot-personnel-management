@@ -2,7 +2,8 @@ import React from 'react';
 import {NavLink} from 'react-router-dom'
 import styles from './sidebar.module.css'
 
-function SideList({listitems, category}){
+
+const SideList = function ({listitems, category}){
   return(
     <ul className={styles.ul}>
       <p className={styles.p}>{category}</p>
@@ -10,7 +11,7 @@ function SideList({listitems, category}){
     </ul>
   )
 }
-function Sidebar() {
+const Sidebar = function () {
   const home = [
     {
       name: '근태관리',
@@ -49,7 +50,7 @@ function Sidebar() {
     <div className={styles.sidebar}>
       <SideList category = '홈' listitems={home}></SideList>
       <SideList category = '인사관리' listitems={employee}></SideList>
-      <SideList category = '설정' listitems={settings}></SideList>
+      <SideList category = '설정' listitems={settings}></SideList>  
     </div>
   );
 }

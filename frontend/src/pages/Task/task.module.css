@@ -3,3 +3,26 @@
     width: 70%;
 }
 
+.searchBox{
+    margin-bottom: 25px;
+}
+.input{
+    outline: none;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    width: 250px;
+    height: 34px;    
+    padding: 0 10px;
+}
+
+.searchButton{
+    background: #2d93f0;
+    padding: 0.6em;
+    width: 100px;
+    color: #fff;
+    cursor: pointer;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    border-radius: 5px;
+    font-size: 13px;
+    margin-left: 10px;
+}

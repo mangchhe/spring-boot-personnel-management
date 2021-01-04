@@ -1,5 +1,10 @@
+.container {
+  width: 95%;
+}
+
 .numBoxContainer {
   display: flex;
+  margin-bottom: 3em;
 }
 
 .numBox {
@@ -10,8 +15,6 @@
 .numBox svg {
   font-size: 3em;
 }
-
-/* numBox color styling */
 
 .normal {
   color: #2d93f0;
@@ -25,6 +28,42 @@
   color: #a9a9a9;
 }
 
-.numBox .text p {
+.text {
+  margin-left: 2em;
+}
+
+.text p {
   margin: 0;
+  font-size: 14px;
+}
+
+.text .title {
+  font-size: 16px;
+}
+
+.text .num {
+  font-size: 24px;
+}
+
+.searchForm {
+  display: flex;
+  margin-bottom: 3em;
+}
+
+.dateInput {
+  flex: 1;
+  margin-right: 2em;
+}
+
+.textInput {
+  flex: 4;
+  margin-right: 2em;
+}
+
+.searchButton {
+  flex: 1;
+  cursor: pointer;
+  background-color: #a9a9a9;
+  color: white;
+  border-radius: 3px;
 }

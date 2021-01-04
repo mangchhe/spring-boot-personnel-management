@@ -3,9 +3,10 @@ package team.okky.personnel_management.repository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import team.okky.personnel_management.domain.Attendance;
+import team.okky.personnel_management.domain.Employee;
 
 import javax.persistence.EntityManager;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -34,11 +35,11 @@ public class AttendanceRepository {
     }
 
     public List<Attendance> findAllOrderByDateAndTime(){
-        return em.createQuery("select a from Attendance a order by a.att_date, a.att_go", Attendance.class)
+        return em.createQuery("select a from Attendance a order by a.att_date, a.att_on_time", Attendance.class)
                 .getResultList();
     }
 
-    public List<Attendance> findAllByDate(Date date){
+    public List<Attendance> findAllByDate(LocalDate date){
         return em.createQuery("select a from Attendance a where a.att_date = :att_date", Attendance.class)
                 .setParameter("att_date", date)
                 .getResultList();
@@ -56,10 +57,30 @@ public class AttendanceRepository {
                 .getResultList();
     }
 
-    public List<Attendance> findAllByDateAndId(Date date, Long id){
+    public List<Attendance> findAllByDateAndId(LocalDate date, Long id){
         return em.createQuery("select a from Attendance a where a.employee.emp_id = :emp_id and a.att_date = :att_date", Attendance.class)
                 .setParameter("emp_id", id)
                 .setParameter("att_date", date)
+                .getResultList();
+    }
+
+    public List<Employee> findAllByOn(){
+        return em.createQuery("select a.employee from Attendance a where a.att_date = :att_date", Employee.class)
+                .setParameter("att_date", LocalDate.now())
+                .getResultList();
+    }
+
+    public List<Attendance> findAllByEmployeeAndDate(Employee employee, LocalDate date){
+        return em.createQuery("select a from Attendance a where a.employee in :employee and a.att_date = :att_date", Attendance.class)
+                .setParameter("employee", employee)
+                .setParameter("att_date", date)
+                .getResultList();
+    }
+
+
+    public List<Employee> findAllByStatus(String status){
+        return em.createQuery("select a.employee from Attendance a where a.att_status = :status", Employee.class)
+                .setParameter("status", status)
                 .getResultList();
     }
 

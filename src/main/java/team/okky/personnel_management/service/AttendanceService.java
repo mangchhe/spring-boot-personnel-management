@@ -3,10 +3,7 @@ package team.okky.personnel_management.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import team.okky.personnel_management.domain.Attendance;
-import team.okky.personnel_management.domain.Employee;
-import team.okky.personnel_management.domain.Sick;
-import team.okky.personnel_management.domain.Vacation;
+import team.okky.personnel_management.domain.*;
 import team.okky.personnel_management.dto.AttendanceDTO;
 import team.okky.personnel_management.repository.AttendanceRepository;
 import team.okky.personnel_management.repository.EmployeeRepository;
@@ -40,18 +37,18 @@ public class AttendanceService {
             attendanceRepository.save(
                     Attendance.builder()
                             .att_date(LocalDate.now())
-                            .att_status("결근")
+                            .att_status(AttendanceStatus.ABSENCE)
                             .employee(e)
                             .build()
             );
         }
         // 오늘 휴가인 사람 체크
         for(Vacation v : vacationRepository.findAllByDate(LocalDate.now())){
-            attendanceRepository.findAllByEmployeeAndDate(v.getEmployee(), LocalDate.now()).get(0).setAtt_status("휴가");
+            attendanceRepository.findAllByEmployeeAndDate(v.getEmployee(), LocalDate.now()).get(0).setAtt_status(AttendanceStatus.VACATION);
         }
         // 오늘 병가인 사람 체크
         for(Sick s : sickRepository.findAllByDate(LocalDate.now())){
-            attendanceRepository.findAllByEmployeeAndDate(s.getEmployee(), LocalDate.now()).get(0).setAtt_status("병가");
+            attendanceRepository.findAllByEmployeeAndDate(s.getEmployee(), LocalDate.now()).get(0).setAtt_status(AttendanceStatus.SICK);
         }
         return attendanceRepository.findAllByDate(LocalDate.now());
     }
@@ -67,11 +64,11 @@ public class AttendanceService {
         // 10시에 데이터 처리가 된 후라면
         if(!attendanceList.isEmpty()){
             // 출근 시간 전이라면
-            if(LocalTime.now().isBefore(LocalTime.of(10, 0, 0))) {
-                attendanceList.get(0).setAtt_status("출근");
+            if(LocalTime.now().isBefore(AttendanceTime.ON_TIME.getLocalTime())) {
+                attendanceList.get(0).setAtt_status(AttendanceStatus.ON);
             // 출근 시간 이후라면
             }else{
-                attendanceList.get(0).setAtt_status("지각");
+                attendanceList.get(0).setAtt_status(AttendanceStatus.LATE);
             }
             return attendanceList.get(0);
         }
@@ -80,7 +77,7 @@ public class AttendanceService {
             Attendance attendance = Attendance.builder()
                     .att_date(LocalDate.now())
                     .att_on_time(LocalTime.now())
-                    .att_status("출근")
+                    .att_status(AttendanceStatus.ON)
                     .build();
             attendanceRepository.save(attendance);
             return attendance;
@@ -95,7 +92,7 @@ public class AttendanceService {
     @Transactional(readOnly = false)
     public Attendance offWork(Employee employee){
         List<Attendance> attendanceList = attendanceRepository.findAllByEmployeeAndDate(employee, LocalDate.now());
-        attendanceList.get(0).setAtt_status("퇴근");
+        attendanceList.get(0).setAtt_status(AttendanceStatus.OFF);
         return attendanceList.get(0);
     }
 
@@ -117,16 +114,16 @@ public class AttendanceService {
 
         HashMap<String, Integer> statusMap = new HashMap<>();
         for(Attendance a : attendanceRepository.findAllByDate(LocalDate.now())) {
-            statusMap.put(a.getAtt_status(), statusMap.getOrDefault(a.getAtt_status(), 0) + 1);
+            statusMap.put(a.getAtt_status().toString(), statusMap.getOrDefault(a.getAtt_status().toString(), 0) + 1);
         }
 
         return AttendanceDTO.Status.builder()
-                .onCnt(statusMap.get("출근"))
-                .offCnt(statusMap.get("퇴근"))
-                .absenceCnt(statusMap.get("결근"))
-                .lateCnt(statusMap.get("지각"))
-                .vacationCnt(statusMap.get("방학"))
-                .sickCnt(statusMap.get("병가"))
+                .onCnt(statusMap.get(AttendanceStatus.ON))
+                .offCnt(statusMap.get(AttendanceStatus.OFF))
+                .absenceCnt(statusMap.get(AttendanceStatus.ABSENCE))
+                .lateCnt(statusMap.get(AttendanceStatus.LATE))
+                .vacationCnt(statusMap.get(AttendanceStatus.VACATION))
+                .sickCnt(statusMap.get(AttendanceStatus.SICK))
                 .build();
     }
 

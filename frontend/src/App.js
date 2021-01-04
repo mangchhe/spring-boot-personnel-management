@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Sidebar from './components/Sidebar/Sidebar';
 import Header from './components/Header/Header';
 import Login from './pages/Login/Login';
-import Attendance from './pages/Attendance/Attendance';
+import AttendanceContainer from './pages/Attendance/AttendanceContainer';
 import Payroll from './pages/Payroll/Payroll';
 import Task from './pages/Task/Task';
 import Performance from './pages/Performance/Performance';
@@ -27,7 +27,7 @@ function App() {
                 </div>
                 <div className={styles.body}>
                   <Header />
-                  <Route path="/attendance" component={Attendance} />
+                  <Route path="/attendance" component={AttendanceContainer} />
                   <Route path="/payroll" component={Payroll} />
                   <Route path="/task" component={Task} />
                   <Route path="/performance" component={Performance} />

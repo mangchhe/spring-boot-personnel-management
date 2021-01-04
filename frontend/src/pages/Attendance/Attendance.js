@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Table from '../../components/Table/Table';
+import { NORMAL, LATE, VACATION, ABSENT, SICK, HEADER_ARR } from './Constants';
 import {
   FaCheckCircle,
   FaExclamationTriangle,
@@ -7,21 +8,62 @@ import {
 } from 'react-icons/fa';
 import styles from './attendance.module.css';
 
+function Attendance({
+  numArr,
+  date,
+  word,
+  handleSearch,
+  handleInputChange,
+  attendanceArr,
+}) {
+  return (
+    <div className={styles.container}>
+      <div className={styles.numBoxContainer}>
+        <NumBox num={numArr.normal} type={NORMAL} />
+        <NumBox num={numArr.late} type={LATE} />
+        <NumBox num={numArr.vacation} type={VACATION} />
+        <NumBox num={numArr.absent} type={ABSENT} />
+        <NumBox num={numArr.sick} type={SICK} />
+      </div>
+      <form onSubmit={handleSearch} className={styles.searchForm}>
+        <input
+          type="date"
+          name="date"
+          className={styles.dateInput}
+          value={date}
+          onChange={handleInputChange}
+        />
+        <input
+          type="text"
+          name="word"
+          className={styles.textInput}
+          value={word}
+          onChange={handleInputChange}
+        />
+        <button type="submit" className={styles.searchButton}>
+          검색
+        </button>
+      </form>
+      <Table page="attendance" headerArr={HEADER_ARR} dataArr={attendanceArr} />
+    </div>
+  );
+}
+
 const NumBox = ({ num, type }) => {
   return (
     <div className={styles.numBox}>
       <div
         className={
-          type === '정상 출근'
+          type === NORMAL
             ? styles.normal
-            : type === '지각'
+            : type === LATE
             ? styles.late
             : styles.off
         }
       >
-        {type === '정상 출근' ? (
+        {type === NORMAL ? (
           <FaCheckCircle />
-        ) : type === '지각' ? (
+        ) : type === LATE ? (
           <FaExclamationTriangle />
         ) : (
           <FaMinusCircle />
@@ -32,9 +74,9 @@ const NumBox = ({ num, type }) => {
         <p>
           <span
             className={`${styles.num} ${
-              type === '정상 출근'
+              type === NORMAL
                 ? styles.normal
-                : type === '지각'
+                : type === LATE
                 ? styles.late
                 : styles.off
             }`}
@@ -47,163 +89,5 @@ const NumBox = ({ num, type }) => {
     </div>
   );
 };
-
-function Attendance() {
-  const currentTime = new Date();
-  const [date, setDate] = useState(currentTime.toISOString().split('T')[0]);
-  const [search, setSearch] = useState('');
-
-  const headerArr = [
-    '일자',
-    '요일',
-    '이름',
-    '부서',
-    '직급',
-    '출근시각',
-    '퇴근시각',
-    '상태',
-  ];
-
-  ////////////////////////////////////////////////
-  ////////////////   Dummy Data      /////////////
-  ////////////////////////////////////////////////
-  const dataArr = [
-    {
-      date: '02/28',
-      day: '금',
-      name: '조혜련',
-      team: '팀원',
-      rank: '사원',
-      startTime: '9:00',
-      endTime: '18:00',
-      status: '정상',
-    },
-    {
-      date: '03/29',
-      day: '토',
-      name: '조혜련',
-      team: '팀원',
-      rank: '사원',
-      startTime: '9:00',
-      endTime: '18:00',
-      status: '지각',
-    },
-    {
-      date: '04/30',
-      day: '일',
-      name: '조혜련',
-      team: '팀원',
-      rank: '사원',
-      startTime: '9:00',
-      endTime: '18:00',
-      status: '휴가',
-    },
-    {
-      date: '02/28',
-      day: '금',
-      name: '조혜련',
-      team: '팀원',
-      rank: '사원',
-      startTime: '9:00',
-      endTime: '18:00',
-      status: '정상',
-    },
-    {
-      date: '03/29',
-      day: '토',
-      name: '조혜련',
-      team: '팀원',
-      rank: '사원',
-      startTime: '9:00',
-      endTime: '18:00',
-      status: '지각',
-    },
-    {
-      date: '04/30',
-      day: '일',
-      name: '조혜련',
-      team: '팀원',
-      rank: '사원',
-      startTime: '9:00',
-      endTime: '18:00',
-      status: '휴가',
-    },
-    {
-      date: '02/28',
-      day: '금',
-      name: '조혜련',
-      team: '팀원',
-      rank: '사원',
-      startTime: '9:00',
-      endTime: '18:00',
-      status: '정상',
-    },
-    {
-      date: '03/29',
-      day: '토',
-      name: '조혜련',
-      team: '팀원',
-      rank: '사원',
-      startTime: '9:00',
-      endTime: '18:00',
-      status: '지각',
-    },
-    {
-      date: '04/30',
-      day: '일',
-      name: '조혜련',
-      team: '팀원',
-      rank: '사원',
-      startTime: '9:00',
-      endTime: '18:00',
-      status: '휴가',
-    },
-  ];
-  const numArr = { normal: 11, late: 3, off: 2 };
-  ////////////////////////////////////////////////
-  ////////////////   Dummy Data      /////////////
-  ////////////////////////////////////////////////
-
-  const handleDateChange = (e) => {
-    setDate(e.target.value);
-  };
-
-  const handleSearchChange = (e) => {
-    setSearch(e.target.value);
-  };
-
-  const handleSearch = (e) => {
-    e.preventDefault();
-    alert(`Search: ${date}, ${search}`);
-  };
-
-  return (
-    <div className={styles.container}>
-      <div className={styles.numBoxContainer}>
-        <NumBox num={numArr.normal} type="정상 출근" />
-        <NumBox num={numArr.late} type="지각" />
-        <NumBox num={numArr.off} type="휴가" />
-      </div>
-      <form onSubmit={handleSearch} className={styles.searchForm}>
-        <input
-          type="date"
-          className={styles.dateInput}
-          value={date}
-          onChange={handleDateChange}
-        />
-        <input
-          type="text"
-          className={styles.textInput}
-          value={search}
-          onChange={handleSearchChange}
-        />
-        <button type="submit" className={styles.searchButton}>
-          검색
-        </button>
-      </form>
-      <Table page="attendance" headerArr={headerArr} dataArr={dataArr} />
-    </div>
-  );
-}
 
 export default Attendance;

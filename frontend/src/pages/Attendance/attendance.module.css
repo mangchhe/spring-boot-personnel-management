@@ -4,11 +4,12 @@
 
 .numBoxContainer {
   display: flex;
+  justify-content: space-between;
   margin-bottom: 3em;
 }
 
 .numBox {
-  flex: 1;
+  /* flex: 1; */
   display: flex;
 }
 

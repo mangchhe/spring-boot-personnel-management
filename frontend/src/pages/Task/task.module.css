@@ -1,6 +1,6 @@
 .container{
-    margin-top: 20px;
-    width: 70%;
+    width: 80%;
+    margin: 20px 40px;
 }
 
 .searchBox{
@@ -10,14 +10,14 @@
     outline: none;
     box-sizing: border-box;
     border: 1px solid #ccc;
-    width: 250px;
-    height: 34px;    
+    width:500px;
+    height: 42px;    
     padding: 0 10px;
 }
 
 .searchButton{
     background: #2d93f0;
-    padding: 0.6em;
+    padding: 0.9em;
     width: 100px;
     color: #fff;
     cursor: pointer;

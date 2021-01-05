@@ -144,7 +144,7 @@ function AttendanceContainer() {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    const { date, word } = inputValues;
+    alert(`${date}, ${word}`);
     // 검색하면 /attendance?date=2020-03-23&word=조 로 get 요청
     axios
       .get(`/attendance?date=${date}&word=${word}`)

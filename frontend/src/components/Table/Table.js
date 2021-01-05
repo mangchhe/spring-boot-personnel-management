@@ -1,24 +1,28 @@
 import React from 'react';
-import styles from './table.module.css';
+import AttendanceRow from './AttendanceRow';
+import styled from 'styled-components';
 
-const AttendanceRow = ({ data }) => {
-  return (
-    <tr>
-      <td>{data.date}</td>
-      <td>{data.day}</td>
-      <td>{data.name}</td>
-      <td>{data.team}</td>
-      <td>{data.rank}</td>
-      <td>{data.startTime}</td>
-      <td>{data.endTime}</td>
-      <td>{data.status}</td>
-    </tr>
-  );
+const StyledTable = styled.table`
+  width: 100%;
+  text-align: center;
+  border-collapse: collapse;
+  border: 1px solid #a9a9a9;
+  th,
+  td {
+    border: 1px solid #a9a9a9;
+    padding: 0.5em;
+  }
+`;
+
+const rowComponents = {
+  attendance: AttendanceRow,
 };
 
 function Table({ page, headerArr, dataArr }) {
+  const RowComponent = rowComponents[page];
+
   return (
-    <table className={styles.table}>
+    <StyledTable>
       <thead>
         <tr>
           {headerArr.map((header, i) => (
@@ -27,15 +31,11 @@ function Table({ page, headerArr, dataArr }) {
         </tr>
       </thead>
       <tbody>
-        {page === 'attendance' ? (
-          dataArr.map((data, i) => {
-            return <AttendanceRow data={data} key={i} />;
-          })
-        ) : (
-          <></>
-        )}
+        {dataArr.map((data, i) => {
+          return <RowComponent data={data} key={i} />;
+        })}
       </tbody>
-    </table>
+    </StyledTable>
   );
 }
 

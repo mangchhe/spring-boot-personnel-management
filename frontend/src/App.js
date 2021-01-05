@@ -10,40 +10,50 @@ import PersonnelInformation from './pages/PersonnelInformation/PersonnelInformat
 import PersonnelStatus from './pages/PersonnelStatus/PersonnelStatus';
 import Profile from './pages/Profile/Profile';
 import styles from './app.module.css';
+import { ThemeProvider } from 'styled-components';
 
 function App() {
   return (
-    <div>
-      <Router>
-        <Switch>
-          <Route exact path="/" component={Login} />
-          <Route
-            exact
-            path="*"
-            component={() => (
-              <div className={styles.app}>
-                <div className={styles.sidebar}>
-                  <Sidebar />
+    <ThemeProvider
+      theme={{
+        palette: { blue: '#2d93f0', red: '#ff3b30', grey: '#a9a9a9' },
+      }}
+    >
+      <div>
+        <Router>
+          <Switch>
+            <Route exact path="/" component={Login} />
+            <Route
+              exact
+              path="*"
+              component={() => (
+                <div className={styles.app}>
+                  <div className={styles.sidebar}>
+                    <Sidebar />
+                  </div>
+                  <div className={styles.body}>
+                    <Header />
+                    <Route path="/attendance" component={AttendanceContainer} />
+                    <Route path="/payroll" component={Payroll} />
+                    <Route path="/task" component={Task} />
+                    <Route path="/performance" component={Performance} />
+                    <Route
+                      path="/personnelInformation"
+                      component={PersonnelInformation}
+                    />
+                    <Route
+                      path="/personnelStatus"
+                      component={PersonnelStatus}
+                    />
+                    <Route path="/profile" component={Profile} />
+                  </div>
                 </div>
-                <div className={styles.body}>
-                  <Header />
-                  <Route path="/attendance" component={AttendanceContainer} />
-                  <Route path="/payroll" component={Payroll} />
-                  <Route path="/task" component={Task} />
-                  <Route path="/performance" component={Performance} />
-                  <Route
-                    path="/personnelInformation"
-                    component={PersonnelInformation}
-                  />
-                  <Route path="/personnelStatus" component={PersonnelStatus} />
-                  <Route path="/profile" component={Profile} />
-                </div>
-              </div>
-            )}
-          />
-        </Switch>
-      </Router>
-    </div>
+              )}
+            />
+          </Switch>
+        </Router>
+      </div>
+    </ThemeProvider>
   );
 }
 

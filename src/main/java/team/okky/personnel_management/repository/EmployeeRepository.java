@@ -2,6 +2,7 @@ package team.okky.personnel_management.repository;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import team.okky.personnel_management.domain.Attendance;
 import team.okky.personnel_management.domain.Employee;
 
 import javax.persistence.EntityManager;
@@ -23,12 +24,18 @@ public class EmployeeRepository {
     }
 
     public List<Employee> findAll(){
-        return em.createQuery("select e from Employee e")
+        return em.createQuery("select e from Employee e", Employee.class)
                 .getResultList();
     }
 
     public Employee remove(Employee employee){
         em.remove(employee);
         return employee;
+    }
+
+    public List<Employee> findAllByName(String name){
+        return em.createQuery("select e from Employee e where e.emp_name = :emp_name", Employee.class)
+                .setParameter("emp_name", name)
+                .getResultList();
     }
 }

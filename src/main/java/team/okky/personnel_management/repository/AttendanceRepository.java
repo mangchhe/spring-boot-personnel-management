@@ -46,12 +46,6 @@ public class AttendanceRepository {
                 .getResultList();
     }
 
-    public List<Attendance> findAllByName(String name){
-        return em.createQuery("select a from Attendance a where a.employee.emp_name = :emp_name", Attendance.class)
-                .setParameter("emp_name", name)
-                .getResultList();
-    }
-
     public List<Attendance> findAllById(Long id){
         return em.createQuery("select a from Attendance a where a.employee.emp_id = :emp_id", Attendance.class)
                 .setParameter("emp_id", id)
@@ -77,7 +71,6 @@ public class AttendanceRepository {
                 .setParameter("att_date", date)
                 .getResultList();
     }
-
 
     public List<Employee> findAllByStatus(AttendanceStatus status){
         return em.createQuery("select a.employee from Attendance a where a.att_status = :status", Employee.class)

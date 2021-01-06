@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
 import team.okky.personnel_management.domain.*;
 import team.okky.personnel_management.dto.AttendanceDTO;
@@ -15,15 +14,13 @@ import team.okky.personnel_management.repository.VacationRepository;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 @SpringBootTest
 @Transactional
 class AttendanceServiceTest {
 
-
+    @Autowired
     private AttendanceService attendanceService;
     @Autowired
     private EmployeeRepository employeeRepository;
@@ -38,23 +35,15 @@ class AttendanceServiceTest {
     public void 근태관리이력생성() throws Exception {
         // given
         String[] position = new String[]{"사원", "대리", "과장", "차장", "부장"};
+        Map<AttendanceStatus, Integer> statusMap = new HashMap<>();
 
         for (int i = 0; i < 10; i++) {
-
-            Employee employee = Employee.builder()
-                    .emp_name("테스터" + i)
-                    .emp_jumin("123456-1234567")
-                    .emp_position(position[i % 5])
-                    .emp_phone_num("010-2472-2117")
-                    .emp_join_date(LocalDate.now())
-                    .build();
+            Employee employee = new Employee();
             employeeRepository.save(employee);
 
             if(i % 4 == 0 && i != 0){
                 vacationRepository.save(
                     Vacation.builder()
-                            .vac_type("연가")
-                            .vac_days(3)
                             .vac_start_date(LocalDate.now().minusDays(1))
                             .vac_end_date(LocalDate.now().plusDays(1))
                             .employee(employee)
@@ -65,8 +54,6 @@ class AttendanceServiceTest {
             if(i % 5 == 0 && i != 0){
                 sickRepository.save(
                   Sick.builder()
-                          .sick_title("감기몸살")
-                          .sick_content("두통, 속쓰림, 오한")
                           .sick_start_date(LocalDate.now().minusDays(1))
                           .sick_end_date(LocalDate.now().plusDays(1))
                           .employee(employee)
@@ -76,23 +63,27 @@ class AttendanceServiceTest {
         }
 
         // when, then
-
         for(Attendance a : attendanceService.autoCreateAttendance()){
-            System.out.println(a.getEmployee().getEmp_name() + " " + a.getAtt_status() + " " + a.getEmployee().getEmp_position());
+            statusMap.put(a.getAtt_status(), statusMap.getOrDefault(a.getAtt_status(), 0) + 1);
         }
+
+        AttendanceDTO.Status status = AttendanceDTO.Status.builder()
+                .onCnt(statusMap.get(AttendanceStatus.ON) != null ? statusMap.get(AttendanceStatus.ON) : 0)
+                .offCnt(statusMap.get(AttendanceStatus.OFF) != null ? statusMap.get(AttendanceStatus.OFF) : 0)
+                .absenceCnt(statusMap.get(AttendanceStatus.ABSENCE) != null ? statusMap.get(AttendanceStatus.ABSENCE) : 0)
+                .lateCnt(statusMap.get(AttendanceStatus.LATE) != null ? statusMap.get(AttendanceStatus.LATE) : 0)
+                .vacationCnt(statusMap.get(AttendanceStatus.VACATION) != null ? statusMap.get(AttendanceStatus.VACATION) : 0)
+                .sickCnt(statusMap.get(AttendanceStatus.SICK) != null ? statusMap.get(AttendanceStatus.SICK) : 0)
+                .build();
+
+        Assertions.assertEquals(status, attendanceService.viewStatus());
 
     }
     
     @Test
     public void 출근() throws Exception {
         //given
-        Employee employee = Employee.builder()
-                .emp_name("테스터1")
-                .emp_jumin("123456-1234567")
-                .emp_position("과장")
-                .emp_phone_num("010-2472-2117")
-                .emp_join_date(LocalDate.now())
-                .build();
+        Employee employee = new Employee();
         employeeRepository.save(employee);
 
         attendanceRepository.save(
@@ -106,18 +97,14 @@ class AttendanceServiceTest {
         attendanceService.autoCreateAttendance();
 
         //when, then
+        attendanceService.onWork(employee);;
 
-        for(Attendance a : attendanceRepository.findAll()){
-            System.out.println(a.getEmployee().getEmp_name());
-            System.out.println(a.getAtt_date());
-            System.out.println(a.getAtt_status());
-        }
-
-        attendanceService.onWork(employee);
-        for(Attendance a : attendanceRepository.findAll()){
-            System.out.println(a.getEmployee().getEmp_name());
-            System.out.println(a.getAtt_date());
-            System.out.println(a.getAtt_status());
+        if(LocalTime.now().isAfter(AttendanceTime.ON_TIME.getLocalTime())) {
+            Assertions.assertEquals(attendanceRepository.findAllByDate(LocalDate.now()).get(0).getAtt_status()
+                    , AttendanceStatus.LATE);
+        }else{
+            Assertions.assertEquals(attendanceRepository.findAllByDate(LocalDate.now()).get(0).getAtt_status()
+                    , AttendanceStatus.ON);
         }
 
     }
@@ -125,52 +112,31 @@ class AttendanceServiceTest {
     @Test
     public void 퇴근() throws Exception {
         //given
-        Employee employee = Employee.builder()
-                .emp_name("테스터1")
-                .emp_jumin("123456-1234567")
-                .emp_position("과장")
-                .emp_phone_num("010-2472-2117")
-                .emp_join_date(LocalDate.now())
-                .build();
+        Employee employee = new Employee();
         employeeRepository.save(employee);
 
         attendanceService.autoCreateAttendance();
 
         //when, then
-        for(Attendance a : attendanceRepository.findAll()){
-            System.out.println(a.getEmployee().getEmp_name());
-            System.out.println(a.getAtt_date());
-            System.out.println(a.getAtt_status());
-        }
 
         attendanceService.offWork(employee);
 
-        for(Attendance a : attendanceRepository.findAll()){
-            System.out.println(a.getEmployee().getEmp_name());
-            System.out.println(a.getAtt_date());
-            System.out.println(a.getAtt_status());
-        }
+        Assertions.assertEquals(attendanceRepository.findAllByDate(LocalDate.now()).get(0).getAtt_status()
+                , AttendanceStatus.OFF);
 
     }
 
     @Test
     public void 전체직원_근태목록() throws Exception {
         //given
-        String[] position = new String[]{"사원", "대리", "과장", "차장", "부장"};
         LocalDate date = LocalDate.now();
         LocalDate beforeDate = null;
         LocalTime beforeTime = null;
-        Boolean first = true;
+        boolean first = true;
         int idx = 0;
 
         for (int i = 0; i < 100; i++) {
-            Employee employee = Employee.builder()
-                    .emp_name("테스터" + i)
-                    .emp_jumin("123456-1234567")
-                    .emp_position(position[i % 5])
-                    .emp_phone_num("010-2472-2117")
-                    .emp_join_date(LocalDate.now())
-                    .build();
+            Employee employee = new Employee();
             employeeRepository.save(employee);
 
             if(i % 10 == 0 && i != 0){
@@ -212,27 +178,17 @@ class AttendanceServiceTest {
     @Test
     public void 전체직원_출근현황() throws Exception {
         //given
-        String[] position = new String[]{"사원", "대리", "과장", "차장", "부장"};
         List<Employee> employeelist = new ArrayList<>();
         int on = 0, off = 0, absence = 10, late = 0, vacation = 0, sick = 0;
 
         for (int i = 0; i < 10; i++) {
-
-            Employee employee = Employee.builder()
-                    .emp_name("테스터" + i)
-                    .emp_jumin("123456-1234567")
-                    .emp_position(position[i % 5])
-                    .emp_phone_num("010-2472-2117")
-                    .emp_join_date(LocalDate.now())
-                    .build();
+            Employee employee = new Employee();
             employeelist.add(employee);
             employeeRepository.save(employee);
 
             if(i % 4 == 0 && i != 0){
                 vacationRepository.save(
                         Vacation.builder()
-                                .vac_type("연가")
-                                .vac_days(3)
                                 .vac_start_date(LocalDate.now().minusDays(1))
                                 .vac_end_date(LocalDate.now().plusDays(1))
                                 .employee(employee)
@@ -245,8 +201,6 @@ class AttendanceServiceTest {
             if(i % 5 == 0 && i != 0){
                 sickRepository.save(
                         Sick.builder()
-                                .sick_title("감기몸살")
-                                .sick_content("두통, 속쓰림, 오한")
                                 .sick_start_date(LocalDate.now().minusDays(1))
                                 .sick_end_date(LocalDate.now().plusDays(1))
                                 .employee(employee)
@@ -275,7 +229,6 @@ class AttendanceServiceTest {
         off ++;
 
         //when, then
-
         AttendanceDTO.Status status = attendanceService.viewStatus();
 
         if(status.getAbsenceCnt() != absence){
@@ -301,26 +254,17 @@ class AttendanceServiceTest {
     @Test
     public void 근태상태_상세표시() throws Exception {
         //given
-        String[] position = new String[]{"사원", "대리", "과장", "차장", "부장"};
         List<Employee> employeelist = new ArrayList<>();
 
         for (int i = 0; i < 10; i++) {
 
-            Employee employee = Employee.builder()
-                    .emp_name("테스터" + i)
-                    .emp_jumin("123456-1234567")
-                    .emp_position(position[i % 5])
-                    .emp_phone_num("010-2472-2117")
-                    .emp_join_date(LocalDate.now())
-                    .build();
+            Employee employee = new Employee();
             employeelist.add(employee);
             employeeRepository.save(employee);
 
             if(i % 4 == 0 && i != 0){
                 vacationRepository.save(
                         Vacation.builder()
-                                .vac_type("연가")
-                                .vac_days(3)
                                 .vac_start_date(LocalDate.now().minusDays(1))
                                 .vac_end_date(LocalDate.now().plusDays(1))
                                 .employee(employee)
@@ -331,8 +275,6 @@ class AttendanceServiceTest {
             if(i % 5 == 0 && i != 0){
                 sickRepository.save(
                         Sick.builder()
-                                .sick_title("감기몸살")
-                                .sick_content("두통, 속쓰림, 오한")
                                 .sick_start_date(LocalDate.now().minusDays(1))
                                 .sick_end_date(LocalDate.now().plusDays(1))
                                 .employee(employee)
@@ -350,7 +292,6 @@ class AttendanceServiceTest {
         attendanceService.offWork(employeelist.get(2));
         
         //when, then
-
         if (!attendanceService.viewStatusDetail(AttendanceStatus.VACATION)
                 .equals(new ArrayList<>(Arrays.asList(employeelist.get(4), employeelist.get(8))))) {
                     Assertions.fail("방학 상세 정보가 아닙니다.");
@@ -387,17 +328,10 @@ class AttendanceServiceTest {
     @Test
     public void 해당날짜_검색() throws Exception {
         //given
-        String[] position = new String[]{"사원", "대리", "과장", "차장", "부장"};
         LocalDate date = LocalDate.now();
 
         for (int i = 0; i < 100; i++) {
-            Employee employee = Employee.builder()
-                    .emp_name("테스터" + i)
-                    .emp_jumin("123456-1234567")
-                    .emp_position(position[i % 5])
-                    .emp_phone_num("010-2472-2117")
-                    .emp_join_date(LocalDate.now())
-                    .build();
+            Employee employee = new Employee();
             employeeRepository.save(employee);
 
             if(i % 10 == 0 && i != 0){
@@ -417,5 +351,65 @@ class AttendanceServiceTest {
         for(Attendance a : attendanceService.viewByDate(LocalDate.now())){
             Assertions.assertEquals(a.getAtt_date(), LocalDate.now());
         }
+
+        Assertions.assertEquals(attendanceService.viewByDate(LocalDate.now()).size()
+                , attendanceRepository.findAll().stream()
+                        .filter(x -> x.getAtt_date().isEqual(LocalDate.now()))
+                        .count());
     }
+
+    @Test
+    public void 해당이름_검색() throws Exception {
+        //given
+        List<Attendance> attendanceList = new ArrayList<>();
+        Employee employee = Employee.builder()
+                .emp_name("테스터")
+                .build();
+        Employee employee2 = Employee.builder()
+                .emp_name("테스터")
+                .build();
+        employeeRepository.save(employee);
+        employeeRepository.save(employee2);
+
+        for (int i = 0; i < 3; i++) {
+            Attendance attendance = Attendance.builder()
+                    .employee(employee)
+                    .att_date(LocalDate.now().minusDays(i))
+                    .build();
+            attendanceRepository.save(attendance);
+            attendanceList.add(attendance);
+        }
+
+        //when, then
+        if(!attendanceService.viewByName(employee.getEmp_id()).equals(attendanceList)){
+            Assertions.fail("해당이름 검색에 문제가 있습니다.(1)");
+        }
+        if(attendanceService.viewByName(employee2.getEmp_id()).equals(attendanceList)){
+            Assertions.fail("해당이름 검색에 문제가 있습니다.(2)");
+        }
+    }
+
+    @Test
+    public void 해당날짜_이름_검색() throws Exception {
+        //given
+        List<Attendance> attendanceList = new ArrayList<>();
+        Employee employee = Employee.builder()
+                .emp_name("테스터")
+                .build();
+        employeeRepository.save(employee);
+
+        for (int i = 0; i < 3; i++) {
+            Attendance attendance = Attendance.builder()
+                    .employee(employee)
+                    .att_date(LocalDate.now().minusDays(i))
+                    .build();
+            attendanceRepository.save(attendance);
+            attendanceList.add(attendance);
+        }
+        //when, then
+        if(!attendanceService.viewByDateOrName(LocalDate.now(), employee.getEmp_id()).get(0).equals(attendanceList.get(0))){
+            Assertions.fail("날짜와 이름으로 검색에 문제가 있습니다.");
+        }
+    }
+
 }

@@ -1,0 +1,46 @@
+package team.okky.personnel_management.service;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
+import team.okky.personnel_management.domain.Employee;
+import team.okky.personnel_management.repository.EmployeeRepository;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@SpringBootTest
+@Transactional
+class EmployeeServiceTest {
+
+    @Autowired
+    private EmployeeService employeeService;
+    @Autowired
+    private EmployeeRepository employeeRepository;
+
+    @Test
+    public void 이름검색_동명이인() throws Exception {
+        //given
+        List<Employee> employeeList = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            Employee employee = Employee.builder()
+                    .emp_name("테스터")
+                    .build();
+            employeeRepository.save(employee);
+            employeeList.add(employee);
+        }
+        for (int i = 0; i < 2; i++) {
+            employeeRepository.save(
+                    Employee.builder()
+                            .emp_name("테스터" + i)
+                            .build()
+            );
+        }
+        //when, then
+        if(!employeeService.viewByName("테스터").equals(employeeList)){
+            Assertions.fail("동명이인 출력에 문제가 있습니다.");
+        }
+    }
+}

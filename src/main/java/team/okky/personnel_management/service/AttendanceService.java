@@ -135,15 +135,6 @@ public class AttendanceService {
     }
 
     /**
-     * 이름 검색(동명이인)
-     * @param name
-     * @return 해당하는 이름만 담은 사원 목록
-     */
-    public List<Attendance> viewByName(String name){
-        return attendanceRepository.findAllByName(name);
-    }
-
-    /**
      * 해당 이름 검색
      * detail, 이름으로 검색 시 동명이인이 있을 수 있으므로 주키로 검색
      * @param id

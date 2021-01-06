@@ -100,18 +100,18 @@ public class AttendanceService {
      */
     public AttendanceDTO.Status viewStatus(){
 
-        HashMap<String, Integer> statusMap = new HashMap<>();
+        HashMap<AttendanceStatus, Integer> statusMap = new HashMap<>();
         for(Attendance a : attendanceRepository.findAllByDate(LocalDate.now())) {
-            statusMap.put(a.getAtt_status().toString(), statusMap.getOrDefault(a.getAtt_status().toString(), 0) + 1);
+            statusMap.put(a.getAtt_status(), statusMap.getOrDefault(a.getAtt_status(), 0) + 1);
         }
 
         return AttendanceDTO.Status.builder()
-                .onCnt(statusMap.get(AttendanceStatus.ON))
-                .offCnt(statusMap.get(AttendanceStatus.OFF))
-                .absenceCnt(statusMap.get(AttendanceStatus.ABSENCE))
-                .lateCnt(statusMap.get(AttendanceStatus.LATE))
-                .vacationCnt(statusMap.get(AttendanceStatus.VACATION))
-                .sickCnt(statusMap.get(AttendanceStatus.SICK))
+                .onCnt(statusMap.get(AttendanceStatus.ON) != null ? statusMap.get(AttendanceStatus.ON) : 0)
+                .offCnt(statusMap.get(AttendanceStatus.OFF) != null ? statusMap.get(AttendanceStatus.OFF) : 0)
+                .absenceCnt(statusMap.get(AttendanceStatus.ABSENCE) != null ? statusMap.get(AttendanceStatus.ABSENCE) : 0)
+                .lateCnt(statusMap.get(AttendanceStatus.LATE) != null ? statusMap.get(AttendanceStatus.LATE) : 0)
+                .vacationCnt(statusMap.get(AttendanceStatus.VACATION) != null ? statusMap.get(AttendanceStatus.VACATION) : 0)
+                .sickCnt(statusMap.get(AttendanceStatus.SICK) != null ? statusMap.get(AttendanceStatus.SICK) : 0)
                 .build();
     }
 
@@ -120,7 +120,7 @@ public class AttendanceService {
      * @param status
      * @return 각 상태에 해당하는 사원 목록
      */
-    public List<Employee> viewStatusDetail(String status){
+    public List<Employee> viewStatusDetail(AttendanceStatus status){
         return attendanceRepository.findAllByStatus(status);
     }
 

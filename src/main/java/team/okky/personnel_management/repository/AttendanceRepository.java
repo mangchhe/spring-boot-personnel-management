@@ -3,6 +3,7 @@ package team.okky.personnel_management.repository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import team.okky.personnel_management.domain.Attendance;
+import team.okky.personnel_management.domain.AttendanceStatus;
 import team.okky.personnel_management.domain.Employee;
 
 import javax.persistence.EntityManager;
@@ -35,7 +36,7 @@ public class AttendanceRepository {
     }
 
     public List<Attendance> findAllOrderByDateAndTime(){
-        return em.createQuery("select a from Attendance a order by a.att_date, a.att_on_time", Attendance.class)
+        return em.createQuery("select a from Attendance a order by a.att_date desc, a.att_on_time desc", Attendance.class)
                 .getResultList();
     }
 
@@ -78,7 +79,7 @@ public class AttendanceRepository {
     }
 
 
-    public List<Employee> findAllByStatus(String status){
+    public List<Employee> findAllByStatus(AttendanceStatus status){
         return em.createQuery("select a.employee from Attendance a where a.att_status = :status", Employee.class)
                 .setParameter("status", status)
                 .getResultList();

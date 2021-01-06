@@ -1,77 +1,145 @@
-import React, { useCallback, useState } from 'react';
-import Block from '../../components/Block/Block.js'
-import styles from './task.module.css'
+import React, {useEffect, useState } from 'react';
+import Block from '../../components/Block/Block.js';
+import styles from './task.module.css';
+import axios from 'axios';
 
-const TaskInput = function({input, handleChange, onSearch}){
-  return(
+const TaskInput = function ({handleSubmit, optionValue, handleSelectChange, input, handleInputChange}) {
+  return (
     <div className={styles.searchBox}>
-      <input value = {input} placeholder = '검색어를 입력하세요' onChange={handleChange} className = {styles.input}/>
-      <button onClick = {onSearch} className={styles.searchButton}>검색하기</button>
+      <form onSubmit = {handleSubmit}>
+        <select value = {optionValue} onChange = {handleSelectChange} className={styles.selectBox}>
+          <option value="name">업무명</option>
+          <option value="staff">직원이름</option>
+          <option value="department">부서</option>
+        </select>
+        <input
+          value={input}
+          placeholder="검색어를 입력하세요"
+          onChange={handleInputChange}
+          className={styles.input}
+        />
+        <button type = 'submit' className={styles.searchButton}>
+          검색하기
+        </button>
+      </form>
     </div>
-  )
-}
+  );
+};
 
-const Task = function() {
-  const [input, setInput] = useState('')
-  const [datas, setData] = useState([
-    {
-      id: 1,
-      name: '업무1',
-      start_date: '2020.08.01',
-      end_date: '2020.09.01',
-      department: '부서1',
-      manager: '담당자1',
-      staff: '직원들1',
-      completed: false,
-    },
-    {
-      id: 2,
-      name: '업무2',
-      start_date: '2020.08.01',
-      end_date: '2020.09.01',
-      department: '부서2',
-      manager: '담당자2',
-      staff: '직원들2',
-      completed: false,
-    },
-    {
-      id: 3,
-      name: '업무3',
-      start_date: '2020.08.01',
-      end_date: '2020.09.01',
-      department: '부서3',
-      manager: '담당자3',
-      staff: '직원들3',
-      completed: true,
-    },
-    {
-      id: 4,
-      name: '업무3',
-      start_date: '2020.08.01',
-      end_date: '2020.09.01',
-      department: '부서4',
-      manager: '담당자4',
-      staff: '직원들4',
-      completed: true,
-    },
-  ]);
-  const [searchResult, setSearchResult] = useState(datas)
+// [
+//   {
+//     id: 1,
+//     name: '업무1',
+//     start_date: '2020.08.01',
+//     end_date: '2020.09.01',
+//     department: '부서1',
+//     manager: '담당자1',
+//     staff: '직원들1',
+//     completed: false,
+//   },
+//   {
+//     id: 2,
+//     name: '업무2',
+//     start_date: '2020.08.01',
+//     end_date: '2020.09.01',
+//     department: '부서2',
+//     manager: '담당자2',
+//     staff: '직원들2',
+//     completed: false,
+//   },
+//   {
+//     id: 3,
+//     name: '업무3',
+//     start_date: '2020.08.01',
+//     end_date: '2020.09.01',
+//     department: '부서3',
+//     manager: '담당자3',
+//     staff: '직원들3',
+//     completed: true,
+//   },
+//   {
+//     id: 4,
+//     name: '업무3',
+//     start_date: '2020.08.01',
+//     end_date: '2020.09.01',
+//     department: '부서4',
+//     manager: '담당자4',
+//     staff: '직원들4',
+//     completed: true,
+//   },
+// ]
+
+// const onSearch = useCallback(() => {
+//   setSearchResult(datas.filter(data => data.name.toLowerCase().includes(input.toLowerCase())))
+//   setInput('')
+// }, [datas, input])
+const Task = function () {
+  const [input, setInput] = useState('');
+  const [datas, setData] = useState([{data: ''}]);
+  const [option, setOption] = useState('name');
   
-  const handleChange = (e) => {
-    setInput(e.target.value)
-  }
+  //로딩 및 에러처리
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(null)
 
-  const onSearch = useCallback(() => {
-    setSearchResult(datas.filter(data => data.name.toLowerCase().includes(input.toLowerCase())))
-    setInput('')
-  }, [datas, input])
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        setLoading(true)
+        setError(null)
+        const response = await axios.get(
+          'https://jsonplaceholder.typicode.com/users',
+        );
+        setData(response.data);
+      } catch (e) {
+        setError(e);
+      }
+      setLoading(false)
+    };
+
+    fetchUsers();
+  }, []);
+
+
+  if (loading) return <div>로딩중입니다</div>;
+  if (error) return <div>에러가 발생했습니다</div>;
+
+  const handleSelectChange = (e) => {
+    setOption(e.target.value);
+  };
+
+  const handleInputChange = (e) => {
+    setInput(e.target.value);
+  };
+
+  const handleSubmit = async(e) => {
+    e.preventDefault()
+    try {
+      setLoading(true)
+      setError(null)
+      const response = await axios.get(
+        'https://jsonplaceholder.typicode.com/users?{option}={input}'
+      );
+      setData(response.data); 
+    } catch (e) {
+      setError(e);
+    }
+    setLoading(false)
+  }
   
   return (
-    <div className = {styles.container}>
-      <TaskInput input={input} handleChange = {handleChange} onSearch = {onSearch}/>
-      <Block searchResult = {searchResult} className = {styles.block} />    
+    <div className={styles.container}>
+      <TaskInput
+        handleSubmit = {handleSubmit}
+        optionValue = {option}
+        handleSelectChange ={handleSelectChange}
+        input={input}
+        handleInputChange={handleInputChange}
+      />
+      {option}{input}
+      <Block searchResult={datas} className={styles.block} />
     </div>
-  )
-}
+  );
+};
 
 export default React.memo(Task);

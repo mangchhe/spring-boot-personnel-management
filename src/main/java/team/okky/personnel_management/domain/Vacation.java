@@ -1,23 +1,24 @@
 package team.okky.personnel_management.domain;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
-@Getter @Setter
+@Getter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Vacation{
 
     @Id @GeneratedValue
     private Long vac_id;
     private String vac_type;
-    private String vac_days;
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date vac_start_date;
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date vac_end_date;
+    private int vac_days;
+    private LocalDate vac_start_date;
+    private LocalDate vac_end_date;
 
     @ManyToOne()
     @JoinColumn(name="emp_id")

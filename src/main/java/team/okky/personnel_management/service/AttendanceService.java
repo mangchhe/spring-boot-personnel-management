@@ -61,27 +61,15 @@ public class AttendanceService {
     @Transactional(readOnly = false)
     public Attendance onWork(Employee employee){
         List<Attendance> attendanceList = attendanceRepository.findAllByEmployeeAndDate(employee, LocalDate.now());
-        // 10시에 데이터 처리가 된 후라면
-        if(!attendanceList.isEmpty()){
-            // 출근 시간 전이라면
-            if(LocalTime.now().isBefore(AttendanceTime.ON_TIME.getLocalTime())) {
-                attendanceList.get(0).setAtt_status(AttendanceStatus.ON);
-            // 출근 시간 이후라면
-            }else{
-                attendanceList.get(0).setAtt_status(AttendanceStatus.LATE);
-            }
-            return attendanceList.get(0);
+
+        // 출근 시간 전이라면
+        if(LocalTime.now().isBefore(AttendanceTime.ON_TIME.getLocalTime())) {
+            attendanceList.get(0).setAtt_status(AttendanceStatus.ON);
+        // 출근 시간 이후라면
+        }else{
+            attendanceList.get(0).setAtt_status(AttendanceStatus.LATE);
         }
-        // 10시에 데이터 처리가 되기 전이라면
-        else{
-            Attendance attendance = Attendance.builder()
-                    .att_date(LocalDate.now())
-                    .att_on_time(LocalTime.now())
-                    .att_status(AttendanceStatus.ON)
-                    .build();
-            attendanceRepository.save(attendance);
-            return attendance;
-        }
+        return attendanceList.get(0);
     }
 
     /**

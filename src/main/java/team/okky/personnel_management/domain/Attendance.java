@@ -36,4 +36,5 @@ public class Attendance {
     public void setAtt_status(AttendanceStatus att_status) {
         this.att_status = att_status;
     }
+
 }

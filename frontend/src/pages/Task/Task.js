@@ -69,10 +69,7 @@ const TaskInput = function ({handleSubmit, optionValue, handleSelectChange, inpu
 //   },
 // ]
 
-// const onSearch = useCallback(() => {
-//   setSearchResult(datas.filter(data => data.name.toLowerCase().includes(input.toLowerCase())))
-//   setInput('')
-// }, [datas, input])
+
 const Task = function () {
   const [input, setInput] = useState('');
   const [datas, setData] = useState([{data: ''}]);

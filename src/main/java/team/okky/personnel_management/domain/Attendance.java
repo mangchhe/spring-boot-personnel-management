@@ -21,7 +21,7 @@ public class Attendance {
     @Enumerated(EnumType.STRING)
     private AttendanceStatus att_status;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name="emp_id")
     private Employee employee;
 

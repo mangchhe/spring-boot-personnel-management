@@ -5,7 +5,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+import team.okky.personnel_management.domain.Department;
 import team.okky.personnel_management.domain.Employee;
+import team.okky.personnel_management.dto.EmployeeDTO;
 import team.okky.personnel_management.repository.EmployeeRepository;
 
 import java.util.ArrayList;
@@ -23,13 +25,21 @@ class EmployeeServiceTest {
     @Test
     public void 이름검색_동명이인() throws Exception {
         //given
-        List<Employee> employeeList = new ArrayList<>();
+        List<EmployeeDTO.DuplicationName> employeeList = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
             Employee employee = Employee.builder()
                     .emp_name("테스터")
+                    .department(Department.builder()
+                            .dept_name("인사과")
+                            .build())
                     .build();
             employeeRepository.save(employee);
-            employeeList.add(employee);
+            EmployeeDTO.DuplicationName duplicationName = EmployeeDTO.DuplicationName.builder()
+                    .emp_name("테스터")
+                    .dept_name("인사과")
+                    .emp_id(employee.getEmp_id())
+                    .build();
+            employeeList.add(duplicationName);
         }
         for (int i = 0; i < 2; i++) {
             employeeRepository.save(

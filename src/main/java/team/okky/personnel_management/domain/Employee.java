@@ -31,4 +31,8 @@ public class Employee {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="mn_id")
     private Manager manager;
+
+    public void setWork(Work work) {
+        this.work = work;
+    }
 }

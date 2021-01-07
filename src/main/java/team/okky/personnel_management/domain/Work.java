@@ -14,11 +14,11 @@ import java.util.List;
 public class Work {
 
     @Id @GeneratedValue
-    Long work_id;
-    String work_name;
-    String work_charge_name;
-    LocalDate work_start_date;
-    LocalDate work_end_date;
+    private Long work_id;
+    private String work_name;
+    private String work_charge_name;
+    private LocalDate work_start_date;
+    private LocalDate work_end_date;
 
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "dept_id")
     Department department;

@@ -12,10 +12,10 @@ import javax.persistence.Id;
 public class Department {
 
     @Id @GeneratedValue
-    Long dept_id;
-    String dept_name;
-    String dept_charge_name;
-    String dept_address;
+    private Long dept_id;
+    private String dept_name;
+    private String dept_charge_name;
+    private String dept_address;
 
     public Department(String dept_name, String dept_charge_name, String dept_address) {
         this.dept_name = dept_name;

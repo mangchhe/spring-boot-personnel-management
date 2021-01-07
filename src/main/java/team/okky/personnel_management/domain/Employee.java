@@ -24,7 +24,7 @@ public class Employee {
     @JoinColumn(name="work_id")
     private Work work;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name="dept_id")
     private Department department;
 

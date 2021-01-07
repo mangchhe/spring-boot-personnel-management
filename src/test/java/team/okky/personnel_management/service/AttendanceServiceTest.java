@@ -7,6 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import team.okky.personnel_management.domain.*;
 import team.okky.personnel_management.dto.AttendanceDTO;
+import team.okky.personnel_management.dto.EmployeeDTO;
 import team.okky.personnel_management.repository.AttendanceRepository;
 import team.okky.personnel_management.repository.EmployeeRepository;
 import team.okky.personnel_management.repository.SickRepository;
@@ -136,7 +137,9 @@ class AttendanceServiceTest {
         int idx = 0;
 
         for (int i = 0; i < 100; i++) {
-            Employee employee = new Employee();
+            Employee employee = Employee.builder()
+                    .department(new Department())
+                    .build();
             employeeRepository.save(employee);
 
             if(i % 10 == 0 && i != 0){
@@ -154,19 +157,19 @@ class AttendanceServiceTest {
         }
         //when, then
 
-        for(Attendance a : attendanceService.viewAll()){
+        for(AttendanceDTO.ListAll a : attendanceService.viewAll()){
             if(first | idx % 10 == 0){
-                beforeDate = a.getAtt_date();
-                beforeTime = a.getAtt_on_time();
+                beforeDate = a.getAttDate();
+                beforeTime = a.getAttOnTime();
                 first = false;
             }else{
-                if(beforeDate.isEqual(a.getAtt_date()) || beforeDate.isAfter(a.getAtt_date())){
-                    beforeDate = a.getAtt_date();
+                if(beforeDate.isEqual(a.getAttDate()) || beforeDate.isAfter(a.getAttDate())){
+                    beforeDate = a.getAttDate();
                 }else{
                     Assertions.fail("내림차순 보장 X");
                 }
-                if(beforeTime.equals(a.getAtt_on_time()) || beforeTime.isAfter(a.getAtt_on_time())){
-                    beforeTime = a.getAtt_on_time();
+                if(beforeTime.equals(a.getAttOnTime()) || beforeTime.isAfter(a.getAttOnTime())){
+                    beforeTime = a.getAttOnTime();
                 }else{
                     Assertions.fail("내림차순 보장 X");
                 }
@@ -258,7 +261,12 @@ class AttendanceServiceTest {
 
         for (int i = 0; i < 10; i++) {
 
-            Employee employee = new Employee();
+            Employee employee = Employee.builder()
+                    .emp_name("테스터")
+                    .department(Department.builder()
+                            .dept_name("인사과")
+                            .build())
+                    .build();
             employeelist.add(employee);
             employeeRepository.save(employee);
 
@@ -285,44 +293,25 @@ class AttendanceServiceTest {
 
         attendanceService.autoCreateAttendance();
 
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 3; i++) {
             attendanceService.onWork(employeelist.get(i));
         }
 
-        attendanceService.offWork(employeelist.get(2));
-        
+        attendanceService.offWork(employeelist.get(3));
+
         //when, then
-        if (!attendanceService.viewStatusDetail(AttendanceStatus.VACATION)
-                .equals(new ArrayList<>(Arrays.asList(employeelist.get(4), employeelist.get(8))))) {
-                    Assertions.fail("방학 상세 정보가 아닙니다.");
-                }
 
-        if (!attendanceService.viewStatusDetail(AttendanceStatus.SICK)
-                .equals(new ArrayList<>(Arrays.asList(employeelist.get(5))))) {
-                    Assertions.fail("병가 상세 정보가 아닙니다.");
-                }
-
-        if(LocalTime.now().isAfter(AttendanceTime.ON_TIME.getLocalTime())) {
-            if (!attendanceService.viewStatusDetail(AttendanceStatus.LATE)
-                    .equals(new ArrayList<>(Arrays.asList(employeelist.get(0), employeelist.get(1))))) {
-                        Assertions.fail("지각 상세 정보가 아닙니다.");
-                    }
+        if(LocalTime.now().isAfter(AttendanceTime.ON_TIME.getLocalTime())){
+            Assertions.assertEquals(attendanceService.viewStatusDetail(AttendanceStatus.LATE).size(), 3);
         }else{
-            if (!attendanceService.viewStatusDetail(AttendanceStatus.ON)
-                    .equals(new ArrayList<>(Arrays.asList(employeelist.get(0), employeelist.get(1))))) {
-                        Assertions.fail("출근 상세 정보가 아닙니다.");
-                    }
+            Assertions.assertEquals(attendanceService.viewStatusDetail(AttendanceStatus.ON).size(), 3);
+
         }
+        Assertions.assertEquals(attendanceService.viewStatusDetail(AttendanceStatus.OFF).size(), 1);
+        Assertions.assertEquals(attendanceService.viewStatusDetail(AttendanceStatus.VACATION).size(), 2);
+        Assertions.assertEquals(attendanceService.viewStatusDetail(AttendanceStatus.SICK).size(), 1);
+        Assertions.assertEquals(attendanceService.viewStatusDetail(AttendanceStatus.ABSENCE).size(), 3);
 
-        if (!attendanceService.viewStatusDetail(AttendanceStatus.OFF)
-                .equals(new ArrayList<>(Arrays.asList(employeelist.get(2))))) {
-                    Assertions.fail("퇴근 상세 정보가 아닙니다.");
-                }
-
-        if (!attendanceService.viewStatusDetail(AttendanceStatus.ABSENCE)
-                .equals(new ArrayList<>(Arrays.asList(employeelist.get(3), employeelist.get(6), employeelist.get(7), employeelist.get(9))))) {
-                    Assertions.fail("결근 상세 정보가 아닙니다.");
-                }
     }
 
     @Test
@@ -331,7 +320,10 @@ class AttendanceServiceTest {
         LocalDate date = LocalDate.now();
 
         for (int i = 0; i < 100; i++) {
-            Employee employee = new Employee();
+            Employee employee = Employee.builder()
+                    .department(Department.builder()
+                            .build())
+                    .build();
             employeeRepository.save(employee);
 
             if(i % 10 == 0 && i != 0){
@@ -348,8 +340,8 @@ class AttendanceServiceTest {
 
         }
         //when, then
-        for(Attendance a : attendanceService.viewByDate(LocalDate.now())){
-            Assertions.assertEquals(a.getAtt_date(), LocalDate.now());
+        for(AttendanceDTO.ListAll a : attendanceService.viewByDate(LocalDate.now())){
+            Assertions.assertEquals(a.getAttDate(), LocalDate.now());
         }
 
         Assertions.assertEquals(attendanceService.viewByDate(LocalDate.now()).size()
@@ -361,12 +353,13 @@ class AttendanceServiceTest {
     @Test
     public void 해당이름_검색() throws Exception {
         //given
-        List<Attendance> attendanceList = new ArrayList<>();
         Employee employee = Employee.builder()
-                .emp_name("테스터")
+                .emp_name("테스터1")
+                .department(new Department())
                 .build();
         Employee employee2 = Employee.builder()
-                .emp_name("테스터")
+                .emp_name("테스터2")
+                .department(new Department())
                 .build();
         employeeRepository.save(employee);
         employeeRepository.save(employee2);
@@ -376,39 +369,55 @@ class AttendanceServiceTest {
                     .employee(employee)
                     .att_date(LocalDate.now().minusDays(i))
                     .build();
+            Attendance attendance2 = Attendance.builder()
+                    .employee(employee2)
+                    .att_date(LocalDate.now().minusDays(i))
+                    .build();
             attendanceRepository.save(attendance);
-            attendanceList.add(attendance);
+            attendanceRepository.save(attendance2);
         }
 
         //when, then
-        if(!attendanceService.viewByName(employee.getEmp_id()).equals(attendanceList)){
-            Assertions.fail("해당이름 검색에 문제가 있습니다.(1)");
-        }
-        if(attendanceService.viewByName(employee2.getEmp_id()).equals(attendanceList)){
-            Assertions.fail("해당이름 검색에 문제가 있습니다.(2)");
+        for (int i = 0; i < 3; i++) {
+            if(!attendanceService.viewByName(employee.getEmp_id()).get(i).getEmpName().equals("테스터1")){
+                Assertions.fail("해당이름 검색에 문제가 있습니다.(1)");
+            }
+            if(!attendanceService.viewByName(employee2.getEmp_id()).get(i).getEmpName().equals("테스터2")){
+                Assertions.fail("해당이름 검색에 문제가 있습니다.(2)");
+            }
         }
     }
 
     @Test
     public void 해당날짜_이름_검색() throws Exception {
         //given
-        List<Attendance> attendanceList = new ArrayList<>();
         Employee employee = Employee.builder()
                 .emp_name("테스터")
+                .department(new Department())
+                .build();
+        Employee employee2 = Employee.builder()
+                .emp_name("테스터2")
+                .department(new Department())
                 .build();
         employeeRepository.save(employee);
+        employeeRepository.save(employee2);
 
         for (int i = 0; i < 3; i++) {
             Attendance attendance = Attendance.builder()
                     .employee(employee)
                     .att_date(LocalDate.now().minusDays(i))
                     .build();
+            Attendance attendance2 = Attendance.builder()
+                    .employee(employee2)
+                    .att_date(LocalDate.now().minusDays(i))
+                    .build();
             attendanceRepository.save(attendance);
-            attendanceList.add(attendance);
+            attendanceRepository.save(attendance2);
         }
         //when, then
-        if(!attendanceService.viewByDateOrName(LocalDate.now(), employee.getEmp_id()).get(0).equals(attendanceList.get(0))){
-            Assertions.fail("날짜와 이름으로 검색에 문제가 있습니다.");
+        for(AttendanceDTO.ListAll list : attendanceService.viewByDateAndName(LocalDate.now(), employee.getEmp_id())){
+            Assertions.assertEquals(list.getEmpName(), "테스터");
+            Assertions.assertEquals(list.getAttDate(), LocalDate.now());
         }
     }
 

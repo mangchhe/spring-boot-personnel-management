@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.okky.personnel_management.domain.*;
 import team.okky.personnel_management.dto.AttendanceDTO;
+import team.okky.personnel_management.dto.EmployeeDTO;
 import team.okky.personnel_management.repository.AttendanceRepository;
 import team.okky.personnel_management.repository.EmployeeRepository;
 import team.okky.personnel_management.repository.SickRepository;
@@ -12,8 +13,11 @@ import team.okky.personnel_management.repository.VacationRepository;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.TextStyle;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.HashMap;
+import java.util.Locale;
 
 @Service
 @RequiredArgsConstructor
@@ -89,8 +93,23 @@ public class AttendanceService {
      * detail, 최근 날짜, 출근 시각 내림차순
      * @return 최근 날짜, 최근 시각 정렬 된 사원 근태 이력
      */
-    public List<Attendance> viewAll(){
-        return attendanceRepository.findAllOrderByDateAndTime();
+    public List<AttendanceDTO.ListAll> viewAll(){
+        List<AttendanceDTO.ListAll> list = new ArrayList<>();
+        for (Attendance a : attendanceRepository.findAllOrderByDateAndTime()){
+            list.add(
+                    AttendanceDTO.ListAll.builder()
+                            .attDate(a.getAtt_date())
+                            .dayOfWeek(a.getAtt_date().getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.KOREAN))
+                            .empName(a.getEmployee().getEmp_name())
+                            .deptName(a.getEmployee().getDepartment().getDept_name())
+                            .empPosition(a.getEmployee().getEmp_position())
+                            .attOnTime(a.getAtt_on_time())
+                            .attOffTime(a.getAtt_off_time())
+                            .attStatus(a.getAtt_status())
+                            .build()
+            );
+        }
+        return list;
     }
 
     /**
@@ -120,8 +139,20 @@ public class AttendanceService {
      * @param status
      * @return 각 상태에 해당하는 사원 목록
      */
-    public List<Employee> viewStatusDetail(AttendanceStatus status){
-        return attendanceRepository.findAllByStatus(status);
+    public List<EmployeeDTO.ListByStatus> viewStatusDetail(AttendanceStatus status){
+        List<EmployeeDTO.ListByStatus> list = new ArrayList<>();
+        for(Employee e : attendanceRepository.findAllByStatus(status)){
+            list.add(
+                    EmployeeDTO.ListByStatus.builder()
+                            .emp_position(e.getEmp_position())
+                            .emp_name(e.getEmp_name())
+                            .emp_internal_num(e.getEmp_internal_num())
+                            .emp_join_date(e.getEmp_join_date())
+                            .dept_name(e.getDepartment().getDept_name())
+                            .build()
+            );
+        }
+        return list;
     }
 
     /**
@@ -130,8 +161,24 @@ public class AttendanceService {
      * @param date
      * @return 해당하는 날짜만 담은 근태 이력
      */
-    public List<Attendance> viewByDate(LocalDate date){
-        return attendanceRepository.findAllByDate(date);
+    public List<AttendanceDTO.ListAll> viewByDate(LocalDate date){
+        List<AttendanceDTO.ListAll> list = new ArrayList<>();
+
+        for (Attendance a : attendanceRepository.findAllByDate(date)){
+            list.add(
+                    AttendanceDTO.ListAll.builder()
+                            .attDate(a.getAtt_date())
+                            .dayOfWeek(a.getAtt_date().getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.KOREAN))
+                            .empName(a.getEmployee().getEmp_name())
+                            .deptName(a.getEmployee().getDepartment().getDept_name())
+                            .empPosition(a.getEmployee().getEmp_position())
+                            .attOnTime(a.getAtt_on_time())
+                            .attOffTime(a.getAtt_off_time())
+                            .attStatus(a.getAtt_status())
+                            .build()
+            );
+        }
+        return list;
     }
 
     /**
@@ -140,8 +187,24 @@ public class AttendanceService {
      * @param id
      * @return 해당하는 이름만 담은 근태 이력
      */
-    public List<Attendance> viewByName(Long id){
-        return attendanceRepository.findAllById(id);
+    public List<AttendanceDTO.ListAll> viewByName(Long id){
+        List<AttendanceDTO.ListAll> list = new ArrayList<>();
+
+        for (Attendance a : attendanceRepository.findAllById(id)){
+            list.add(
+                    AttendanceDTO.ListAll.builder()
+                            .attDate(a.getAtt_date())
+                            .dayOfWeek(a.getAtt_date().getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.KOREAN))
+                            .empName(a.getEmployee().getEmp_name())
+                            .deptName(a.getEmployee().getDepartment().getDept_name())
+                            .empPosition(a.getEmployee().getEmp_position())
+                            .attOnTime(a.getAtt_on_time())
+                            .attOffTime(a.getAtt_off_time())
+                            .attStatus(a.getAtt_status())
+                            .build()
+            );
+        }
+        return list;
     }
 
     /**
@@ -151,8 +214,24 @@ public class AttendanceService {
      * @param id
      * @return 해당 날짜와 이름만 담은 근태 이력
      */
-    public List<Attendance> viewByDateOrName(LocalDate date, Long id){
-        return attendanceRepository.findAllByDateAndId(date, id);
+    public List<AttendanceDTO.ListAll> viewByDateAndName(LocalDate date, Long id){
+        List<AttendanceDTO.ListAll> list = new ArrayList<>();
+
+        for (Attendance a : attendanceRepository.findAllByDateAndId(date, id)){
+            list.add(
+                    AttendanceDTO.ListAll.builder()
+                            .attDate(a.getAtt_date())
+                            .dayOfWeek(a.getAtt_date().getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.KOREAN))
+                            .empName(a.getEmployee().getEmp_name())
+                            .deptName(a.getEmployee().getDepartment().getDept_name())
+                            .empPosition(a.getEmployee().getEmp_position())
+                            .attOnTime(a.getAtt_on_time())
+                            .attOffTime(a.getAtt_off_time())
+                            .attStatus(a.getAtt_status())
+                            .build()
+            );
+        }
+        return list;
     }
 
 }

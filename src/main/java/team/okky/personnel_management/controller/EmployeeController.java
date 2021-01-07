@@ -21,9 +21,9 @@ public class EmployeeController {
     private final EmployeeService employeeService;
 
     @GetMapping("/employee/status/{status}")
-    public List<EmployeeDTO.ListByStatus> viewStatusDetail(@PathVariable AttendanceStatus status){
+    public List<EmployeeDTO.ListByStatus> viewStatusDetail(@PathVariable String status){
 
-        List<EmployeeDTO.ListByStatus> listByStatuses = attendanceService.viewStatusDetail(status);
+        List<EmployeeDTO.ListByStatus> listByStatuses = attendanceService.viewStatusDetail(AttendanceStatus.valueOf(status.toUpperCase()));
 
         return listByStatuses;
     }

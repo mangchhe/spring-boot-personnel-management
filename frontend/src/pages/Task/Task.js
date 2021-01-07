@@ -18,7 +18,7 @@ const TaskInput = function ({handleSubmit, optionValue, handleSelectChange, inpu
           onChange={handleInputChange}
           className={styles.input}
         />
-        <button type = 'submit' className={styles.searchButton}>
+        <button type ='submit' className={styles.searchButton}>
           검색하기
         </button>
       </form>
@@ -115,8 +115,8 @@ const Task = function () {
     if(!input){
       return
     }
-    const fetchusers = async() => {
-      try {
+  const fetchusers = async() => {
+    try {
         setLoading(true)
         setError(null)
         const response = await axios.get(

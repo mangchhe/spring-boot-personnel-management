@@ -82,27 +82,28 @@ const Task = function () {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
 
+  
   useEffect(() => {
-    const fetchUsers = async () => {
+    const fetchusers = async() => {
       try {
         setLoading(true)
         setError(null)
         const response = await axios.get(
-          'https://jsonplaceholder.typicode.com/users',
+          `https://jsonplaceholder.typicode.com/users`,
         );
         setData(response.data);
       } catch (e) {
         setError(e);
       }
       setLoading(false)
-    };
+    }
 
-    fetchUsers();
+    fetchusers()
   }, []);
 
 
-  if (loading) return <div>로딩중입니다</div>;
-  if (error) return <div>에러가 발생했습니다</div>;
+  if (loading) return <div>Loading..</div>;
+  if (error) return <div>Error Occurred</div>;
 
   const handleSelectChange = (e) => {
     setOption(e.target.value);
@@ -114,17 +115,24 @@ const Task = function () {
 
   const handleSubmit = async(e) => {
     e.preventDefault()
-    try {
-      setLoading(true)
-      setError(null)
-      const response = await axios.get(
-        'https://jsonplaceholder.typicode.com/users?{option}={input}'
-      );
-      setData(response.data); 
-    } catch (e) {
-      setError(e);
+    if(!input){
+      return
     }
-    setLoading(false)
+    const fetchusers = async() => {
+      try {
+        setLoading(true)
+        setError(null)
+        const response = await axios.get(
+          `https://jsonplaceholder.typicode.com/users?${option}=${input}`,
+        );
+        setData(response.data);
+      } catch (e) {
+        setError(e);
+      }
+      setLoading(false)
+    }
+
+    fetchusers()
   }
   
   return (

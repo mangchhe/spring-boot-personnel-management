@@ -1,9 +1,9 @@
 package team.okky.personnel_management.repository;
 
 import org.springframework.stereotype.Repository;
-import team.okky.personnel_management.controller.WorkSearch;
 import team.okky.personnel_management.domain.Work;
 import team.okky.personnel_management.dto.WorkFindDto;
+import team.okky.personnel_management.dto.WorkSearchDTO;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -50,7 +50,7 @@ public class WorkRepository {
                 .getResultList();
     }
 
-    public List<WorkFindDto> filteringList(WorkSearch workSearch) {
+    public List<WorkFindDto> filteringList(WorkSearchDTO workSearch) {
         String nameType = workSearch.getNameType();
         String name = workSearch.getName();
         if(nameType.equals("workName") && !name.isEmpty()) {

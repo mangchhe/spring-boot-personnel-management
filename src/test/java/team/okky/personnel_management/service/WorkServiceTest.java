@@ -6,9 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
-import team.okky.personnel_management.controller.WorkSearch;
 import team.okky.personnel_management.domain.Department;
 import team.okky.personnel_management.domain.Work;
+import team.okky.personnel_management.dto.WorkSearchDTO;
 import team.okky.personnel_management.repository.DepartmentRepository;
 import team.okky.personnel_management.repository.EmployeeRepository;
 import team.okky.personnel_management.dto.WorkFindDto;
@@ -29,15 +29,12 @@ public class WorkServiceTest {
     @Test
     public void 업무추가() throws Exception{
         //given
-        Department department = new Department("R&D","jaeseok","5F");
-        departmentRepository.save(department);
-
         Work work = new Work();
         work.setWork_name("VR");
-        work.setWork_charge_name("jaeseok");
-        work.setWork_start_date(LocalDate.of(2021,12,1));
-        work.setWork_end_date(LocalDate.of(2022,5,10));
-        work.setDepartment(department);
+        work.setWork_charge_name("jungha");
+        work.setWork_start_date(LocalDate.of(2021,1,3));
+        work.setWork_end_date(LocalDate.of(2022,6,16));
+        work.setDepartment(departmentRepository.findOne(2L));
 
         //when, then
         assertEquals(work,workService.save(work),"업무 추가되었다.");
@@ -68,7 +65,7 @@ public class WorkServiceTest {
     @Test
     public void 업무상세검색() throws Exception{
         //given
-        WorkSearch workSearch = new WorkSearch();
+        WorkSearchDTO workSearch = new WorkSearchDTO();
         workSearch.setNameType("empName");
         workSearch.setName("honggildong");
 
@@ -96,9 +93,9 @@ public class WorkServiceTest {
         String chargeName = work.getWork_charge_name();
 
         //when
-        Work updateWork = workService.update(work.getWork_id(),"클라우드",1L,"miho",
-                LocalDate.of(2020,1,4),
-                LocalDate.of(2020,9,16));
+        Work updateWork = workService.update(work.getWork_id(),"인공지능",1L,"honggildong",
+                LocalDate.of(2020,1,9),
+                LocalDate.of(2020,12,21));
 
         //then
         if(chargeName.equals(updateWork.getWork_charge_name())){

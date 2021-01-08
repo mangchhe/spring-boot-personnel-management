@@ -2,6 +2,8 @@ package team.okky.personnel_management.repository;
 
 import org.springframework.stereotype.Repository;
 import team.okky.personnel_management.domain.Work;
+import team.okky.personnel_management.dto.WorkFindDto;
+import team.okky.personnel_management.dto.WorkSearchDTO;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -21,9 +23,47 @@ public class WorkRepository {
         return em.find(Work.class, id);
     }
 
-    public List<Work> findAll(){
-        return em.createQuery("select w from Work w")
+    public List<WorkFindDto> findByWorkName(String workName){
+        return em.createQuery("select new team.okky.personnel_management.dto.WorkFindDto(w)" +
+                "from Work w where w.work_name = :name")
+                .setParameter("name",workName)
                 .getResultList();
+    }
+
+    public List<WorkFindDto> findByEmpName(String empName){
+        return em.createQuery("select new team.okky.personnel_management.dto.WorkFindDto(w) " +
+                "from Work w join Employee e on w = e.work and e.emp_name = :name")
+                .setParameter("name",empName)
+                .getResultList();
+    }
+
+    public List<WorkFindDto> findByDeptName(String deptName){
+        return em.createQuery("select new team.okky.personnel_management.dto.WorkFindDto(w) " +
+                "from Work w join Department d on w.department = d and d.dept_name = :name")
+                .setParameter("name",deptName)
+                .getResultList();
+    }
+
+    public List<WorkFindDto> findAll() {
+        return em.createQuery("select new team.okky.personnel_management.dto.WorkFindDto(w) " +
+                "from Work w order by w.work_end_date desc")
+                .getResultList();
+    }
+
+    public List<WorkFindDto> filteringList(WorkSearchDTO workSearch) {
+        String nameType = workSearch.getNameType();
+        String name = workSearch.getName();
+        if(nameType.equals("workName") && !name.isEmpty()) {
+            return findByWorkName(name);
+        }
+        else if(nameType.equals("deptName")&& !name.isEmpty()) {
+            return findByDeptName(name);
+        }
+        else if(nameType.equals("empName")&& !name.isEmpty()){
+            return findByEmpName(name);
+        }
+        else return findAll();
+
     }
 
     public Work remove(Work work){

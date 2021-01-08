@@ -1,0 +1,30 @@
+.sidebar{
+    background: #32373b;
+    position:fixed;
+    height: 100%;
+    width: 15%;
+    box-sizing: border-box;
+    padding: 50px 30px;
+}
+
+.ul{
+    margin-bottom: 50px;
+}
+
+.p{
+    font-size: 20px;
+    margin-bottom: 5px;
+    color: #c0c6c3;
+}
+
+.list{
+    font-size: 16px;
+    line-height: 1.8em;
+    font-weight: 400;
+}
+
+a{color: #c0c6c3;}
+
+.activeStyle{
+    color: #fff;
+}

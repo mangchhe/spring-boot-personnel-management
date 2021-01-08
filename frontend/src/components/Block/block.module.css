@@ -1,0 +1,33 @@
+.blockElements{
+    position: relative;
+    width: 100%; 
+    height: 180px;
+    background: #f4f5f9;    
+    margin-bottom: 20px;
+    box-sizing: border-box;
+    border: 1px solid #efefef;
+    padding: 30px;
+    border-radius: 1rem;
+}
+
+.blockCompleted{
+    width: 100%; 
+    height: 180px;
+    background: rgba(0,0,0,0.2);    
+    margin-bottom: 20px;
+    box-sizing: border-box;
+    border: 1px solid #efefef;
+    padding: 30px;
+    border-radius: 1rem;
+}
+
+.text{
+    line-height: 1.2em;
+}
+
+.icon{
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    cursor: pointer;
+}

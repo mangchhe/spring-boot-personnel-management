@@ -12,21 +12,21 @@ public class EmployeeDTO {
     @Builder
     @Getter @Setter
     public static class ListByStatus {
-        private String emp_position;
-        private String emp_name;
-        private String emp_internal_num;
-        private LocalDate emp_join_date;
-        private String dept_name;
+        private String empPosition;
+        private String empName;
+        private String empInternalNum;
+        private LocalDate empJoinDate;
+        private String deptName;
     }
     @Builder
     @Getter @Setter
     @EqualsAndHashCode
     public static class DuplicationName {
-        private Long emp_id;
-        private String emp_position;
-        private String emp_name;
-        private String emp_internal_num;
-        private LocalDate emp_join_date;
-        private String dept_name;
+        private Long empId;
+        private String empPosition;
+        private String empName;
+        private String empInternalNum;
+        private LocalDate empJoinDate;
+        private String deptName;
     }
 }

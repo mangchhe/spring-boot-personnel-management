@@ -144,11 +144,11 @@ public class AttendanceService {
         for(Employee e : attendanceRepository.findAllByStatus(status)){
             list.add(
                     EmployeeDTO.ListByStatus.builder()
-                            .emp_position(e.getEmp_position())
-                            .emp_name(e.getEmp_name())
-                            .emp_internal_num(e.getEmp_internal_num())
-                            .emp_join_date(e.getEmp_join_date())
-                            .dept_name(e.getDepartment().getDept_name())
+                            .empPosition(e.getEmp_position())
+                            .empName(e.getEmp_name())
+                            .empInternalNum(e.getEmp_internal_num())
+                            .empJoinDate(e.getEmp_join_date())
+                            .deptName(e.getDepartment().getDept_name())
                             .build()
             );
         }

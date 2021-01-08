@@ -1,9 +1,16 @@
+#spring:
+#  datasource:
+#    url: jdbc:mysql://localhost:3306/web_pm?useSSL=false&characterEncoding=UTF-8&serverTimezone=Asia/Seoul
+#    username:
+#    password:
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/web_pm?useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC
-    username:
+    url: jdbc:h2:tcp://localhost/~/personnel_mn
+    username: sa
     password:
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    driver-class-name: org.h2.Driver
 
   jpa:
     hibernate:

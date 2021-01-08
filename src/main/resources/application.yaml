@@ -1,9 +1,9 @@
 spring:
   datasource:
-    url: jdbc:h2:tcp://localhost/~/personnel_mn
-    username: sa
+    url: jdbc:mysql://localhost:3306/web_pm?useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC
+    username:
     password:
-    driver-class-name: org.h2.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
     hibernate:
@@ -11,7 +11,7 @@ spring:
     properties:
       hibernate:
  #       show_sql: true
-        format_sql: true
+ #       format_sql: true
 
 logging:
   level:

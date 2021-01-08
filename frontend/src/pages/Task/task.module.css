@@ -1,6 +1,6 @@
 .container{
-    width: 80%;
-    margin: 20px 40px;
+    width: 90%;
+    margin: 20px 0;
 }
 
 .searchBox{
@@ -9,7 +9,7 @@
 
 .selectBox{
     outline: none;
-    width: 100px;
+    width: 20%;
     height: 42px;
     box-sizing: border-box;
     border: 1px solid #aaa;
@@ -20,7 +20,7 @@
     outline: none;
     box-sizing: border-box;
     border: 1px solid #ccc;
-    width:470px;
+    width:45%;
     height: 42px;    
     padding: 0 10px;
     margin-left: 8px;
@@ -29,7 +29,7 @@
 .searchButton{
     background: #2d93f0;
     padding: 0.7em;
-    width: 120px;
+    width: 19%;
     color: #fff;
     cursor: pointer;
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;

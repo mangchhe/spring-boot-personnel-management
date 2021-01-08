@@ -121,7 +121,9 @@ function AttendanceContainer() {
         // attendanceArr로 정보 저장
         // setAttendanceArr(res.data)
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        console.log(error);
+      });
 
     // attendance/info로 get 요청
     axios

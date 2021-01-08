@@ -35,9 +35,9 @@ class EmployeeServiceTest {
                     .build();
             employeeRepository.save(employee);
             EmployeeDTO.DuplicationName duplicationName = EmployeeDTO.DuplicationName.builder()
-                    .emp_name("테스터")
-                    .dept_name("인사과")
-                    .emp_id(employee.getEmp_id())
+                    .empName("테스터")
+                    .deptName("인사과")
+                    .empId(employee.getEmp_id())
                     .build();
             employeeList.add(duplicationName);
         }

@@ -69,9 +69,11 @@ public class AttendanceService {
         // 출근 시간 전이라면
         if(LocalTime.now().isBefore(AttendanceTime.ON_TIME.getLocalTime())) {
             attendanceList.get(0).setAtt_status(AttendanceStatus.ON);
+            attendanceList.get(0).setAtt_on_time(LocalTime.now());
         // 출근 시간 이후라면
         }else{
             attendanceList.get(0).setAtt_status(AttendanceStatus.LATE);
+            attendanceList.get(0).setAtt_on_time(LocalTime.now());
         }
         return attendanceList.get(0);
     }
@@ -85,6 +87,8 @@ public class AttendanceService {
     public Attendance offWork(Employee employee){
         List<Attendance> attendanceList = attendanceRepository.findAllByEmployeeAndDate(employee, LocalDate.now());
         attendanceList.get(0).setAtt_status(AttendanceStatus.OFF);
+        attendanceList.get(0).setAtt_on_time(LocalTime.now());
+
         return attendanceList.get(0);
     }
 

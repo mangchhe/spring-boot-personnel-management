@@ -37,4 +37,11 @@ public class Attendance {
         this.att_status = att_status;
     }
 
+    public void setAtt_on_time(LocalTime att_on_time) {
+        this.att_on_time = att_on_time;
+    }
+
+    public void setAtt_off_time(LocalTime att_off_time) {
+        this.att_off_time = att_off_time;
+    }
 }

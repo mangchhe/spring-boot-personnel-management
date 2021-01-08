@@ -1,0 +1,39 @@
+.container{
+    width: 80%;
+    margin: 20px 40px;
+}
+
+.searchBox{
+    margin-bottom: 25px;
+}
+
+.selectBox{
+    outline: none;
+    width: 100px;
+    height: 42px;
+    box-sizing: border-box;
+    border: 1px solid #aaa;
+    padding: 0 10px;
+}
+
+.input{
+    outline: none;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    width:470px;
+    height: 42px;    
+    padding: 0 10px;
+    margin-left: 8px;
+}
+
+.searchButton{
+    background: #2d93f0;
+    padding: 0.7em;
+    width: 120px;
+    color: #fff;
+    cursor: pointer;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    border-radius: 5px;
+    font-size: 14px;
+    margin-left: 8px;
+}

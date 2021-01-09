@@ -4,7 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import team.okky.personnel_management.domain.AttendanceStatus;
 import team.okky.personnel_management.dto.AttendanceDTO;
+import team.okky.personnel_management.dto.EmployeeDTO;
 import team.okky.personnel_management.service.AttendanceService;
 import team.okky.personnel_management.service.EmployeeService;
 
@@ -26,6 +28,14 @@ public class AttendanceController {
         statusAndList.setStatus(attendanceService.viewStatus());
         statusAndList.setAttendanceList(attendanceService.viewAll());
         return statusAndList;
+    }
+
+    @GetMapping("/attendance/status/{status}")
+    public List<AttendanceDTO.ListAll> viewStatusDetail(@PathVariable String status){
+
+        List<AttendanceDTO.ListAll> listByStatuses = attendanceService.viewStatusDetail(AttendanceStatus.valueOf(status.toUpperCase()));
+
+        return listByStatuses;
     }
 
     @GetMapping("/attendance/search")

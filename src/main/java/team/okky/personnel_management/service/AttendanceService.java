@@ -40,19 +40,19 @@ public class AttendanceService {
         for(Employee e : employeeRepository.findAll()){
             attendanceRepository.save(
                     Attendance.builder()
-                            .att_date(LocalDate.now())
-                            .att_status(AttendanceStatus.ABSENCE)
+                            .attDate(LocalDate.now())
+                            .attStatus(AttendanceStatus.ABSENCE)
                             .employee(e)
                             .build()
             );
         }
         // 오늘 휴가인 사람 체크
         for(Vacation v : vacationRepository.findAllByDate(LocalDate.now())){
-            attendanceRepository.findAllByEmployeeAndDate(v.getEmployee(), LocalDate.now()).get(0).setAtt_status(AttendanceStatus.VACATION);
+            attendanceRepository.findAllByEmployeeAndDate(v.getEmployee(), LocalDate.now()).get(0).setAttStatus(AttendanceStatus.VACATION);
         }
         // 오늘 병가인 사람 체크
         for(Sick s : sickRepository.findAllByDate(LocalDate.now())){
-            attendanceRepository.findAllByEmployeeAndDate(s.getEmployee(), LocalDate.now()).get(0).setAtt_status(AttendanceStatus.SICK);
+            attendanceRepository.findAllByEmployeeAndDate(s.getEmployee(), LocalDate.now()).get(0).setAttStatus(AttendanceStatus.SICK);
         }
         return attendanceRepository.findAllByDate(LocalDate.now());
     }
@@ -68,12 +68,12 @@ public class AttendanceService {
 
         // 출근 시간 전이라면
         if(LocalTime.now().isBefore(AttendanceTime.ON_TIME.getLocalTime())) {
-            attendanceList.get(0).setAtt_status(AttendanceStatus.ON);
-            attendanceList.get(0).setAtt_on_time(LocalTime.now());
+            attendanceList.get(0).setAttStatus(AttendanceStatus.ON);
+            attendanceList.get(0).setAttOnTime(LocalTime.now());
         // 출근 시간 이후라면
         }else{
-            attendanceList.get(0).setAtt_status(AttendanceStatus.LATE);
-            attendanceList.get(0).setAtt_on_time(LocalTime.now());
+            attendanceList.get(0).setAttStatus(AttendanceStatus.LATE);
+            attendanceList.get(0).setAttOnTime(LocalTime.now());
         }
         return attendanceList.get(0);
     }
@@ -86,8 +86,8 @@ public class AttendanceService {
     @Transactional(readOnly = false)
     public Attendance offWork(Employee employee){
         List<Attendance> attendanceList = attendanceRepository.findAllByEmployeeAndDate(employee, LocalDate.now());
-        attendanceList.get(0).setAtt_status(AttendanceStatus.OFF);
-        attendanceList.get(0).setAtt_on_time(LocalTime.now());
+        attendanceList.get(0).setAttStatus(AttendanceStatus.OFF);
+        attendanceList.get(0).setAttOnTime(LocalTime.now());
 
         return attendanceList.get(0);
     }
@@ -102,14 +102,14 @@ public class AttendanceService {
         for (Attendance a : attendanceRepository.findAllOrderByDateAndTime()){
             list.add(
                     AttendanceDTO.ListAll.builder()
-                            .attDate(a.getAtt_date())
-                            .dayOfWeek(a.getAtt_date().getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.KOREAN))
-                            .empName(a.getEmployee().getEmp_name())
-                            .deptName(a.getEmployee().getDepartment().getDept_name())
-                            .empPosition(a.getEmployee().getEmp_position())
-                            .attOnTime(a.getAtt_on_time())
-                            .attOffTime(a.getAtt_off_time())
-                            .attStatus(a.getAtt_status())
+                            .attDate(a.getAttDate())
+                            .dayOfWeek(a.getAttDate().getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.KOREAN))
+                            .empName(a.getEmployee().getEmpName())
+                            .deptName(a.getEmployee().getDepartment().getDeptName())
+                            .empPosition(a.getEmployee().getEmpPosition())
+                            .attOnTime(a.getAttOnTime())
+                            .attOffTime(a.getAttOffTime())
+                            .attStatus(a.getAttStatus())
                             .build()
             );
         }
@@ -125,7 +125,7 @@ public class AttendanceService {
 
         HashMap<AttendanceStatus, Integer> statusMap = new HashMap<>();
         for(Attendance a : attendanceRepository.findAllByDate(LocalDate.now())) {
-            statusMap.put(a.getAtt_status(), statusMap.getOrDefault(a.getAtt_status(), 0) + 1);
+            statusMap.put(a.getAttStatus(), statusMap.getOrDefault(a.getAttStatus(), 0) + 1);
         }
 
         return AttendanceDTO.Status.builder()
@@ -148,14 +148,14 @@ public class AttendanceService {
         for(Attendance a : attendanceRepository.findAllByStatus(status)){
             list.add(
                     AttendanceDTO.ListAll.builder()
-                            .attDate(a.getAtt_date())
-                            .dayOfWeek(a.getAtt_date().getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.KOREAN))
-                            .empName(a.getEmployee().getEmp_name())
-                            .deptName(a.getEmployee().getDepartment().getDept_name())
-                            .empPosition(a.getEmployee().getEmp_position())
-                            .attOnTime(a.getAtt_on_time())
-                            .attOffTime(a.getAtt_off_time())
-                            .attStatus(a.getAtt_status())
+                            .attDate(a.getAttDate())
+                            .dayOfWeek(a.getAttDate().getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.KOREAN))
+                            .empName(a.getEmployee().getEmpName())
+                            .deptName(a.getEmployee().getDepartment().getDeptName())
+                            .empPosition(a.getEmployee().getEmpPosition())
+                            .attOnTime(a.getAttOnTime())
+                            .attOffTime(a.getAttOffTime())
+                            .attStatus(a.getAttStatus())
                             .build()
             );
         }
@@ -174,14 +174,14 @@ public class AttendanceService {
         for (Attendance a : attendanceRepository.findAllByDate(date)){
             list.add(
                     AttendanceDTO.ListAll.builder()
-                            .attDate(a.getAtt_date())
-                            .dayOfWeek(a.getAtt_date().getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.KOREAN))
-                            .empName(a.getEmployee().getEmp_name())
-                            .deptName(a.getEmployee().getDepartment().getDept_name())
-                            .empPosition(a.getEmployee().getEmp_position())
-                            .attOnTime(a.getAtt_on_time())
-                            .attOffTime(a.getAtt_off_time())
-                            .attStatus(a.getAtt_status())
+                            .attDate(a.getAttDate())
+                            .dayOfWeek(a.getAttDate().getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.KOREAN))
+                            .empName(a.getEmployee().getEmpName())
+                            .deptName(a.getEmployee().getDepartment().getDeptName())
+                            .empPosition(a.getEmployee().getEmpPosition())
+                            .attOnTime(a.getAttOnTime())
+                            .attOffTime(a.getAttOffTime())
+                            .attStatus(a.getAttStatus())
                             .build()
             );
         }
@@ -200,14 +200,14 @@ public class AttendanceService {
         for (Attendance a : attendanceRepository.findAllById(id)){
             list.add(
                     AttendanceDTO.ListAll.builder()
-                            .attDate(a.getAtt_date())
-                            .dayOfWeek(a.getAtt_date().getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.KOREAN))
-                            .empName(a.getEmployee().getEmp_name())
-                            .deptName(a.getEmployee().getDepartment().getDept_name())
-                            .empPosition(a.getEmployee().getEmp_position())
-                            .attOnTime(a.getAtt_on_time())
-                            .attOffTime(a.getAtt_off_time())
-                            .attStatus(a.getAtt_status())
+                            .attDate(a.getAttDate())
+                            .dayOfWeek(a.getAttDate().getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.KOREAN))
+                            .empName(a.getEmployee().getEmpName())
+                            .deptName(a.getEmployee().getDepartment().getDeptName())
+                            .empPosition(a.getEmployee().getEmpPosition())
+                            .attOnTime(a.getAttOnTime())
+                            .attOffTime(a.getAttOffTime())
+                            .attStatus(a.getAttStatus())
                             .build()
             );
         }
@@ -227,14 +227,14 @@ public class AttendanceService {
         for (Attendance a : attendanceRepository.findAllByDateAndId(date, id)){
             list.add(
                     AttendanceDTO.ListAll.builder()
-                            .attDate(a.getAtt_date())
-                            .dayOfWeek(a.getAtt_date().getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.KOREAN))
-                            .empName(a.getEmployee().getEmp_name())
-                            .deptName(a.getEmployee().getDepartment().getDept_name())
-                            .empPosition(a.getEmployee().getEmp_position())
-                            .attOnTime(a.getAtt_on_time())
-                            .attOffTime(a.getAtt_off_time())
-                            .attStatus(a.getAtt_status())
+                            .attDate(a.getAttDate())
+                            .dayOfWeek(a.getAttDate().getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.KOREAN))
+                            .empName(a.getEmployee().getEmpName())
+                            .deptName(a.getEmployee().getDepartment().getDeptName())
+                            .empPosition(a.getEmployee().getEmpPosition())
+                            .attOnTime(a.getAttOnTime())
+                            .attOffTime(a.getAttOffTime())
+                            .attStatus(a.getAttStatus())
                             .build()
             );
         }

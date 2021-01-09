@@ -45,8 +45,8 @@ class AttendanceServiceTest {
             if(i % 4 == 0 && i != 0){
                 vacationRepository.save(
                     Vacation.builder()
-                            .vac_start_date(LocalDate.now().minusDays(1))
-                            .vac_end_date(LocalDate.now().plusDays(1))
+                            .vacStartDate(LocalDate.now().minusDays(1))
+                            .vacEndDate(LocalDate.now().plusDays(1))
                             .employee(employee)
                             .build()
                 );
@@ -55,8 +55,8 @@ class AttendanceServiceTest {
             if(i % 5 == 0 && i != 0){
                 sickRepository.save(
                   Sick.builder()
-                          .sick_start_date(LocalDate.now().minusDays(1))
-                          .sick_end_date(LocalDate.now().plusDays(1))
+                          .sickStartDate(LocalDate.now().minusDays(1))
+                          .sickEndDate(LocalDate.now().plusDays(1))
                           .employee(employee)
                           .build()
                 );
@@ -65,7 +65,7 @@ class AttendanceServiceTest {
 
         // when, then
         for(Attendance a : attendanceService.autoCreateAttendance()){
-            statusMap.put(a.getAtt_status(), statusMap.getOrDefault(a.getAtt_status(), 0) + 1);
+            statusMap.put(a.getAttStatus(), statusMap.getOrDefault(a.getAttStatus(), 0) + 1);
         }
 
         AttendanceDTO.Status status = AttendanceDTO.Status.builder()
@@ -89,8 +89,8 @@ class AttendanceServiceTest {
 
         attendanceRepository.save(
           Attendance.builder()
-                  .att_date(LocalDate.now().minusDays(1))
-                  .att_status(AttendanceStatus.ABSENCE)
+                  .attDate(LocalDate.now().minusDays(1))
+                  .attStatus(AttendanceStatus.ABSENCE)
                   .employee(employee)
                   .build()
         );
@@ -101,10 +101,10 @@ class AttendanceServiceTest {
         attendanceService.onWork(employee);;
 
         if(LocalTime.now().isAfter(AttendanceTime.ON_TIME.getLocalTime())) {
-            Assertions.assertEquals(attendanceRepository.findAllByDate(LocalDate.now()).get(0).getAtt_status()
+            Assertions.assertEquals(attendanceRepository.findAllByDate(LocalDate.now()).get(0).getAttStatus()
                     , AttendanceStatus.LATE);
         }else{
-            Assertions.assertEquals(attendanceRepository.findAllByDate(LocalDate.now()).get(0).getAtt_status()
+            Assertions.assertEquals(attendanceRepository.findAllByDate(LocalDate.now()).get(0).getAttStatus()
                     , AttendanceStatus.ON);
         }
 
@@ -122,7 +122,7 @@ class AttendanceServiceTest {
 
         attendanceService.offWork(employee);
 
-        Assertions.assertEquals(attendanceRepository.findAllByDate(LocalDate.now()).get(0).getAtt_status()
+        Assertions.assertEquals(attendanceRepository.findAllByDate(LocalDate.now()).get(0).getAttStatus()
                 , AttendanceStatus.OFF);
 
     }
@@ -147,9 +147,9 @@ class AttendanceServiceTest {
             }
             attendanceRepository.save(
                     Attendance.builder()
-                            .att_date(date)
-                            .att_on_time(LocalTime.of((int)(Math.random() * 23), (int)(Math.random() * 59), (int)(Math.random() * 59)))
-                            .att_status(AttendanceStatus.ABSENCE)
+                            .attDate(date)
+                            .attOnTime(LocalTime.of((int)(Math.random() * 23), (int)(Math.random() * 59), (int)(Math.random() * 59)))
+                            .attStatus(AttendanceStatus.ABSENCE)
                             .employee(employee)
                             .build()
             );
@@ -192,8 +192,8 @@ class AttendanceServiceTest {
             if(i % 4 == 0 && i != 0){
                 vacationRepository.save(
                         Vacation.builder()
-                                .vac_start_date(LocalDate.now().minusDays(1))
-                                .vac_end_date(LocalDate.now().plusDays(1))
+                                .vacStartDate(LocalDate.now().minusDays(1))
+                                .vacEndDate(LocalDate.now().plusDays(1))
                                 .employee(employee)
                                 .build()
                 );
@@ -204,8 +204,8 @@ class AttendanceServiceTest {
             if(i % 5 == 0 && i != 0){
                 sickRepository.save(
                         Sick.builder()
-                                .sick_start_date(LocalDate.now().minusDays(1))
-                                .sick_end_date(LocalDate.now().plusDays(1))
+                                .sickStartDate(LocalDate.now().minusDays(1))
+                                .sickEndDate(LocalDate.now().plusDays(1))
                                 .employee(employee)
                                 .build()
                 );
@@ -262,9 +262,9 @@ class AttendanceServiceTest {
         for (int i = 0; i < 10; i++) {
 
             Employee employee = Employee.builder()
-                    .emp_name("테스터")
+                    .empName("테스터")
                     .department(Department.builder()
-                            .dept_name("인사과")
+                            .deptName("인사과")
                             .build())
                     .build();
             employeelist.add(employee);
@@ -273,8 +273,8 @@ class AttendanceServiceTest {
             if(i % 4 == 0 && i != 0){
                 vacationRepository.save(
                         Vacation.builder()
-                                .vac_start_date(LocalDate.now().minusDays(1))
-                                .vac_end_date(LocalDate.now().plusDays(1))
+                                .vacStartDate(LocalDate.now().minusDays(1))
+                                .vacEndDate(LocalDate.now().plusDays(1))
                                 .employee(employee)
                                 .build()
                 );
@@ -283,8 +283,8 @@ class AttendanceServiceTest {
             if(i % 5 == 0 && i != 0){
                 sickRepository.save(
                         Sick.builder()
-                                .sick_start_date(LocalDate.now().minusDays(1))
-                                .sick_end_date(LocalDate.now().plusDays(1))
+                                .sickStartDate(LocalDate.now().minusDays(1))
+                                .sickEndDate(LocalDate.now().plusDays(1))
                                 .employee(employee)
                                 .build()
                 );
@@ -331,9 +331,9 @@ class AttendanceServiceTest {
             }
             attendanceRepository.save(
                     Attendance.builder()
-                            .att_date(date)
-                            .att_on_time(LocalTime.of((int)(Math.random() * 23), (int)(Math.random() * 59), (int)(Math.random() * 59)))
-                            .att_status(AttendanceStatus.ABSENCE)
+                            .attDate(date)
+                            .attOnTime(LocalTime.of((int)(Math.random() * 23), (int)(Math.random() * 59), (int)(Math.random() * 59)))
+                            .attStatus(AttendanceStatus.ABSENCE)
                             .employee(employee)
                             .build()
             );
@@ -346,7 +346,7 @@ class AttendanceServiceTest {
 
         Assertions.assertEquals(attendanceService.viewByDate(LocalDate.now()).size()
                 , attendanceRepository.findAll().stream()
-                        .filter(x -> x.getAtt_date().isEqual(LocalDate.now()))
+                        .filter(x -> x.getAttDate().isEqual(LocalDate.now()))
                         .count());
     }
 
@@ -354,11 +354,11 @@ class AttendanceServiceTest {
     public void 해당이름_검색() throws Exception {
         //given
         Employee employee = Employee.builder()
-                .emp_name("테스터1")
+                .empName("테스터1")
                 .department(new Department())
                 .build();
         Employee employee2 = Employee.builder()
-                .emp_name("테스터2")
+                .empName("테스터2")
                 .department(new Department())
                 .build();
         employeeRepository.save(employee);
@@ -367,11 +367,11 @@ class AttendanceServiceTest {
         for (int i = 0; i < 3; i++) {
             Attendance attendance = Attendance.builder()
                     .employee(employee)
-                    .att_date(LocalDate.now().minusDays(i))
+                    .attDate(LocalDate.now().minusDays(i))
                     .build();
             Attendance attendance2 = Attendance.builder()
                     .employee(employee2)
-                    .att_date(LocalDate.now().minusDays(i))
+                    .attDate(LocalDate.now().minusDays(i))
                     .build();
             attendanceRepository.save(attendance);
             attendanceRepository.save(attendance2);
@@ -379,10 +379,10 @@ class AttendanceServiceTest {
 
         //when, then
         for (int i = 0; i < 3; i++) {
-            if(!attendanceService.viewByName(employee.getEmp_id()).get(i).getEmpName().equals("테스터1")){
+            if(!attendanceService.viewByName(employee.getEmpId()).get(i).getEmpName().equals("테스터1")){
                 Assertions.fail("해당이름 검색에 문제가 있습니다.(1)");
             }
-            if(!attendanceService.viewByName(employee2.getEmp_id()).get(i).getEmpName().equals("테스터2")){
+            if(!attendanceService.viewByName(employee2.getEmpId()).get(i).getEmpName().equals("테스터2")){
                 Assertions.fail("해당이름 검색에 문제가 있습니다.(2)");
             }
         }
@@ -392,11 +392,11 @@ class AttendanceServiceTest {
     public void 해당날짜_이름_검색() throws Exception {
         //given
         Employee employee = Employee.builder()
-                .emp_name("테스터")
+                .empName("테스터")
                 .department(new Department())
                 .build();
         Employee employee2 = Employee.builder()
-                .emp_name("테스터2")
+                .empName("테스터2")
                 .department(new Department())
                 .build();
         employeeRepository.save(employee);
@@ -405,17 +405,17 @@ class AttendanceServiceTest {
         for (int i = 0; i < 3; i++) {
             Attendance attendance = Attendance.builder()
                     .employee(employee)
-                    .att_date(LocalDate.now().minusDays(i))
+                    .attDate(LocalDate.now().minusDays(i))
                     .build();
             Attendance attendance2 = Attendance.builder()
                     .employee(employee2)
-                    .att_date(LocalDate.now().minusDays(i))
+                    .attDate(LocalDate.now().minusDays(i))
                     .build();
             attendanceRepository.save(attendance);
             attendanceRepository.save(attendance2);
         }
         //when, then
-        for(AttendanceDTO.ListAll list : attendanceService.viewByDateAndName(LocalDate.now(), employee.getEmp_id())){
+        for(AttendanceDTO.ListAll list : attendanceService.viewByDateAndName(LocalDate.now(), employee.getEmpId())){
             Assertions.assertEquals(list.getEmpName(), "테스터");
             Assertions.assertEquals(list.getAttDate(), LocalDate.now());
         }

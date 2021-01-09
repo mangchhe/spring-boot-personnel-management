@@ -2,6 +2,7 @@ import React, {useEffect, useState } from 'react';
 import Block from '../../components/Block/Block.js';
 import styles from './work.module.css';
 import axios from 'axios';
+import {Link} from 'react-router-dom'
 
 const WorkInput = function ({handleSubmit, optionValue, handleSelectChange, input, handleInputChange}) {
   return (
@@ -141,8 +142,9 @@ const Work = function () {
         input={input}
         handleInputChange={handleInputChange}
       />
+      <button className={styles.addButton}><Link to='work/create' component={WorkModal}>업무추가하기</Link></button>
       {option}{input}
-      <Block searchResult={datas} className={styles.block} />
+      <Block searchResult={datas} className={styles.block}/>
     </div>
   );
 };

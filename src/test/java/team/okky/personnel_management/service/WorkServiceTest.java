@@ -80,10 +80,6 @@ public class WorkServiceTest {
             System.out.println("====================================");
         }
 
-        List<String> empList = findWorks.get(0).getEmployees();
-
-        //then
-        assertTrue(empList.contains(workSearch.getName()));
     }
 
     @Test

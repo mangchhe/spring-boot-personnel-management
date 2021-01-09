@@ -3,14 +3,18 @@ package team.okky.personnel_management.controller;
 import lombok.Getter;
 import lombok.Setter;
 import team.okky.personnel_management.domain.Department;
+import team.okky.personnel_management.domain.Work;
 
-import java.time.LocalDate;
+import java.util.List;
 
-@Getter @Setter
+
 public class WorkForm {
-    private String work_name;
-    private String work_charge_name;
-    private LocalDate work_start_date;
-    private LocalDate work_end_date;
-    private String deptName;
+
+    @Getter @Setter
+    public static class workAndDept{
+        private Work work;
+        private List<Department> departmentList;
+
+    }
+
 }

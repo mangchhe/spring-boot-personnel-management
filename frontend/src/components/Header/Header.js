@@ -5,7 +5,7 @@ import styles from './header.module.css';
 const convertLocation = {
   '/attendance': '근태 관리',
   '/payroll': '급여 관리',
-  '/task': '업무 관리',
+  '/work': '업무 관리',
   '/performance': '성과 관리',
   '/personnelInformation': '인적사항 관리',
   '/personnelStatus': '인사 현황',

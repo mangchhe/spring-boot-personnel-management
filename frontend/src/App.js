@@ -4,7 +4,7 @@ import Header from './components/Header/Header';
 import Login from './pages/Login/Login';
 import AttendanceContainer from './pages/Attendance/AttendanceContainer';
 import Payroll from './pages/Payroll/Payroll';
-import Task from './pages/Task/Task';
+import Work from './pages/Work/Work';
 import Performance from './pages/Performance/Performance';
 import PersonnelInformation from './pages/PersonnelInformation/PersonnelInformation';
 import PersonnelStatus from './pages/PersonnelStatus/PersonnelStatus';
@@ -35,7 +35,7 @@ function App() {
                     <Header />
                     <Route path="/attendance" component={AttendanceContainer} />
                     <Route path="/payroll" component={Payroll} />
-                    <Route path="/task" component={Task} />
+                    <Route path="/work" component={Work} />
                     <Route path="/performance" component={Performance} />
                     <Route
                       path="/personnelInformation"

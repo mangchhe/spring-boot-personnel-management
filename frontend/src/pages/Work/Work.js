@@ -1,9 +1,9 @@
 import React, {useEffect, useState } from 'react';
 import Block from '../../components/Block/Block.js';
-import styles from './task.module.css';
+import styles from './work.module.css';
 import axios from 'axios';
 
-const TaskInput = function ({handleSubmit, optionValue, handleSelectChange, input, handleInputChange}) {
+const WorkInput = function ({handleSubmit, optionValue, handleSelectChange, input, handleInputChange}) {
   return (
     <div className={styles.searchBox}>
       <form onSubmit = {handleSubmit}>
@@ -70,7 +70,7 @@ const TaskInput = function ({handleSubmit, optionValue, handleSelectChange, inpu
 // ]
 
 
-const Task = function () {
+const Work = function () {
   const [input, setInput] = useState('');
   const [datas, setData] = useState([{data: ''}]);
   const [option, setOption] = useState('name');
@@ -134,7 +134,7 @@ const Task = function () {
   
   return (
     <div className={styles.container}>
-      <TaskInput
+      <WorkInput
         handleSubmit = {handleSubmit}
         optionValue = {option}
         handleSelectChange ={handleSelectChange}
@@ -147,4 +147,4 @@ const Task = function () {
   );
 };
 
-export default React.memo(Task);
+export default React.memo(Work);

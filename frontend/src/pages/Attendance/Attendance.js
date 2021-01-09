@@ -1,7 +1,15 @@
 import React from 'react';
 import Table from '../../components/Table/Table';
 import NumBox from './NumBox';
-import { NORMAL, LATE, VACATION, ABSENT, SICK, HEADER_ARR } from './Constants';
+import {
+  ON,
+  OFF,
+  ABSENCE,
+  LATE,
+  VACATION,
+  SICK,
+  HEADER_ARR,
+} from './Constants';
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -21,9 +29,10 @@ const StyledForm = styled.form`
   }
   .dateInput {
     flex: 1;
+    margin-left: 2em;
   }
   .textInput {
-    flex: 4;
+    flex: 3;
   }
   button {
     flex: 1;
@@ -35,23 +44,26 @@ const StyledForm = styled.form`
 `;
 
 function Attendance({
-  numArr,
   date,
   word,
+  handleAllDates,
   handleSearch,
   handleInputChange,
+  statusArr,
   attendanceArr,
 }) {
   return (
     <Container>
       <div className="numBoxContainer">
-        <NumBox num={numArr.normal} type={NORMAL} />
-        <NumBox num={numArr.late} type={LATE} />
-        <NumBox num={numArr.vacation} type={VACATION} />
-        <NumBox num={numArr.absent} type={ABSENT} />
-        <NumBox num={numArr.sick} type={SICK} />
+        <NumBox num={statusArr.onCnt} type={ON} />
+        <NumBox num={statusArr.offCnt} type={OFF} />
+        <NumBox num={statusArr.absenceCnt} type={ABSENCE} />
+        <NumBox num={statusArr.lateCnt} type={LATE} />
+        <NumBox num={statusArr.vacationCnt} type={VACATION} />
+        <NumBox num={statusArr.sickCnt} type={SICK} />
       </div>
       <StyledForm onSubmit={handleSearch}>
+        <button onClick={handleAllDates}>모든 날짜</button>
         <input
           type="date"
           name="date"

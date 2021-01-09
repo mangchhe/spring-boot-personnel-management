@@ -4,12 +4,16 @@ import {
   FaExclamationTriangle,
   FaMinusCircle,
 } from 'react-icons/fa';
-import { NORMAL, LATE } from './Constants';
+import { ON, OFF, ABSENCE, LATE } from './Constants';
 import styled, { css } from 'styled-components';
 
 const colorStyles = css`
   ${({ theme, type }) => {
-    const color = type === NORMAL ? 'blue' : type === LATE ? 'red' : 'grey';
+    const color = [ON, OFF].includes(type)
+      ? 'blue'
+      : [ABSENCE, LATE].includes(type)
+      ? 'red'
+      : 'grey';
     return css`
       color: ${theme.palette[color]};
     `;
@@ -19,22 +23,22 @@ const colorStyles = css`
 const StyledBox = styled.div`
   display: flex;
   svg {
-    font-size: 3em;
+    font-size: 2.8em;
     ${colorStyles}
   }
 `;
 
 const Text = styled.div`
-  margin-left: 2em;
+  margin-left: 1.2em;
   p {
     margin: 0;
-    font-size: 14px;
+    font-size: 13px;
   }
   .title {
-    font-size: 16px;
+    font-size: 15px;
   }
   .num {
-    font-size: 24px;
+    font-size: 23px;
     ${colorStyles}
   }
 `;
@@ -43,9 +47,9 @@ function NumBox({ num, type }) {
   return (
     <StyledBox type={type}>
       <div>
-        {type === NORMAL ? (
+        {[ON, OFF].includes(type) ? (
           <FaCheckCircle />
-        ) : type === LATE ? (
+        ) : [ABSENCE, LATE].includes(type) ? (
           <FaExclamationTriangle />
         ) : (
           <FaMinusCircle />

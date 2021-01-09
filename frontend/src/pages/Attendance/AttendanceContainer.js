@@ -2,139 +2,36 @@ import React, { useCallback, useState, useEffect } from 'react';
 import Attendance from './Attendance';
 import axios from 'axios';
 
-////////////////////////////////////////////////
-////////////////   Dummy Data      /////////////
-const dataArr = [
-  {
-    date: '02/28',
-    day: '금',
-    name: '조혜련',
-    team: '팀원',
-    rank: '사원',
-    startTime: '9:00',
-    endTime: '18:00',
-    status: '정상',
-  },
-  {
-    date: '03/29',
-    day: '토',
-    name: '조혜련',
-    team: '팀원',
-    rank: '사원',
-    startTime: '9:00',
-    endTime: '18:00',
-    status: '지각',
-  },
-  {
-    date: '04/30',
-    day: '일',
-    name: '조혜련',
-    team: '팀원',
-    rank: '사원',
-    startTime: '9:00',
-    endTime: '18:00',
-    status: '휴가',
-  },
-  {
-    date: '02/28',
-    day: '금',
-    name: '조혜련',
-    team: '팀원',
-    rank: '사원',
-    startTime: '9:00',
-    endTime: '18:00',
-    status: '정상',
-  },
-  {
-    date: '03/29',
-    day: '토',
-    name: '조혜련',
-    team: '팀원',
-    rank: '사원',
-    startTime: '9:00',
-    endTime: '18:00',
-    status: '지각',
-  },
-  {
-    date: '04/30',
-    day: '일',
-    name: '조혜련',
-    team: '팀원',
-    rank: '사원',
-    startTime: '9:00',
-    endTime: '18:00',
-    status: '휴가',
-  },
-  {
-    date: '02/28',
-    day: '금',
-    name: '조혜련',
-    team: '팀원',
-    rank: '사원',
-    startTime: '9:00',
-    endTime: '18:00',
-    status: '정상',
-  },
-  {
-    date: '03/29',
-    day: '토',
-    name: '조혜련',
-    team: '팀원',
-    rank: '사원',
-    startTime: '9:00',
-    endTime: '18:00',
-    status: '지각',
-  },
-  {
-    date: '04/30',
-    day: '일',
-    name: '조혜련',
-    team: '팀원',
-    rank: '사원',
-    startTime: '9:00',
-    endTime: '18:00',
-    status: '휴가',
-  },
-];
-const numDummyArr = { normal: 11, late: 3, vacation: 2, absent: 1, sick: 2 };
-////////////////////////////////////////////////
-////////////////////////////////////////////////
-
 function AttendanceContainer() {
-  const currentTime = new Date();
   const [inputValues, setInputValues] = useState({
-    date: currentTime.toISOString().split('T')[0],
+    date: '',
     word: '',
   });
-  ////////////////////////////////////////////////
-  /////////   useState 안에 빈 배열로 바꾸기   ////////
-  const [attendanceArr, setAttendanceArr] = useState(dataArr);
-  const [numArr, setNumArr] = useState(numDummyArr);
+  const [attendanceArr, setAttendanceArr] = useState([]);
+  const [statusArr, setStatusArr] = useState([]);
   const { date, word } = inputValues;
 
-  useEffect(() => {
-    // attendance get 요청
+  const fetchAttendance = (route) => {
     axios
-      .get('/attendance')
+      .get(route)
       .then((res) => {
         console.log(res.data);
-        // attendanceArr로 정보 저장
-        // setAttendanceArr(res.data)
+        const { attendanceList, status } = res.data;
+        setAttendanceArr(attendanceList);
+        setStatusArr(status);
       })
       .catch((error) => {
         console.log(error);
       });
+  };
 
-    // attendance/info로 get 요청
-    axios
-      .get('/attendance/info')
-      .then((res) => {
-        console.log(res.data);
-        // numArr로 정보 저장
-        // setNumArr(res.data)
-      })
-      .catch((error) => console.log(error));
+  useEffect(() => {
+    fetchAttendance('/attendance');
   }, []);
+
+  const handleAllDates = () => {
+    setInputValues({ ...inputValues, date: '' });
+  };
 
   const handleInputChange = useCallback(
     (e) => {
@@ -146,25 +43,20 @@ function AttendanceContainer() {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    alert(`${date}, ${word}`);
-    // 검색하면 /attendance?date=2020-03-23&word=조 로 get 요청
-    axios
-      .get(`/attendance?date=${date}&word=${word}`)
-      .then((res) => {
-        console.log(res);
-        // attendanceArr로 정보 저장
-        // setAttendanceArr(res.data);
-      })
-      .catch((error) => console.log(error));
+    const { date, word } = inputValues;
+    if (date && !word) {
+      fetchAttendance(`/attendance/search?date=${date}`);
+    }
   };
 
   return (
     <Attendance
-      numArr={numArr}
       date={date}
       word={word}
+      handleAllDates={handleAllDates}
       handleSearch={handleSearch}
       handleInputChange={handleInputChange}
+      statusArr={statusArr}
       attendanceArr={attendanceArr}
     />
   );

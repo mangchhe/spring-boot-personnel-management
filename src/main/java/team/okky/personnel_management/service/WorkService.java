@@ -36,9 +36,9 @@ public class WorkService {
     }
 
     @Transactional
-    public Work update(Long workId, String workName, Long dept_id, String chargeName, LocalDate startDate, LocalDate endDate){
+    public Work update(Long workId, String workName, Long deptId, String chargeName, LocalDate startDate, LocalDate endDate){
         Work findWork = workRepository.findOne(workId);
-        Department selectDept = departmentRepository.findOne(dept_id);
+        Department selectDept = departmentRepository.findOne(deptId);
 
         findWork.change(workName, chargeName, startDate, endDate, selectDept);
         return findWork;

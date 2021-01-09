@@ -30,10 +30,10 @@ public class WorkServiceTest {
     public void 업무추가() throws Exception{
         //given
         Work work = new Work();
-        work.setWork_name("VR");
-        work.setWork_charge_name("jungha");
-        work.setWork_start_date(LocalDate.of(2021,1,3));
-        work.setWork_end_date(LocalDate.of(2022,6,16));
+        work.setWorkName("VR");
+        work.setWorkChargeName("jungha");
+        work.setWorkStartDate(LocalDate.of(2021,1,3));
+        work.setWorkEndDate(LocalDate.of(2022,6,16));
         work.setDepartment(departmentRepository.findOne(2L));
 
         //when, then
@@ -50,10 +50,10 @@ public class WorkServiceTest {
         //when
         for (WorkFindDto dto : findWorks) {
             countDTO++;
-            System.out.println("업무명=" + dto.getWork_name());
-            System.out.println("업무명과 연관된 부서명 =" + dto.getDept_name());
+            System.out.println("업무명=" + dto.getWorkName());
+            System.out.println("업무명과 연관된 부서명 =" + dto.getDeptName());
             System.out.println("업무를 맡은 직원들=" + dto.getEmployees());
-            System.out.println("업무 시작일 =" + dto.getWork_start_date());
+            System.out.println("업무 시작일 =" + dto.getWorkStartDate());
             System.out.println("업무 진행상태="+dto.getWorkStatus());
             System.out.println("====================================");
         }
@@ -72,34 +72,14 @@ public class WorkServiceTest {
         //when
         List<WorkFindDto> findWorks = workService.filteringList(workSearch);
         for (WorkFindDto dto : findWorks) {
-            System.out.println("업무명=" + dto.getWork_name());
-            System.out.println("업무명과 연관된 부서명 =" + dto.getDept_name());
+            System.out.println("업무명=" + dto.getWorkName());
+            System.out.println("업무명과 연관된 부서명 =" + dto.getDeptName());
             System.out.println("업무를 맡은 직원들=" + dto.getEmployees());
-            System.out.println("업무 시작일 =" + dto.getWork_start_date());
+            System.out.println("업무 시작일 =" + dto.getWorkStartDate());
             System.out.println("업무 진행상태="+dto.getWorkStatus());
             System.out.println("====================================");
         }
 
     }
 
-    @Test
-    public void 업무수정() throws Exception{
-        //given
-        Work work = workService.findOne(1L);
-        String chargeName = work.getWork_charge_name();
-
-        //when
-        Work updateWork = workService.update(work.getWork_id(),"인공지능",1L,"honggildong",
-                LocalDate.of(2020,1,9),
-                LocalDate.of(2020,12,21));
-
-        //then
-        if(chargeName.equals(updateWork.getWork_charge_name())){
-            Assertions.fail("업무 상세정보가 수정되지 않았습니다.");
-        }
-        else {
-            Assertions.assertTrue(true,"업무 상세정보가 수정되었습니다.");
-        }
-
-    }
 }

@@ -14,29 +14,29 @@ import java.util.List;
 @Getter
 public class WorkFindDto {
 
-    private Long work_id;
-    private String work_name;
-    private String work_charge_name;
-    private LocalDate work_start_date;
-    private LocalDate work_end_date;
-    private String dept_name;
+    private Long workId;
+    private String workName;
+    private String workChargeName;
+    private LocalDate workStartDate;
+    private LocalDate workEndDate;
+    private String deptName;
     private String employees;
     private Boolean workStatus;
 
     public WorkFindDto(Work entity) {
-        this.work_id = entity.getWork_id();
-        this.work_name = entity.getWork_name();
-        this.work_charge_name = entity.getWork_charge_name();
-        this.work_start_date = entity.getWork_start_date();
-        this.work_end_date = entity.getWork_end_date();
-        this.dept_name = entity.getDepartment().getDept_name();
+        this.workId = entity.getWorkId();
+        this.workName = entity.getWorkName();
+        this.workChargeName = entity.getWorkChargeName();
+        this.workStartDate = entity.getWorkStartDate();
+        this.workEndDate = entity.getWorkEndDate();
+        this.deptName = entity.getDepartment().getDeptName();
         this.employees = findEmpName(entity);
-        this.workStatus = findStatus(work_start_date, work_end_date);
+        this.workStatus = findStatus(workStartDate, workEndDate);
     }
 
-    private Boolean findStatus(LocalDate work_start_date, LocalDate work_end_date) {
+    private Boolean findStatus(LocalDate workStartDate, LocalDate workEndDate) {
         LocalDate today = LocalDate.now();
-        if(today.isAfter(work_start_date) && today.isBefore(work_end_date)){
+        if(today.isAfter(workStartDate) && today.isBefore(workEndDate)){
             return true;
         }
         else {
@@ -48,7 +48,7 @@ public class WorkFindDto {
         List<Employee> list = entity.getEmployees();
         String empName="";
         for(Employee e : list ) {
-            empName = empName+" "+e.getEmp_name();
+            empName = empName+" "+e.getEmpName();
         }
         return empName;
     }

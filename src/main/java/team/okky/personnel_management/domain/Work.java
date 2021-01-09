@@ -32,7 +32,7 @@ public class Work {
         employee.setWork(this);
     }
 
-    public Work(String workName, String workChargeName, LocalDate workStartDate, LocalDate workEndDate, Department department) {
+    public void change(String workName, String workChargeName, LocalDate workStartDate, LocalDate workEndDate, Department department) {
         this.workName = workName;
         this.workChargeName = workChargeName;
         this.workStartDate = workStartDate;

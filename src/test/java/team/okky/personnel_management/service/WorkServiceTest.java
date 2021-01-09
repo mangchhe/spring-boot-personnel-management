@@ -26,7 +26,7 @@ public class WorkServiceTest {
     @Autowired DepartmentRepository departmentRepository;
     @Autowired EmployeeRepository employeeRepository;
 
-    @Test
+/*    @Test
     public void 업무추가() throws Exception{
         //given
         Work work = Work.builder()
@@ -61,7 +61,6 @@ public class WorkServiceTest {
         assertEquals("업무0",findWorks.get(0).getWorkName());
     }
 
-    /*
     @Test
     public void 업무수정() throws Exception{
         //given

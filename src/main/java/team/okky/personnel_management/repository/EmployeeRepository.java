@@ -34,8 +34,8 @@ public class EmployeeRepository {
     }
 
     public List<Employee> findAllByName(String name){
-        return em.createQuery("select e from Employee e where e.emp_name = :emp_name", Employee.class)
-                .setParameter("emp_name", name)
+        return em.createQuery("select e from Employee e where e.empName = :empName", Employee.class)
+                .setParameter("empName", name)
                 .getResultList();
     }
 }

@@ -14,7 +14,7 @@ public class WorkForm {
     public static class workAndDept{
         private Work work;
         private List<Department> departmentList;
-
+        private String defaultDeptName;
     }
 
 }

@@ -1,7 +1,6 @@
 package team.okky.personnel_management.domain;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -10,11 +9,13 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Getter @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
 public class Work {
 
     @Id @GeneratedValue
-    @Column(name = "work_id")
     private Long workId;
     private String workName;
     private String workChargeName;
@@ -22,21 +23,21 @@ public class Work {
     private LocalDate workEndDate;
 
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "dept_id")
-    private Department department;
+    Department department;
 
     @OneToMany(mappedBy = "work")
-    private List<Employee> employees = new ArrayList<>();
+    List<Employee> employees = new ArrayList<>();
 
     public void addEmployee(Employee employee){
         employees.add(employee);
         employee.setWork(this);
     }
 
-    public void change(String workName, String workChargeName, LocalDate workStartDate, LocalDate workEndDate, Department department) {
+    public void change(String workName, String chargeName, LocalDate startDate, LocalDate endDate, Department department) {
         this.workName = workName;
-        this.workChargeName = workChargeName;
-        this.workStartDate = workStartDate;
-        this.workEndDate = workEndDate;
+        this.workChargeName = chargeName;
+        this.workStartDate = startDate;
+        this.workEndDate = endDate;
         this.department = department;
     }
 }

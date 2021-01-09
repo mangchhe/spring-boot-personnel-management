@@ -21,7 +21,7 @@ public class WorkController {
     @GetMapping("/work/create")
     public WorkForm.workAndDept createWorkForm(){
         WorkForm.workAndDept workAndDept = new WorkForm.workAndDept();
-        workAndDept.setWork(new Work());
+        workAndDept.setWork(Work.builder().build());
         workAndDept.setDepartmentList(departmentRepository.findAll());
         return workAndDept;
     }
@@ -29,13 +29,13 @@ public class WorkController {
     @PostMapping("/work/create")
     public String create(@RequestParam("deptId") Long deptId,
                          WorkForm.workAndDept workForm){
-        Work work = new Work();
-        work.setWorkName(workForm.getWork().getWorkName());
-        work.setWorkChargeName(workForm.getWork().getWorkChargeName());
-        work.setWorkStartDate(workForm.getWork().getWorkStartDate());
-        work.setWorkEndDate(workForm.getWork().getWorkEndDate());
-        work.setDepartment(departmentRepository.findOne(deptId));
-
+        Work work = Work.builder()
+                .workName(workForm.getWork().getWorkName())
+                .workChargeName(workForm.getWork().getWorkChargeName())
+                .workStartDate(workForm.getWork().getWorkStartDate())
+                .workEndDate(workForm.getWork().getWorkEndDate())
+                .department(departmentRepository.findOne(deptId))
+                .build();
         workService.save(work);
         return "redirect:/work";
     }
@@ -47,33 +47,25 @@ public class WorkController {
         workSearchDTO.setNameType(nameType);
         workSearchDTO.setName(name);
 
-        List<WorkFindDto> workList = workService.filteringList(workSearchDTO);
-        return workList;
+        return workService.filteringList(workSearchDTO);
     }
-/*
+
     @GetMapping("/work/{workId}/edit")
-    public String updateWorkForm(@PathVariable("workId") Long workId, Model model){
+    public WorkForm.workAndDept updateWorkForm(@PathVariable("workId") Long workId){
         Work work = workService.findOne(workId);
-        List<Department> department = departmentRepository.findAll();
+        WorkForm.workAndDept form = new WorkForm.workAndDept();
+        form.setWork(work);
+        form.setDefaultDeptName(work.getDepartment().getDeptName());
+        form.setDepartmentList(departmentRepository.findAll());
 
-        WorkForm form = new WorkForm();
-        form.setWork_name(work.getWork_name());
-        form.setWork_charge_name(work.getWork_charge_name());
-        form.setWork_start_date(work.getWork_start_date());
-        form.setWork_end_date(work.getWork_end_date());
-        form.setDeptName(work.getDepartment().getDept_name());
-
-        model.addAttribute("form",form);
-        model.addAttribute("dept",department);
-
-        return "/work/updateWorkForm";
+        return form;
     }
 
     @PostMapping("/work/{workId}/edit")
     public String update(@PathVariable Long workId, @RequestParam("deptId") Long deptId,
-                         @ModelAttribute("form") WorkForm form){
-        workService.update(workId,form.getWork_name(),deptId,form.getWork_charge_name(),
-                form.getWork_start_date(),form.getWork_end_date());
+                         @ModelAttribute("form") WorkForm.workAndDept form){
+        workService.update(workId,form.getWork().getWorkName(),deptId,form.getWork().getWorkChargeName(),
+                form.getWork().getWorkStartDate(),form.getWork().getWorkEndDate());
         return "redirect:/work";
-    }*/
+    }
 }

@@ -5,14 +5,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import team.okky.personnel_management.domain.Department;
-import team.okky.personnel_management.domain.Employee;
-import team.okky.personnel_management.domain.Sick;
-import team.okky.personnel_management.domain.Vacation;
-import team.okky.personnel_management.repository.DepartmentRepository;
-import team.okky.personnel_management.repository.EmployeeRepository;
-import team.okky.personnel_management.repository.SickRepository;
-import team.okky.personnel_management.repository.VacationRepository;
+import team.okky.personnel_management.domain.*;
+import team.okky.personnel_management.repository.*;
 import team.okky.personnel_management.service.AttendanceService;
 
 import java.time.LocalDate;
@@ -27,29 +21,47 @@ public class InitController {
     private final VacationRepository vacationRepository;
     private final SickRepository sickRepository;
     private final DepartmentRepository departmentRepository;
+    private final WorkRepository workRepository;
 
     @GetMapping("/init")
     @Transactional
     @ResponseBody
-    public void init(){
+    public void init() {
         String[] position = new String[]{"대리", "사원", "부장", "본부장", "사장", "차장", "과장"};
         List<Employee> employeeList = new ArrayList<>();
         List<Department> departmentList = new ArrayList<>();
+        List<Work> workList = new ArrayList<>();
 
-        for(int i=1;i<6;i++){
+        for (int i = 1; i < 6; i++) {
             Department department = Department.builder()
-                    .deptName("부서"+i)
+                    .deptName("부서" + i)
                     .build();
             departmentList.add(department);
             departmentRepository.save(department);
         }
-        for (int i = 0; i < 49; i++) {
+
+        int count=0;
+        for(int i=0;i<10;i++) {
+            Work work =
+                    Work.builder()
+                            .workName("업무" + i)
+                            .workChargeName("담당자" + i)
+                            .workStartDate(LocalDate.of(2020, i + 1, i + 1))
+                            .workEndDate(LocalDate.of(2021, 1, i + 1))
+                            .department(departmentList.get(i/2))
+                            .build();
+            workRepository.save(work);
+            workList.add(work);
+        }
+
+        for (int i = 0; i < 50; i++) {
             Employee employee = Employee.builder()
                     .empPosition(position[i % 7])
                     .empName("테스터" + i)
                     .department(
-                            departmentList.get(i/10)
+                            departmentList.get(i / 10)
                     )
+                    .work(workList.get(i/ 5))
                     .empPhoneNum("010-2472-2117")
                     .empJumin("123456-1234567")
                     .empInternalNum("010-1234-5678")
@@ -76,6 +88,7 @@ public class InitController {
                                 .build()
                 );
             }
+
         }
 
         attendanceService.autoCreateAttendance();

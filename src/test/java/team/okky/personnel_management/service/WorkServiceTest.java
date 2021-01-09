@@ -29,57 +29,57 @@ public class WorkServiceTest {
     @Test
     public void 업무추가() throws Exception{
         //given
-        Work work = new Work();
-        work.setWorkName("VR");
-        work.setWorkChargeName("jungha");
-        work.setWorkStartDate(LocalDate.of(2021,1,3));
-        work.setWorkEndDate(LocalDate.of(2022,6,16));
-        work.setDepartment(departmentRepository.findOne(2L));
+        Work work = Work.builder()
+                .workName("new업무")
+                .workChargeName("new담당자")
+                .workStartDate(LocalDate.of(2021,1,3))
+                .workEndDate(LocalDate.of(2022,6,16))
+                .department(departmentRepository.findOne(1L))
+                .build();
 
         //when, then
-        assertEquals(work,workService.save(work),"업무 추가되었다.");
+        assertEquals(work,workService.save(work),"새로운 업무가 추가되었다.");
     }
 
     @Test
     public void 업무전체검색() throws Exception{
         //given
         List<WorkFindDto> findWorks = workService.findAll();
-        int findWorksSize = findWorks.size();
-        int countDTO=0;
-
-        //when
-        for (WorkFindDto dto : findWorks) {
-            countDTO++;
-            System.out.println("업무명=" + dto.getWorkName());
-            System.out.println("업무명과 연관된 부서명 =" + dto.getDeptName());
-            System.out.println("업무를 맡은 직원들=" + dto.getEmployees());
-            System.out.println("업무 시작일 =" + dto.getWorkStartDate());
-            System.out.println("업무 진행상태="+dto.getWorkStatus());
-            System.out.println("====================================");
-        }
-
-        //then
-        assertEquals(findWorksSize,countDTO,"업무전체가 검색되었습니다.");
+        //when,then
+        assertEquals(11,findWorks.size(),"새로 추가된 업무까지 전체가 검색되었습니다");
     }
 
     @Test
     public void 업무상세검색() throws Exception{
         //given
         WorkSearchDTO workSearch = new WorkSearchDTO();
-        workSearch.setNameType("empName");
-        workSearch.setName("honggildong");
+        workSearch.setNameType("workName");
+        workSearch.setName("업무0");
 
-        //when
+        //when,then
         List<WorkFindDto> findWorks = workService.filteringList(workSearch);
-        for (WorkFindDto dto : findWorks) {
-            System.out.println("업무명=" + dto.getWorkName());
-            System.out.println("업무명과 연관된 부서명 =" + dto.getDeptName());
-            System.out.println("업무를 맡은 직원들=" + dto.getEmployees());
-            System.out.println("업무 시작일 =" + dto.getWorkStartDate());
-            System.out.println("업무 진행상태="+dto.getWorkStatus());
-            System.out.println("====================================");
-        }
-
+        assertEquals("업무0",findWorks.get(0).getWorkName());
     }
 
+    /*
+    @Test
+    public void 업무수정() throws Exception{
+        //given
+        Work work = workService.findOne(1L);
+        String chargeName = work.getWork_charge_name();
+
+        //when
+        Work updateWork = workService.update(work.getWork_id(),"인공지능",1L,"honggildong",
+                LocalDate.of(2020,1,9),
+                LocalDate.of(2020,12,21));
+
+        //then
+        if(chargeName.equals(updateWork.getWork_charge_name())){
+            Assertions.fail("업무 상세정보가 수정되지 않았습니다.");
+        }
+        else {
+            Assertions.assertTrue(true,"업무 상세정보가 수정되었습니다.");
+        }
+
+    }*/
 }

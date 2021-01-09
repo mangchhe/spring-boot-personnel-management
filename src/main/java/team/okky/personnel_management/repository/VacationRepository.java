@@ -35,7 +35,7 @@ public class VacationRepository {
     }
 
     public List<Vacation> findAllByDate(LocalDate localDate){
-        return em.createQuery("select v from Vacation v where v.vac_start_date <= :date and v.vac_end_date >= :date", Vacation.class)
+        return em.createQuery("select v from Vacation v where v.vacStartDate <= :date and v.vacEndDate >= :date", Vacation.class)
                 .setParameter("date", localDate)
                 .getResultList();
     }

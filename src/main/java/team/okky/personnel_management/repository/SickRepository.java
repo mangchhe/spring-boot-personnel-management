@@ -34,7 +34,7 @@ public class SickRepository {
     }
 
     public List<Sick> findAllByDate(LocalDate date){
-        return em.createQuery("select s from Sick s where s.sick_start_date <= :date and s.sick_end_date >= :date", Sick.class)
+        return em.createQuery("select s from Sick s where s.sickStartDate <= :date and s.sickEndDate >= :date", Sick.class)
                 .setParameter("date", date)
                 .getResultList();
     }

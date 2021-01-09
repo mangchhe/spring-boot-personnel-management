@@ -36,44 +36,44 @@ public class AttendanceRepository {
     }
 
     public List<Attendance> findAllOrderByDateAndTime(){
-        return em.createQuery("select a from Attendance a order by a.att_date desc, a.att_on_time desc", Attendance.class)
+        return em.createQuery("select a from Attendance a order by a.attDate desc, a.attOnTime desc", Attendance.class)
                 .getResultList();
     }
 
     public List<Attendance> findAllByDate(LocalDate date){
-        return em.createQuery("select a from Attendance a where a.att_date = :att_date", Attendance.class)
+        return em.createQuery("select a from Attendance a where a.attDate = :att_date", Attendance.class)
                 .setParameter("att_date", date)
                 .getResultList();
     }
 
     public List<Attendance> findAllById(Long id){
-        return em.createQuery("select a from Attendance a where a.employee.emp_id = :emp_id", Attendance.class)
+        return em.createQuery("select a from Attendance a where a.employee.empId = :emp_id", Attendance.class)
                 .setParameter("emp_id", id)
                 .getResultList();
     }
 
     public List<Attendance> findAllByDateAndId(LocalDate date, Long id){
-        return em.createQuery("select a from Attendance a where a.employee.emp_id = :emp_id and a.att_date = :att_date", Attendance.class)
+        return em.createQuery("select a from Attendance a where a.employee.empId = :emp_id and a.attDate = :att_date", Attendance.class)
                 .setParameter("emp_id", id)
                 .setParameter("att_date", date)
                 .getResultList();
     }
 
     public List<Employee> findAllByOn(){
-        return em.createQuery("select a.employee from Attendance a where a.att_date = :att_date", Employee.class)
+        return em.createQuery("select a.employee from Attendance a where a.attDate = :att_date", Employee.class)
                 .setParameter("att_date", LocalDate.now())
                 .getResultList();
     }
 
     public List<Attendance> findAllByEmployeeAndDate(Employee employee, LocalDate date){
-        return em.createQuery("select a from Attendance a where a.employee in :employee and a.att_date = :att_date", Attendance.class)
+        return em.createQuery("select a from Attendance a where a.employee in :employee and a.attDate = :att_date", Attendance.class)
                 .setParameter("employee", employee)
                 .setParameter("att_date", date)
                 .getResultList();
     }
 
     public List<Attendance> findAllByStatus(AttendanceStatus status){
-        return em.createQuery("select a from Attendance a where a.att_status = :status", Attendance.class)
+        return em.createQuery("select a from Attendance a where a.attStatus = :status", Attendance.class)
                 .setParameter("status", status)
                 .getResultList();
     }

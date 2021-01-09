@@ -2,22 +2,22 @@ import React, {} from 'react';
 import styles from './block.module.css';
 import { FaPen } from 'react-icons/fa';
 
-const BlockElements = React.memo(function ({ data, is_completed}) {
+const BlockElements = React.memo(function ({data}) {
   return (
     <div
-      className={!is_completed ? styles.blockElements : styles.blockCompleted}
+      className={data.workStatus ? styles.blockElements : styles.blockCompleted}
     >
       <p>
-        {data.name}
+        {data.workName}
       </p>
       <p>
-        <span>{data.start_date} ~ </span>
-        <span>{data.end_date}</span>
+        <span>{data.workStartDate} ~ </span>
+        <span>{data.workEndDate}</span>
       </p>
-      <p>{data.department}</p>
+      <p>{data.deptName}</p>
       <p>{data.manager}</p>
-      <p>{data.staff}</p>
-      {!is_completed ? <i className={styles.icon}><FaPen /></i> : null}
+      <p>{data.employees}</p>
+      {data.workStatus ? <i className={styles.icon}><FaPen /></i> : null}
     </div>
   );
 })
@@ -29,8 +29,7 @@ const Block = function({searchResult}) {
         return (
           <BlockElements
             data={data}
-            is_completed={data.completed}
-            key={data.id}
+            key={data.workId}
           />
         );
       })}

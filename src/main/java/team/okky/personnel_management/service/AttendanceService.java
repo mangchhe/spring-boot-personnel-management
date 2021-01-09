@@ -143,16 +143,19 @@ public class AttendanceService {
      * @param status
      * @return 각 상태에 해당하는 사원 목록
      */
-    public List<EmployeeDTO.ListByStatus> viewStatusDetail(AttendanceStatus status){
-        List<EmployeeDTO.ListByStatus> list = new ArrayList<>();
-        for(Employee e : attendanceRepository.findAllByStatus(status)){
+    public List<AttendanceDTO.ListAll> viewStatusDetail(AttendanceStatus status){
+        List<AttendanceDTO.ListAll> list = new ArrayList<>();
+        for(Attendance a : attendanceRepository.findAllByStatus(status)){
             list.add(
-                    EmployeeDTO.ListByStatus.builder()
-                            .empPosition(e.getEmp_position())
-                            .empName(e.getEmp_name())
-                            .empInternalNum(e.getEmp_internal_num())
-                            .empJoinDate(e.getEmp_join_date())
-                            .deptName(e.getDepartment().getDept_name())
+                    AttendanceDTO.ListAll.builder()
+                            .attDate(a.getAtt_date())
+                            .dayOfWeek(a.getAtt_date().getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.KOREAN))
+                            .empName(a.getEmployee().getEmp_name())
+                            .deptName(a.getEmployee().getDepartment().getDept_name())
+                            .empPosition(a.getEmployee().getEmp_position())
+                            .attOnTime(a.getAtt_on_time())
+                            .attOffTime(a.getAtt_off_time())
+                            .attStatus(a.getAtt_status())
                             .build()
             );
         }

@@ -14,28 +14,29 @@ import java.util.List;
 public class Work {
 
     @Id @GeneratedValue
-    private Long work_id;
-    private String work_name;
-    private String work_charge_name;
-    private LocalDate work_start_date;
-    private LocalDate work_end_date;
+    @Column(name = "work_id")
+    private Long workId;
+    private String workName;
+    private String workChargeName;
+    private LocalDate workStartDate;
+    private LocalDate workEndDate;
 
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "dept_id")
-    Department department;
+    private Department department;
 
     @OneToMany(mappedBy = "work")
-    List<Employee> employees = new ArrayList<>();
+    private List<Employee> employees = new ArrayList<>();
 
     public void addEmployee(Employee employee){
         employees.add(employee);
         employee.setWork(this);
     }
 
-    public void change(String workName, String chargeName, LocalDate startDate, LocalDate endDate, Department department) {
-        work_name = workName;
-        work_charge_name = chargeName;
-        work_start_date = startDate;
-        work_end_date = endDate;
+    public void change(String workName, String workChargeName, LocalDate workStartDate, LocalDate workEndDate, Department department) {
+        this.workName = workName;
+        this.workChargeName = workChargeName;
+        this.workStartDate = workStartDate;
+        this.workEndDate = workEndDate;
         this.department = department;
     }
 }

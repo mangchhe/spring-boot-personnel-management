@@ -27,13 +27,13 @@ public class WorkController {
     }
 
     @PostMapping("/work/create")
-    public String create(@RequestParam("dept_id") Long deptId,
+    public String create(@RequestParam("deptId") Long deptId,
                          WorkForm.workAndDept workForm){
         Work work = new Work();
-        work.setWork_name(workForm.getWork().getWork_name());
-        work.setWork_charge_name(workForm.getWork().getWork_charge_name());
-        work.setWork_start_date(workForm.getWork().getWork_start_date());
-        work.setWork_end_date(workForm.getWork().getWork_end_date());
+        work.setWorkName(workForm.getWork().getWorkName());
+        work.setWorkChargeName(workForm.getWork().getWorkChargeName());
+        work.setWorkStartDate(workForm.getWork().getWorkStartDate());
+        work.setWorkEndDate(workForm.getWork().getWorkEndDate());
         work.setDepartment(departmentRepository.findOne(deptId));
 
         workService.save(work);

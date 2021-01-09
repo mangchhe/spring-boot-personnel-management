@@ -10,14 +10,15 @@ import javax.persistence.*;
 public class Evaluation {
 
     @Id @GeneratedValue
-    Long eval_id;
-    int eval_result_score;
-    String eval_comment;
+    @Column(name = "eval_id")
+    private Long evalId;
+    private int evalResultScore;
+    private String evalComment;
 
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "work_id")
-    Work work;
+    private Work work;
 
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "emp_id")
-    Employee employee;
+    private Employee employee;
 
 }

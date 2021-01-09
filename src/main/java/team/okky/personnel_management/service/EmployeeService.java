@@ -28,12 +28,12 @@ public class EmployeeService {
         for(Employee e : employeeRepository.findAllByName(name)){
             list.add(
                     EmployeeDTO.DuplicationName.builder()
-                            .empId(e.getEmp_id())
-                            .empPosition(e.getEmp_position())
-                            .empName(e.getEmp_name())
-                            .empInternalNum(e.getEmp_internal_num())
-                            .empJoinDate(e.getEmp_join_date())
-                            .deptName(e.getDepartment().getDept_name())
+                            .empId(e.getEmpId())
+                            .empPosition(e.getEmpPosition())
+                            .empName(e.getEmpName())
+                            .empInternalNum(e.getEmpInternalNum())
+                            .empJoinDate(e.getEmpJoinDate())
+                            .deptName(e.getDepartment().getDeptName())
                             .build()
             );
         }

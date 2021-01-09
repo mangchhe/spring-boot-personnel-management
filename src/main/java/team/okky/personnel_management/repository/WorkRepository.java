@@ -25,28 +25,28 @@ public class WorkRepository {
 
     public List<WorkFindDto> findByWorkName(String workName){
         return em.createQuery("select new team.okky.personnel_management.dto.WorkFindDto(w)" +
-                "from Work w where w.work_name = :name")
+                "from Work w where w.workName = :name")
                 .setParameter("name",workName)
                 .getResultList();
     }
 
     public List<WorkFindDto> findByEmpName(String empName){
         return em.createQuery("select new team.okky.personnel_management.dto.WorkFindDto(w) " +
-                "from Work w join Employee e on w = e.work and e.emp_name = :name")
+                "from Work w join Employee e on w = e.work and e.empName = :name")
                 .setParameter("name",empName)
                 .getResultList();
     }
 
     public List<WorkFindDto> findByDeptName(String deptName){
         return em.createQuery("select new team.okky.personnel_management.dto.WorkFindDto(w) " +
-                "from Work w join Department d on w.department = d and d.dept_name = :name")
+                "from Work w join Department d on w.department = d and d.deptName = :name")
                 .setParameter("name",deptName)
                 .getResultList();
     }
 
     public List<WorkFindDto> findAll() {
         return em.createQuery("select new team.okky.personnel_management.dto.WorkFindDto(w) " +
-                "from Work w order by w.work_end_date desc")
+                "from Work w order by w.workEndDate desc")
                 .getResultList();
     }
 

@@ -13,35 +13,37 @@ import java.time.LocalTime;
 @AllArgsConstructor
 public class Attendance {
     @Id @GeneratedValue
-    private Long att_id;
+    @Column(name = "att_id")
+    private Long attID;
 
-    private LocalDate att_date;
-    private LocalTime att_on_time;
-    private LocalTime att_off_time;
+    private LocalDate attDate;
+    private LocalTime attOnTime;
+    private LocalTime attOffTime;
     @Enumerated(EnumType.STRING)
-    private AttendanceStatus att_status;
+    private AttendanceStatus attStatus;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name="emp_id")
     private Employee employee;
 
-    public Attendance(LocalDate att_date, LocalTime att_on_time, LocalTime att_off_time, AttendanceStatus att_status, Employee employee) {
-        this.att_date = att_date;
-        this.att_on_time = att_on_time;
-        this.att_off_time = att_off_time;
-        this.att_status = att_status;
+
+    public Attendance(LocalDate attDate, LocalTime attOnTime, LocalTime attOffTime, AttendanceStatus attStatus, Employee employee) {
+        this.attDate = attDate;
+        this.attOnTime = attOnTime;
+        this.attOffTime = attOffTime;
+        this.attStatus = attStatus;
         this.employee = employee;
     }
 
-    public void setAtt_status(AttendanceStatus att_status) {
-        this.att_status = att_status;
+    public void setAttOnTime(LocalTime attOnTime) {
+        this.attOnTime = attOnTime;
     }
 
-    public void setAtt_on_time(LocalTime att_on_time) {
-        this.att_on_time = att_on_time;
+    public void setAttOffTime(LocalTime attOffTime) {
+        this.attOffTime = attOffTime;
     }
 
-    public void setAtt_off_time(LocalTime att_off_time) {
-        this.att_off_time = att_off_time;
+    public void setAttStatus(AttendanceStatus attStatus) {
+        this.attStatus = attStatus;
     }
 }

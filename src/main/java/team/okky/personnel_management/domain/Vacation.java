@@ -14,13 +14,14 @@ import java.util.Date;
 public class Vacation{
 
     @Id @GeneratedValue
-    private Long vac_id;
-    private String vac_type;
-    private int vac_days;
-    private LocalDate vac_start_date;
-    private LocalDate vac_end_date;
+    @Column(name = "vac_id")
+    private Long vacId;
+    private String vacType;
+    private int vacDays;
+    private LocalDate vacStartDate;
+    private LocalDate vacEndDate;
 
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(name="emp_id")
     private Employee employee;
 }

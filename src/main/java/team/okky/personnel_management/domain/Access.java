@@ -11,11 +11,12 @@ import java.util.Date;
 @Getter @Setter
 public class Access {
     @Id @GeneratedValue
-    private Long access_id;
+    @Column(name = "access_id")
+    private Long accessId;
 
     @Temporal(TemporalType.TIMESTAMP)
-    private Date access_date;
-    private String access_area;
+    private Date accessDate;
+    private String accessArea;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="mn_id")

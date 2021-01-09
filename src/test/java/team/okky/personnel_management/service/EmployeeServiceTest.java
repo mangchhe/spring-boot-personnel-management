@@ -28,23 +28,23 @@ class EmployeeServiceTest {
         List<EmployeeDTO.DuplicationName> employeeList = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
             Employee employee = Employee.builder()
-                    .emp_name("테스터")
+                    .empName("테스터")
                     .department(Department.builder()
-                            .dept_name("인사과")
+                            .deptName("인사과")
                             .build())
                     .build();
             employeeRepository.save(employee);
             EmployeeDTO.DuplicationName duplicationName = EmployeeDTO.DuplicationName.builder()
                     .empName("테스터")
                     .deptName("인사과")
-                    .empId(employee.getEmp_id())
+                    .empId(employee.getEmpId())
                     .build();
             employeeList.add(duplicationName);
         }
         for (int i = 0; i < 2; i++) {
             employeeRepository.save(
                     Employee.builder()
-                            .emp_name("테스터" + i)
+                            .empName("테스터" + i)
                             .build()
             );
         }

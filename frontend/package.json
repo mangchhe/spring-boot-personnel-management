@@ -12,6 +12,7 @@
     "react-icons": "^4.1.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.1",
+    "rodal": "^1.8.1",
     "styled-components": "^5.2.1",
     "web-vitals": "^0.2.4"
   },
@@ -21,7 +22,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
-  "proxy": "http://localhost:8080",
+  "proxy": "http://13.124.107.49:8080/",
   "eslintConfig": {
     "extends": [
       "react-app",

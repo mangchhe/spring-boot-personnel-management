@@ -21,6 +21,10 @@ const rowComponents = {
 function Table({ page, headerArr, dataArr }) {
   const RowComponent = rowComponents[page];
 
+  if (!dataArr) {
+    return <p>로딩 중...</p>;
+  }
+
   if (dataArr.length === 0) {
     return <p>해당하는 정보가 없습니다.</p>;
   }

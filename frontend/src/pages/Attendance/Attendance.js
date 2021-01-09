@@ -11,6 +11,7 @@ import {
   HEADER_ARR,
 } from './Constants';
 import styled from 'styled-components';
+import DuplicateModal from './DuplicateModal';
 
 const Container = styled.div`
   width: 95%;
@@ -43,6 +44,15 @@ const StyledForm = styled.form`
   }
 `;
 
+const numBoxNames = [
+  { name: 'onCnt', type: ON },
+  { name: 'offCnt', type: OFF },
+  { name: 'absenceCnt', type: ABSENCE },
+  { name: 'lateCnt', type: LATE },
+  { name: 'vacationCnt', type: VACATION },
+  { name: 'sickCnt', type: SICK },
+];
+
 function Attendance({
   date,
   word,
@@ -51,19 +61,30 @@ function Attendance({
   handleInputChange,
   statusArr,
   attendanceArr,
+  handleStatus,
+  showModal,
+  handleModalClose,
+  duplicateArr,
+  selectedId,
+  handleSelectedIdChange,
+  handleChoose,
 }) {
   return (
     <Container>
       <div className="numBoxContainer">
-        <NumBox num={statusArr.onCnt} type={ON} />
-        <NumBox num={statusArr.offCnt} type={OFF} />
-        <NumBox num={statusArr.absenceCnt} type={ABSENCE} />
-        <NumBox num={statusArr.lateCnt} type={LATE} />
-        <NumBox num={statusArr.vacationCnt} type={VACATION} />
-        <NumBox num={statusArr.sickCnt} type={SICK} />
+        {numBoxNames.map((s) => (
+          <NumBox
+            num={statusArr[s.name]}
+            type={s.type}
+            handleStatus={handleStatus}
+            key={s.type}
+          />
+        ))}
       </div>
       <StyledForm onSubmit={handleSearch}>
-        <button onClick={handleAllDates}>모든 날짜</button>
+        <button type="button" onClick={handleAllDates}>
+          모든 날짜
+        </button>
         <input
           type="date"
           name="date"
@@ -81,6 +102,14 @@ function Attendance({
         <button type="submit">검색</button>
       </StyledForm>
       <Table page="attendance" headerArr={HEADER_ARR} dataArr={attendanceArr} />
+      <DuplicateModal
+        showModal={showModal}
+        handleModalClose={handleModalClose}
+        duplicateArr={duplicateArr}
+        selectedId={selectedId}
+        handleSelectedIdChange={handleSelectedIdChange}
+        handleChoose={handleChoose}
+      />
     </Container>
   );
 }

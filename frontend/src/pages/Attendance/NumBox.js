@@ -39,11 +39,28 @@ const Text = styled.div`
   }
   .num {
     font-size: 23px;
+    cursor: pointer;
     ${colorStyles}
+  }
+  .num:hover {
+    text-decoration: underline;
   }
 `;
 
-function NumBox({ num, type }) {
+const status = {
+  출근: 'ON',
+  퇴근: 'OFF',
+  결근: 'ABSENCE',
+  지각: 'LATE',
+  휴가: 'VACATION',
+  병가: 'SICK',
+};
+
+function NumBox({ num, type, handleStatus }) {
+  const handleNumClick = () => {
+    handleStatus(status[type]);
+  };
+
   return (
     <StyledBox type={type}>
       <div>
@@ -58,7 +75,10 @@ function NumBox({ num, type }) {
       <Text type={type}>
         <p className="title">{type}</p>
         <p>
-          <span className="num">{num}</span> 건
+          <span className="num" onClick={handleNumClick}>
+            {num === undefined ? '...' : num}
+          </span>{' '}
+          건
         </p>
       </Text>
     </StyledBox>

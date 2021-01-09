@@ -8,9 +8,9 @@ const WorkInput = function ({handleSubmit, optionValue, handleSelectChange, inpu
     <div className={styles.searchBox}>
       <form onSubmit = {handleSubmit}>
         <select value = {optionValue} onChange = {handleSelectChange} className={styles.selectBox}>
-          <option value="name">업무명</option>
-          <option value="staff">직원이름</option>
-          <option value="department">부서</option>
+          <option value="workName">업무명</option>
+          <option value="employees">직원이름</option>
+          <option value="deptName">부서</option>
         </select>
         <input
           value={input}
@@ -73,7 +73,7 @@ const WorkInput = function ({handleSubmit, optionValue, handleSelectChange, inpu
 const Work = function () {
   const [input, setInput] = useState('');
   const [datas, setData] = useState([{data: ''}]);
-  const [option, setOption] = useState('name');
+  const [option, setOption] = useState('workName');
   
   //로딩 및 에러처리
   const [loading, setLoading] = useState(false)
@@ -86,7 +86,7 @@ const Work = function () {
         setLoading(true)
         setError(null)
         const response = await axios.get(
-          `https://jsonplaceholder.typicode.com/users`,
+          `https://jsonplaceholder.typicode.com/users`,       //'/work'
         );
         setData(response.data);
       } catch (e) {
@@ -120,7 +120,7 @@ const Work = function () {
         setLoading(true)
         setError(null)
         const response = await axios.get(
-          `https://jsonplaceholder.typicode.com/users?${option}=${input}`,
+          `/work?nameType=${option}&name=${input}`
         );
         setData(response.data);
       } catch (e) {

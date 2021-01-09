@@ -20,8 +20,8 @@ public class WorkFindDto {
     private LocalDate work_start_date;
     private LocalDate work_end_date;
     private String dept_name;
-    private List<String> employees = new ArrayList<>();
-    private String workStatus;
+    private String employees;
+    private Boolean workStatus;
 
     public WorkFindDto(Work entity) {
         this.work_id = entity.getWork_id();
@@ -34,22 +34,21 @@ public class WorkFindDto {
         this.workStatus = findStatus(work_start_date, work_end_date);
     }
 
-    private String findStatus(LocalDate work_start_date, LocalDate work_end_date) {
+    private Boolean findStatus(LocalDate work_start_date, LocalDate work_end_date) {
         LocalDate today = LocalDate.now();
         if(today.isAfter(work_start_date) && today.isBefore(work_end_date)){
-            return "진행중";
+            return true;
         }
-        else if(today.isAfter(work_end_date)){
-            return "완료";
+        else {
+            return false;
         }
-        else return "예정";
     }
 
-    public List<String> findEmpName(Work entity){
+    public String findEmpName(Work entity){
         List<Employee> list = entity.getEmployees();
-        List<String> empName = new ArrayList<>();
+        String empName="";
         for(Employee e : list ) {
-            empName.add(e.getEmp_name());
+            empName = empName+" "+e.getEmp_name();
         }
         return empName;
     }

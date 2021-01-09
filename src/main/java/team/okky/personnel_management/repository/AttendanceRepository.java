@@ -72,8 +72,8 @@ public class AttendanceRepository {
                 .getResultList();
     }
 
-    public List<Employee> findAllByStatus(AttendanceStatus status){
-        return em.createQuery("select a.employee from Attendance a where a.att_status = :status", Employee.class)
+    public List<Attendance> findAllByStatus(AttendanceStatus status){
+        return em.createQuery("select a from Attendance a where a.att_status = :status", Attendance.class)
                 .setParameter("status", status)
                 .getResultList();
     }

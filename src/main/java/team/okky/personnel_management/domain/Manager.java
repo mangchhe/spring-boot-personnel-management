@@ -11,11 +11,12 @@ import java.util.Date;
 @Getter @Setter
 public class Manager {
     @Id @GeneratedValue
-    private Long mn_id;
-    private String mn_email;
-    private String mn_pw;
-    private String mn_authority;
+    @Column(name = "mn_id")
+    private Long mnId;
+    private String mnEmail;
+    private String mnPw;
+    private String mnAuthority;
 
     @Temporal(TemporalType.TIMESTAMP)
-    private Date mn_create_date;
+    private Date mnCreateDate;
 }

@@ -12,13 +12,14 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class Employee {
     @Id @GeneratedValue
-    private Long emp_id;
-    private String emp_jumin;
-    private String emp_position;
-    private String emp_name;
-    private String emp_phone_num;
-    private String emp_internal_num;
-    private LocalDate emp_join_date;
+    @Column(name = "emp_id")
+    private Long empId;
+    private String empJumin;
+    private String empPosition;
+    private String empName;
+    private String empPhoneNum;
+    private String empInternalNum;
+    private LocalDate empJoinDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="work_id")

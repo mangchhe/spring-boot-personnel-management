@@ -16,12 +16,13 @@ import java.time.LocalDate;
 public class Sick {
 
     @Id @GeneratedValue
-    private Long sick_id;
+    @Column(name = "sick_id")
+    private Long sickId;
 
-    private String sick_title;
-    private String sick_content;
-    private LocalDate sick_start_date;
-    private LocalDate sick_end_date;
+    private String sickTitle;
+    private String sickContent;
+    private LocalDate sickStartDate;
+    private LocalDate sickEndDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "emp_id")

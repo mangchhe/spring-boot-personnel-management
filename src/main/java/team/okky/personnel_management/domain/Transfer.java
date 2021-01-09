@@ -10,13 +10,14 @@ import java.util.Date;
 public class Transfer {
 
     @Id @GeneratedValue
-    Long trans_id;
-    String trans_dept;
+    @Column(name = "trans_id")
+    private Long transId;
+    private String transDept;
     @Temporal(TemporalType.TIMESTAMP)
-    Date appoint_date;
+    private Date appointDate;
 
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "dept_id")
-    Department department;
+    private Department department;
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "emp_id")
-    Employee employee;
+    private Employee employee;
 }

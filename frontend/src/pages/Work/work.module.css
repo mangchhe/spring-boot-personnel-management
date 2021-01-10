@@ -42,3 +42,31 @@
    float: right;
    cursor: pointer;
 }
+
+.modal{
+    position: absolute;
+    width: 500px;
+    height:300px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #f1f1f1;
+    box-sizing: border-box;
+    padding: 40px;
+    text-align: left;
+    outline: none;
+}
+
+.overlay{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.7);
+}
+
+.label{
+    display: block;
+    margin-bottom: 10px;
+}

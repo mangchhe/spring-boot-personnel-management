@@ -15,6 +15,16 @@ const Work = function () {
   const [error, setError] = useState(null);
 
   const [modal, setModal] = useState(false);
+  const [addWorkInput, setAddWorkInput] = useState({
+    workName: '',
+    workCharger: '',
+    workStartDate: '',
+    workEndDate: '',
+  });
+
+  const [selectedDept, setSelectedDept] = useState('dep1');
+
+  const { workName, workCharger, workStartDate, workEndDate } = addWorkInput;
 
   useEffect(() => {
     const fetchusers = async () => {
@@ -76,14 +86,38 @@ const Work = function () {
     setModal(false);
   };
 
-  const addWork = () => {
-    setModal(true);
+  const handleAddInput = (e) => {
+    const { value, name } = e.target;
+    setAddWorkInput({
+      ...addWorkInput,
+      [name]: value,
+    });
   };
 
-  const selectDept = () => {
-    setModal(false);
+  const handleSelectDept = (e) => {
+    setSelectedDept(e.target.value);
   };
 
+  const addWork = (e) => {
+    e.preventDefault();
+    const nextId = datas.length + 1;
+    alert(
+      `${nextId},${workName}, ${selectedDept}, ${workStartDate}, ${workEndDate}`,
+    );
+    try {
+      axios
+        .post(`/work/create`, {
+          workId: { nextId },
+          workName: { workName },
+          workDept: { selectedDept },
+          workStartDate: { workStartDate },
+          workEndDate: { workEndDate },
+        })
+        .then((response) => setData(response.data));
+    } catch (e) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className={styles.container}>
@@ -94,8 +128,21 @@ const Work = function () {
         input={input}
         handleInputChange={handleInputChange}
       />
-      <button onClick={modalOpen} className={styles.addButton}>업무추가하기</button>
-      <WorkModal modal={modal} addWork={addWork} selectDept={selectDept} modalClose={modalClose} />
+      <button onClick={modalOpen} className={styles.addButton}>
+        업무추가하기
+      </button>
+      <WorkModal
+        modal={modal}
+        handleAddInput={handleAddInput}
+        handleSelectDept={handleSelectDept}
+        addWork={addWork}
+        selectedDept={selectedDept}
+        workName={workName}
+        workCharger={workCharger}
+        workStartDate={workStartDate}
+        workEndDate={workEndDate}
+        modalClose={modalClose}
+      />
       {option}
       {input}
       <Block searchResult={datas} className={styles.block} />

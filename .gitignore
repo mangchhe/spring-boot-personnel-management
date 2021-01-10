@@ -38,3 +38,20 @@ out/
 
 *.eslintcache
 */node_modules/*
+node_modules/.bin/loose-envify
+node_modules/.bin/loose-envify.ps1
+node_modules/.bin/loose-envify.cmd
+*.md
+*.js
+*.json
+node_modules/react-modal/LICENSE
+node_modules/react-is/LICENSE
+*.yml
+*.json
+*.json
+node_modules/loose-envify/LICENSE
+node_modules/exenv/LICENSE
+node_modules/js-tokens/LICENSE
+node_modules/object-assign/license
+node_modules/prop-types/LICENSE
+package-lock.json

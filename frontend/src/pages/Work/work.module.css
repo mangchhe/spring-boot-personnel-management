@@ -1,0 +1,77 @@
+.container {
+  width: 80%;
+  margin: 20px 40px;
+}
+
+.searchBox {
+  margin-bottom: 25px;
+}
+
+.selectBox {
+  outline: none;
+  width: 100px;
+  height: 42px;
+  box-sizing: border-box;
+  border: 1px solid #aaa;
+  padding: 0 10px;
+}
+
+.input {
+  outline: none;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  width: 470px;
+  height: 42px;
+  padding: 0 10px;
+  margin-left: 8px;
+}
+
+.searchButton {
+  background: #2d93f0;
+  padding: 0.7em;
+  width: 120px;
+  color: #fff;
+  cursor: pointer;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  border-radius: 5px;
+  font-size: 14px;
+  margin-left: 8px;
+}
+
+.addButton {
+  float: right;
+  cursor: pointer;
+}
+
+.modal {
+  position: absolute;
+  width: 500px;
+  height: 400px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #f1f1f1;
+  box-sizing: border-box;
+  padding: 40px;
+  text-align: left;
+  outline: none;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.label {
+  width: 100%;
+  display: block;
+}
+
+.addInput {
+  width: 70%;
+  margin-left: 20px;
+}

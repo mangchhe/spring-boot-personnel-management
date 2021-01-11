@@ -8,7 +8,7 @@ import WorkModal from './WorkModal';
 const Work = function () {
   const [input, setInput] = useState('');
   const [datas, setData] = useState([{ data: '' }]);
-  const [option, setOption] = useState('workName');
+  const [option, setOption] = useState('');
 
   //로딩 및 에러처리
   const [loading, setLoading] = useState(false);
@@ -22,7 +22,8 @@ const Work = function () {
     workEndDate: '',
   });
 
-  const [selectedDept, setSelectedDept] = useState('dep1');
+  const [deptLists, setDeptLists] = useState([{ dept: '' }]);
+  const [selectedDept, setSelectedDept] = useState('');
 
   const { workName, workCharger, workStartDate, workEndDate } = addWorkInput;
 
@@ -32,7 +33,7 @@ const Work = function () {
         setLoading(true);
         setError(null);
         const response = await axios.get(
-          `http://13.124.107.49:8080/work?nameType=workName&name=`, //'/work'
+          `https://13.124.107.49:8080/work?nameType=workName&name=`, //13.124.107.49:8080/work?nameType=workName&name=
         );
         setData(response.data);
       } catch (e) {
@@ -42,6 +43,19 @@ const Work = function () {
     };
 
     fetchusers();
+
+    const fetchDept = async () => {
+      try {
+        const response = await axios.get(
+          `http://13.124.107.49:8080/work/create`, //13.124.107.49:8080/work/create
+        );
+        setDeptLists(response.data.departmentList);
+      } catch (e) {
+        console.log('부서데이터를 가져오는데 문제가 있습니다.');
+      }
+    };
+
+    fetchDept();
   }, []);
 
   if (loading) return <div>Loading..</div>;
@@ -115,7 +129,7 @@ const Work = function () {
         })
         .then((response) => setData(response.data));
     } catch (e) {
-      console.log(error);
+      console.log('업무를 추가하는데 문제가 있습니다.');
     }
   };
 
@@ -142,9 +156,8 @@ const Work = function () {
         workStartDate={workStartDate}
         workEndDate={workEndDate}
         modalClose={modalClose}
+        deptLists={deptLists}
       />
-      {option}
-      {input}
       <Block searchResult={datas} className={styles.block} />
     </div>
   );

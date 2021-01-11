@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import team.okky.personnel_management.domain.Attendance;
 import team.okky.personnel_management.domain.Employee;
 import team.okky.personnel_management.dto.EmployeeDTO;
+import team.okky.personnel_management.repository.DepartmentRepository;
 import team.okky.personnel_management.repository.EmployeeRepository;
 
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
 public class EmployeeService {
 
     private final EmployeeRepository employeeRepository;
+    private final DepartmentRepository departmentRepository;
     private final ModelMapper modelMapper;
 
     /**
@@ -34,7 +36,6 @@ public class EmployeeService {
                             .empId(e.getEmpId())
                             .empPosition(e.getEmpPosition())
                             .empName(e.getEmpName())
-                            .empInternalNum(e.getEmpInternalNum())
                             .empJoinDate(e.getEmpJoinDate())
                             .deptName(e.getDepartment().getDeptName())
                             .build()
@@ -77,23 +78,19 @@ public class EmployeeService {
     }
 
     /**
-     * 사원 번호로 검색
-     * @param internalNum
-     * @return 해당 사원 번호를 검색한 직원 목록
-     */
-    public List<EmployeeDTO.ListIndex> viewAllByInternalNum(String internalNum){
-        return employeeRepository.findAllByInternalNum(internalNum).stream()
-                .map(m -> modelMapper.map(m, EmployeeDTO.ListIndex.class))
-                .collect(Collectors.toList());
-    }
-
-    /**
      * 사원 등록
      * @param addEmployee
      * @return 등록된 사원
      */
+    @Transactional(readOnly = false)
     public Employee createEmployee(EmployeeDTO.AddEmployee addEmployee){
-        return Employee.builder().build();
+        return Employee.builder()
+                .empName(addEmployee.getEmpName())
+                .department(departmentRepository.findOne(addEmployee.getDeptId()))
+                .empPosition(addEmployee.getEmpPosition())
+                .empJoinDate(addEmployee.getEmpJoinDate())
+                .empPhoneNum(addEmployee.getEmpPhoneNum())
+                .build();
     }
 
     /**
@@ -101,8 +98,12 @@ public class EmployeeService {
      * @param updateEmployee
      * @return 변경된 사원
      */
+    @Transactional(readOnly = false)
     public Employee updateEmployee(EmployeeDTO.UpdateEmployee updateEmployee){
-        return Employee.builder().build();
+        Employee employee = employeeRepository.findOne(updateEmployee.getEmpId());
+        employee.changePhoneNum(updateEmployee.getEmpPhoneNum());
+        employee.changeJoinDate(updateEmployee.getEmpJoinDate());
+        return employee;
     }
 
 }

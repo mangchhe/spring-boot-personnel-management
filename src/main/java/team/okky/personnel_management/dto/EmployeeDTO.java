@@ -32,20 +32,18 @@ public class EmployeeDTO {
     @Getter @Setter
     public static class AddEmployee {
         private String empName;
-        private Long departmentDeptName;
+        private Long deptId;
         private String empPosition;
         private LocalDate empJoinDate;
         private String empPhoneNum;
-        private String empInternalNum;
     }
 
     @Builder
     @Getter @Setter
     public static class UpdateEmployee {
         private Long empId;
-        private LocalDate empPosition;
         private String empPhoneNum;
-        private String empInternalNum;
+        private LocalDate empJoinDate;
     }
 
     @Getter @Setter

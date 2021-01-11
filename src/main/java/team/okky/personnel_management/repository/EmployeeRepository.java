@@ -50,10 +50,4 @@ public class EmployeeRepository {
                 .getResultList();
     }
 
-    public List<Employee> findAllByInternalNum(String internalNum){
-        return em.createQuery("select e from Employee e where e.empInternalNum = :internalNum", Employee.class)
-                .setParameter("internalNum", internalNum)
-                .getResultList();
-    }
-
 }

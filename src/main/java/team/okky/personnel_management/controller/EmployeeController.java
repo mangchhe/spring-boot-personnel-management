@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import team.okky.personnel_management.domain.Employee;
 import team.okky.personnel_management.dto.EmployeeDTO;
 import team.okky.personnel_management.service.EmployeeService;
 
@@ -19,23 +18,18 @@ public class EmployeeController {
     private final ModelMapper modelMapper;
 
     @GetMapping("/employee")
-    public List<EmployeeDTO.ListIndex> viewIndex(){
-        return employeeService.viewAll();
-    }
-
-    @GetMapping("/employee/search")
     public List<EmployeeDTO.ListIndex> viewByName(@RequestParam(required = false) String name,
-                           @RequestParam(required = false) String deptName,
-                           @RequestParam(required = false) String empInternalNum){
+                                                  @RequestParam(required = false) String deptName){
         List<EmployeeDTO.ListIndex> list = null;
+
         if(name != null){
             list = employeeService.viewAllById(name);
         }
         else if(deptName != null){
             list = employeeService.viewAllByDept(deptName);
         }
-        else if(empInternalNum != null){
-            list = employeeService.viewAllByInternalNum(empInternalNum);
+        else{
+            list = employeeService.viewAll();
         }
         return list;
     }
@@ -53,11 +47,7 @@ public class EmployeeController {
     @GetMapping("/employee/duplication/{name}")
     public List<EmployeeDTO.DuplicationName> viewDuplicationName(@PathVariable String name){
 
-        List<EmployeeDTO.DuplicationName> employeeList = employeeService.viewAllByName(name);
-
-        return employeeList;
+        return employeeService.viewAllByName(name);
     }
-
-
 
 }

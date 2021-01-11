@@ -40,14 +40,13 @@ public class InitController {
             departmentRepository.save(department);
         }
 
-        int count=0;
         for(int i=0;i<10;i++) {
             Work work =
                     Work.builder()
                             .workName("업무" + i)
                             .workChargeName("담당자" + i)
                             .workStartDate(LocalDate.of(2020, i + 1, i + 1))
-                            .workEndDate(LocalDate.of(2021, 1, i + 1))
+                            .workEndDate(LocalDate.of(2021, 1, 4 + i))
                             .department(departmentList.get(i/2))
                             .build();
             workRepository.save(work);

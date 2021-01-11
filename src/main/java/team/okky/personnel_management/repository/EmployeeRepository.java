@@ -33,9 +33,27 @@ public class EmployeeRepository {
         return employee;
     }
 
-    public List<Employee> findAllByName(String name){
-        return em.createQuery("select e from Employee e where e.empName = :empName", Employee.class)
-                .setParameter("empName", name)
+    public List<Employee> findAllOrderByJoinDate(){
+        return em.createQuery("select e from Employee e order by e.empJoinDate desc", Employee.class)
                 .getResultList();
     }
+
+    public List<Employee> findAllByName(String name){
+        return em.createQuery("select e from Employee e where e.empName = :name", Employee.class)
+                .setParameter("name", name)
+                .getResultList();
+    }
+
+    public List<Employee> findAllByDept(String deptName){
+        return em.createQuery("select e from Employee e where e.department.deptName = :deptName", Employee.class)
+                .setParameter("deptName", deptName)
+                .getResultList();
+    }
+
+    public List<Employee> findAllByInternalNum(String internalNum){
+        return em.createQuery("select e from Employee e where e.empInternalNum = :internalNum", Employee.class)
+                .setParameter("internalNum", internalNum)
+                .getResultList();
+    }
+
 }

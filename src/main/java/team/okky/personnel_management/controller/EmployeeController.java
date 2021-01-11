@@ -19,31 +19,41 @@ public class EmployeeController {
     private final ModelMapper modelMapper;
 
     @GetMapping("/employee")
-    public EmployeeDTO.ListIndex viewIndex(){
-        return modelMapper.map(new Employee(), EmployeeDTO.ListIndex.class);
+    public List<EmployeeDTO.ListIndex> viewIndex(){
+        return employeeService.viewAll();
     }
 
     @GetMapping("/employee/search")
-    public EmployeeDTO.ListIndex viewByName(@RequestParam(required = false) Long name,
+    public List<EmployeeDTO.ListIndex> viewByName(@RequestParam(required = false) String name,
                            @RequestParam(required = false) String deptName,
                            @RequestParam(required = false) String empInternalNum){
-        return modelMapper.map(new Employee(), EmployeeDTO.ListIndex.class);
+        List<EmployeeDTO.ListIndex> list = null;
+        if(name != null){
+            list = employeeService.viewAllById(name);
+        }
+        else if(deptName != null){
+            list = employeeService.viewAllByDept(deptName);
+        }
+        else if(empInternalNum != null){
+            list = employeeService.viewAllByInternalNum(empInternalNum);
+        }
+        return list;
     }
 
     @PostMapping("/employee")
     public void viewAddEmployee(@RequestBody EmployeeDTO.AddEmployee addEmployee){
-
+        employeeService.createEmployee(addEmployee);
     }
 
     @PutMapping("/employee")
     public void viewUpdateEmployee(@RequestBody EmployeeDTO.UpdateEmployee updateEmployee){
-
+        employeeService.updateEmployee(updateEmployee);
     }
 
     @GetMapping("/employee/duplication/{name}")
     public List<EmployeeDTO.DuplicationName> viewDuplicationName(@PathVariable String name){
 
-        List<EmployeeDTO.DuplicationName> employeeList = employeeService.viewByName(name);
+        List<EmployeeDTO.DuplicationName> employeeList = employeeService.viewAllByName(name);
 
         return employeeList;
     }

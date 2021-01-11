@@ -23,9 +23,9 @@ public class EmployeeDTO {
         private Long empId;
         private String empPosition;
         private String empName;
-        private String empInternalNum;
         private LocalDate empJoinDate;
         private String deptName;
+        private String empInternalNum;
     }
 
     @Builder

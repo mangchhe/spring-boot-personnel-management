@@ -49,7 +49,7 @@ class EmployeeServiceTest {
             );
         }
         //when, then
-        if(!employeeService.viewByName("테스터").equals(employeeList)){
+        if(!employeeService.viewAllByName("테스터").equals(employeeList)){
             Assertions.fail("동명이인 출력에 문제가 있습니다.");
         }
     }

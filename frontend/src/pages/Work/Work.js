@@ -32,7 +32,7 @@ const Work = function () {
         setLoading(true);
         setError(null);
         const response = await axios.get(
-          `https://jsonplaceholder.typicode.com/users`, //'/work'
+          `http://13.124.107.49:8080/work?nameType=workName&name=`, //'/work'
         );
         setData(response.data);
       } catch (e) {
@@ -65,7 +65,7 @@ const Work = function () {
         setLoading(true);
         setError(null);
         const response = await axios.get(
-          `/work?nameType=${option}&name=${input}`,
+          `http://13.124.107.49:8080/work?nameType=${option}&name=${input}`,
         );
         setData(response.data);
       } catch (e) {
@@ -106,7 +106,7 @@ const Work = function () {
     );
     try {
       axios
-        .post(`/work/create`, {
+        .post(`http://13.124.107.49:8080/work/create`, {
           workId: { nextId },
           workName: { workName },
           workDept: { selectedDept },

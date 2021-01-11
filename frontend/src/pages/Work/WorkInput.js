@@ -17,7 +17,7 @@ const WorkInput = function ({
           className={styles.selectBox}
         >
           <option value="workName">업무명</option>
-          <option value="employees">직원이름</option>
+          <option value="empName">직원이름</option>
           <option value="deptName">부서</option>
         </select>
         <input

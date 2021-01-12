@@ -45,7 +45,9 @@ function DuplicateModal({
 }) {
   return (
     <Rodal visible={showModal} onClose={handleModalClose}>
-      <ModalTitle>직원 선택: {duplicateArr[0].empName}</ModalTitle>
+      <ModalTitle>
+        직원 선택: {duplicateArr[0] && duplicateArr[0].empName}
+      </ModalTitle>
       <form onSubmit={handleChoose}>
         {duplicateArr.map((person) => (
           <ModalRadio key={person.empId}>

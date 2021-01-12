@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './block.module.css';
 import { FaPen } from 'react-icons/fa';
 
-const BlockElements = React.memo(function ({ data }) {
+const BlockElements = React.memo(function ({ data, modalOpen }) {
   return (
     <div
       className={data.workStatus ? styles.blockElements : styles.blockCompleted}
@@ -16,19 +16,23 @@ const BlockElements = React.memo(function ({ data }) {
       <p>{data.workChargeName}</p>
       <p>{data.employees}</p>
       {data.workStatus ? (
-        <i className={styles.icon}>
-          <FaPen />
-        </i>
+        <button onClick={modalOpen}>
+          <i className={styles.icon}>
+            <FaPen />
+          </i>
+        </button>
       ) : null}
     </div>
   );
 });
 
-const Block = function ({ searchResult }) {
+const Block = function ({ searchResult, modalOpen }) {
   return (
     <>
       {searchResult.map((data) => {
-        return <BlockElements data={data} key={data.workId} />;
+        return (
+          <BlockElements data={data} modalOpen={modalOpen} key={data.workId} />
+        );
       })}
     </>
   );

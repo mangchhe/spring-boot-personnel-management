@@ -9,7 +9,7 @@ const WorkInput = function ({
   handleInputChange,
 }) {
   return (
-    <div className={styles.searchBox}>
+    <>
       <form onSubmit={handleSubmit}>
         <select
           value={optionValue}
@@ -30,7 +30,7 @@ const WorkInput = function ({
           검색하기
         </button>
       </form>
-    </div>
+    </>
   );
 };
 

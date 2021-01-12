@@ -13,11 +13,15 @@ const DeptOption = ({ data, selectedDept, handleSelectDept }) => {
   );
 };
 
+const Button = ({ buttonText }) => {
+  return <button type="submit">{buttonText}</button>;
+};
+
 function WorkModal({
   modal,
-  handleAddInput,
+  handleModalInput,
   handleSelectDept,
-  addWork,
+  handleWork,
   selectedDept,
   workName,
   workCharger,
@@ -25,6 +29,7 @@ function WorkModal({
   workEndDate,
   modalClose,
   deptLists,
+  buttonText,
 }) {
   return (
     <>
@@ -33,17 +38,17 @@ function WorkModal({
         className={styles.modal}
         overlayClassName={styles.overlay}
       >
-        <form onSubmit={addWork}>
+        <form onSubmit={handleWork}>
           <label className={styles.label}>
             업무명:
             <input
               className={styles.addInput}
-              onChange={handleAddInput}
+              onChange={handleModalInput}
               value={workName}
               name="workName"
             />
           </label>
-          {deptLists.map((deptList) => {
+          {/* {deptLists.map((deptList) => {
             return (
               <DeptOption
                 data={deptList}
@@ -51,13 +56,13 @@ function WorkModal({
                 handleSelectDept={handleSelectDept}
               />
             );
-          })}
+          })} */}
           <label className={styles.label}>
             담당자:
             <input
               value={workCharger}
               name="workCharger"
-              onChange={handleAddInput}
+              onChange={handleModalInput}
               className={styles.addInput}
             />
           </label>
@@ -66,7 +71,7 @@ function WorkModal({
             <input
               value={workStartDate}
               name="workStartDate"
-              onChange={handleAddInput}
+              onChange={handleModalInput}
               className={styles.addInput}
               type="date"
             />
@@ -76,12 +81,12 @@ function WorkModal({
             <input
               value={workEndDate}
               name="workEndDate"
-              onChange={handleAddInput}
+              onChange={handleModalInput}
               className={styles.addInput}
               type="date"
             />
           </label>
-          <button type="submit">추가하기</button>
+          <Button buttonText={buttonText}></Button>
         </form>
         <button onClick={modalClose}>x</button>
       </Modal>

@@ -14,8 +14,9 @@ const Work = function () {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const [modal, setModal] = useState(false);
-  const [addWorkInput, setAddWorkInput] = useState({
+  const [addModal, setAddModal] = useState(false);
+  const [correctModal, setCorrectModal] = useState(false);
+  const [modalInput, setModalInput] = useState({
     workName: '',
     workCharger: '',
     workStartDate: '',
@@ -25,7 +26,7 @@ const Work = function () {
   const [deptLists, setDeptLists] = useState([{ dept: '' }]);
   const [selectedDept, setSelectedDept] = useState('');
 
-  const { workName, workCharger, workStartDate, workEndDate } = addWorkInput;
+  const { workName, workCharger, workStartDate, workEndDate } = modalInput;
 
   useEffect(() => {
     const fetchusers = async () => {
@@ -33,7 +34,7 @@ const Work = function () {
         setLoading(true);
         setError(null);
         const response = await axios.get(
-          `https://13.124.107.49:8080/work?nameType=workName&name=`, //13.124.107.49:8080/work?nameType=workName&name=
+          `https://jsonplaceholder.typicode.com/users`, //13.124.107.49:8080/work?nameType=workName&name=
         );
         setData(response.data);
       } catch (e) {
@@ -47,9 +48,9 @@ const Work = function () {
     const fetchDept = async () => {
       try {
         const response = await axios.get(
-          `http://13.124.107.49:8080/work/create`, //13.124.107.49:8080/work/create
+          `http://13.124.107.49:8080/work/create`,
         );
-        setDeptLists(response.data.departmentList);
+        setDeptLists(response.data);
       } catch (e) {
         console.log('부서데이터를 가져오는데 문제가 있습니다.');
       }
@@ -92,18 +93,26 @@ const Work = function () {
   };
 
   //모달
-  const modalOpen = () => {
-    setModal(true);
+  const addModalOpen = () => {
+    setAddModal(true);
   };
 
-  const modalClose = () => {
-    setModal(false);
+  const addModalClose = () => {
+    setAddModal(false);
   };
 
-  const handleAddInput = (e) => {
+  const correctModalOpen = () => {
+    setCorrectModal(true);
+  };
+
+  const correctModalClose = () => {
+    setCorrectModal(false);
+  };
+
+  const handleModalInput = (e) => {
     const { value, name } = e.target;
-    setAddWorkInput({
-      ...addWorkInput,
+    setModalInput({
+      ...modalInput,
       [name]: value,
     });
   };
@@ -133,6 +142,8 @@ const Work = function () {
     }
   };
 
+  const correctWork = (e) => {};
+
   return (
     <div className={styles.container}>
       <WorkInput
@@ -142,23 +153,44 @@ const Work = function () {
         input={input}
         handleInputChange={handleInputChange}
       />
-      <button onClick={modalOpen} className={styles.addButton}>
-        업무추가하기
-      </button>
+      <div className={styles.addButtonWrap}>
+        <button onClick={addModalOpen} className={styles.addButton}>
+          업무추가하기
+        </button>
+      </div>
       <WorkModal
-        modal={modal}
-        handleAddInput={handleAddInput}
+        modal={addModal}
+        handleModalInput={handleModalInput}
         handleSelectDept={handleSelectDept}
-        addWork={addWork}
+        handleWork={addWork}
         selectedDept={selectedDept}
         workName={workName}
         workCharger={workCharger}
         workStartDate={workStartDate}
         workEndDate={workEndDate}
-        modalClose={modalClose}
+        modalClose={addModalClose}
         deptLists={deptLists}
+        buttonText="추가하기"
       />
-      <Block searchResult={datas} className={styles.block} />
+      <Block
+        searchResult={datas}
+        modalOpen={correctModalOpen}
+        className={styles.block}
+      />
+      <WorkModal
+        modal={correctModal}
+        handleModalInput={handleModalInput}
+        handleSelectDept={handleSelectDept}
+        handleWork={correctWork}
+        selectedDept={selectedDept}
+        workName={workName}
+        workCharger={workCharger}
+        workStartDate={workStartDate}
+        workEndDate={workEndDate}
+        modalClose={correctModalClose}
+        deptLists={deptLists}
+        buttonText="수정하기"
+      />
     </div>
   );
 };

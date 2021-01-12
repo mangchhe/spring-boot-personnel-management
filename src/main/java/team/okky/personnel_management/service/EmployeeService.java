@@ -24,27 +24,6 @@ public class EmployeeService {
     private final ModelMapper modelMapper;
 
     /**
-     * 이름 검색(동명이인)
-     * @param name
-     * @return 해당하는 이름만 담은 사원 목록
-     */
-    public List<EmployeeDTO.DuplicationName> viewAllByName(String name){
-        List<EmployeeDTO.DuplicationName> list = new ArrayList<>();
-        for(Employee e : employeeRepository.findAllByName(name)){
-            list.add(
-                    EmployeeDTO.DuplicationName.builder()
-                            .empId(e.getEmpId())
-                            .empPosition(e.getEmpPosition())
-                            .empName(e.getEmpName())
-                            .empJoinDate(e.getEmpJoinDate())
-                            .deptName(e.getDepartment().getDeptName())
-                            .build()
-            );
-        }
-        return list;
-    }
-
-    /**
      * 전체 직원 목록 보여주기
      * @detail 직원 입사일 기준으로 내림차순
      * @return 직원 정보가 담긴 목록
@@ -56,11 +35,11 @@ public class EmployeeService {
     }
 
     /**
-     * 직원 이름으로 검색
+     * 이름 검색
      * @param name
-     * @return 해당 이름을 검색한 직원 목록
+     * @return 해당하는 이름만 담은 사원 목록, 동명이인 포함
      */
-    public List<EmployeeDTO.ListIndex> viewAllById(String name){
+    public List<EmployeeDTO.ListIndex> viewAllByName(String name){
         return employeeRepository.findAllByName(name).stream()
                 .map(m -> modelMapper.map(m, EmployeeDTO.ListIndex.class))
                 .collect(Collectors.toList());
@@ -84,13 +63,15 @@ public class EmployeeService {
      */
     @Transactional(readOnly = false)
     public Employee createEmployee(EmployeeDTO.AddEmployee addEmployee){
-        return Employee.builder()
+        Employee employee = Employee.builder()
                 .empName(addEmployee.getEmpName())
                 .department(departmentRepository.findOne(addEmployee.getDeptId()))
                 .empPosition(addEmployee.getEmpPosition())
                 .empJoinDate(addEmployee.getEmpJoinDate())
                 .empPhoneNum(addEmployee.getEmpPhoneNum())
                 .build();
+        employeeRepository.save(employee);
+        return employee;
     }
 
     /**

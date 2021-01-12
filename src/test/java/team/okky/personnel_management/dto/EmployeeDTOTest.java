@@ -25,7 +25,6 @@ class EmployeeDTOTest {
                 .department(Department.builder()
                         .deptName("부서1")
                         .build())
-                .empInternalNum("E-0001")
                 .empPhoneNum("010-1234-5678")
                 .empPosition("팀장")
                 .build();
@@ -35,7 +34,6 @@ class EmployeeDTOTest {
         Assertions.assertEquals(map.getEmpName(), employee.getEmpName());
         Assertions.assertEquals(map.getEmpJoinDate(), employee.getEmpJoinDate());
         Assertions.assertEquals(map.getDepartmentDeptName(), employee.getDepartment().getDeptName());
-        Assertions.assertEquals(map.getEmpInternalNum(), employee.getEmpInternalNum());
         Assertions.assertEquals(map.getEmpPhoneNum(), employee.getEmpPhoneNum());
         Assertions.assertEquals(map.getEmpPosition(), employee.getEmpPosition());
     }

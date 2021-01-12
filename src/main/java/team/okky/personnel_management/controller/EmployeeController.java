@@ -15,7 +15,6 @@ import java.util.List;
 public class EmployeeController {
 
     private final EmployeeService employeeService;
-    private final ModelMapper modelMapper;
 
     @GetMapping("/employee")
     public List<EmployeeDTO.ListIndex> viewByName(@RequestParam(required = false) String name,
@@ -23,7 +22,7 @@ public class EmployeeController {
         List<EmployeeDTO.ListIndex> list = null;
 
         if(name != null){
-            list = employeeService.viewAllById(name);
+            list = employeeService.viewAllByName(name);
         }
         else if(deptName != null){
             list = employeeService.viewAllByDept(deptName);
@@ -45,8 +44,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/employee/duplication/{name}")
-    public List<EmployeeDTO.DuplicationName> viewDuplicationName(@PathVariable String name){
-
+    public List<EmployeeDTO.ListIndex> viewDuplicationName(@PathVariable String name){
         return employeeService.viewAllByName(name);
     }
 

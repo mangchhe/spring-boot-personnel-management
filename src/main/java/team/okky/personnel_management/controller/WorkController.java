@@ -27,14 +27,13 @@ public class WorkController {
     }
 
     @PostMapping("/work/create")
-    public String create(@RequestParam("deptId") Long deptId,
-                         WorkForm.workAndDept workForm){
+    public String create(@RequestBody WorkForm.workCreateForm workForm){
         Work work = Work.builder()
-                .workName(workForm.getWork().getWorkName())
-                .workChargeName(workForm.getWork().getWorkChargeName())
-                .workStartDate(workForm.getWork().getWorkStartDate())
-                .workEndDate(workForm.getWork().getWorkEndDate())
-                .department(departmentRepository.findOne(deptId))
+                .workName(workForm.getWorkName())
+                .department(departmentRepository.findOne(workForm.getWorkDept()))
+                .workChargeName(workForm.getWorkChargeName())
+                .workStartDate(workForm.getWorkStartDate())
+                .workEndDate(workForm.getWorkEndDate())
                 .build();
         workService.save(work);
         return "redirect:/work";
@@ -62,10 +61,9 @@ public class WorkController {
     }
 
     @PostMapping("/work/{workId}/edit")
-    public String update(@PathVariable Long workId, @RequestParam("deptId") Long deptId,
-                         @ModelAttribute("form") WorkForm.workAndDept form){
-        workService.update(workId,form.getWork().getWorkName(),deptId,form.getWork().getWorkChargeName(),
-                form.getWork().getWorkStartDate(),form.getWork().getWorkEndDate());
+    public String update(@PathVariable Long workId,@RequestBody WorkForm.workCreateForm form ){
+        workService.update(workId,form.getWorkName(),form.getWorkDept(),form.getWorkChargeName(),
+                form.getWorkStartDate(),form.getWorkEndDate());
         return "redirect:/work";
     }
 }

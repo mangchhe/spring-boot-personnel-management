@@ -1,12 +1,14 @@
 package team.okky.personnel_management.domain;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Evaluation {
 
     @Id @GeneratedValue

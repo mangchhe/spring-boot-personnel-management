@@ -10,7 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import team.okky.personnel_management.domain.*;
-import team.okky.personnel_management.dto.WorkSearchDTO;
+import team.okky.personnel_management.dto.SearchDTO;
 import team.okky.personnel_management.repository.DepartmentRepository;
 import team.okky.personnel_management.repository.EmployeeRepository;
 import team.okky.personnel_management.dto.WorkFindDto;
@@ -24,7 +24,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
-@Rollback(value = false)
 public class WorkServiceTest {
     @Autowired private WorkService workService;
     @Autowired private DepartmentRepository departmentRepository;
@@ -145,10 +144,10 @@ public class WorkServiceTest {
             workList.add(work);
         }
 
-        WorkSearchDTO workSearch1 = new WorkSearchDTO();
-        WorkSearchDTO workSearch2 = new WorkSearchDTO();
-        WorkSearchDTO workSearch3 = new WorkSearchDTO();
-        WorkSearchDTO workSearch4 = new WorkSearchDTO();
+        SearchDTO workSearch1 = new SearchDTO();
+        SearchDTO workSearch2 = new SearchDTO();
+        SearchDTO workSearch3 = new SearchDTO();
+        SearchDTO workSearch4 = new SearchDTO();
 
         workSearch1.setNameType("workName");
         workSearch1.setName("업무0");

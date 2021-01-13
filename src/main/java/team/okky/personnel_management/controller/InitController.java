@@ -22,12 +22,14 @@ public class InitController {
     private final SickRepository sickRepository;
     private final DepartmentRepository departmentRepository;
     private final WorkRepository workRepository;
+    private final EvaluationRepository evaluationRepository;
 
     @GetMapping("/init")
     @Transactional
     @ResponseBody
     public void init() {
         String[] position = new String[]{"대리", "사원", "부장", "본부장", "사장", "차장", "과장"};
+        String[] comment = new String[]{"BEST","SOSO","BAD"};
         List<Employee> employeeList = new ArrayList<>();
         List<Department> departmentList = new ArrayList<>();
         List<Work> workList = new ArrayList<>();
@@ -88,6 +90,12 @@ public class InitController {
                 );
             }
 
+            evaluationRepository.save(Evaluation.builder()
+                    .evalResultScore((int)(Math.random()*100)+1)
+                    .evalComment(comment[i%3])
+                    .employee(employeeList.get(i))
+                    .work(workList.get(i%10))
+                    .build());
         }
 
         attendanceService.autoCreateAttendance();
@@ -96,6 +104,7 @@ public class InitController {
         attendanceService.onWork(employeeList.get(1));
         attendanceService.onWork(employeeList.get(2));
         attendanceService.offWork(employeeList.get(2));
+
 
     }
 }

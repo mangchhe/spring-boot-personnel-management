@@ -4,8 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import team.okky.personnel_management.domain.Work;
+import team.okky.personnel_management.dto.SearchDTO;
 import team.okky.personnel_management.dto.WorkFindDto;
-import team.okky.personnel_management.dto.WorkSearchDTO;
 import team.okky.personnel_management.repository.DepartmentRepository;
 import team.okky.personnel_management.service.WorkService;
 
@@ -43,7 +43,7 @@ public class WorkController {
     @GetMapping("/work")
     public List<WorkFindDto> list(@RequestParam("nameType") String nameType,
                                   @RequestParam("name") String name){
-        WorkSearchDTO workSearchDTO = new WorkSearchDTO();
+        SearchDTO workSearchDTO = new SearchDTO();
         workSearchDTO.setNameType(nameType);
         workSearchDTO.setName(name);
 

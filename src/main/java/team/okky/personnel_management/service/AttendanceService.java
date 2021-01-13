@@ -5,7 +5,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.okky.personnel_management.domain.*;
 import team.okky.personnel_management.dto.AttendanceDTO;
-import team.okky.personnel_management.dto.EmployeeDTO;
+import team.okky.personnel_management.dto.PageRequestDTO;
+import team.okky.personnel_management.dto.PageResultDTO;
 import team.okky.personnel_management.repository.AttendanceRepository;
 import team.okky.personnel_management.repository.EmployeeRepository;
 import team.okky.personnel_management.repository.SickRepository;
@@ -95,11 +96,12 @@ public class AttendanceService {
     /**
      * 전체 직원 근태 목록 보여주기
      * detail, 최근 날짜, 출근 시각 내림차순
+     * @param pageRequestDTO
      * @return 최근 날짜, 최근 시각 정렬 된 사원 근태 이력
      */
-    public List<AttendanceDTO.ListAll> viewAll(){
+    public List<AttendanceDTO.ListAll> viewAll(PageRequestDTO pageRequestDTO){
         List<AttendanceDTO.ListAll> list = new ArrayList<>();
-        for (Attendance a : attendanceRepository.findAllOrderByDateAndTime()){
+        for (Attendance a : attendanceRepository.findAllOrderByDateAndTime(pageRequestDTO)){
             list.add(
                     AttendanceDTO.ListAll.builder()
                             .attDate(a.getAttDate())
@@ -114,6 +116,17 @@ public class AttendanceService {
             );
         }
         return list;
+    }
+
+    /**
+     * 전체 직원 근태 목록 페이징 데이터 생성
+     * @param pageNo
+     * @return 전체 직원 근태 목록 페이징 정보
+     */
+    public PageResultDTO viewAllForPage(int pageNo){
+        return new PageResultDTO(
+                attendanceRepository.findAllOrderByDateAndTimeTotal(),
+                pageNo);
     }
 
     /**

@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.*;
 import team.okky.personnel_management.domain.AttendanceStatus;
 import team.okky.personnel_management.dto.AttendanceDTO;
 import team.okky.personnel_management.dto.EmployeeDTO;
+import team.okky.personnel_management.dto.PageRequestDTO;
+import team.okky.personnel_management.dto.PageResultDTO;
+import team.okky.personnel_management.repository.AttendanceRepository;
 import team.okky.personnel_management.service.AttendanceService;
 import team.okky.personnel_management.service.EmployeeService;
 
@@ -20,13 +23,14 @@ import java.util.List;
 public class AttendanceController {
 
     private final AttendanceService attendanceService;
-    private final EmployeeService employeeService;
 
     @GetMapping("/attendance")
-    public AttendanceDTO.StatusAndList viewIndex(){
+    public AttendanceDTO.StatusAndList viewIndex(@RequestParam(value = "page", defaultValue = "1") Integer pageNo){
+        PageRequestDTO pageRequestDTO = new PageRequestDTO(pageNo);
         AttendanceDTO.StatusAndList statusAndList = new AttendanceDTO.StatusAndList();
         statusAndList.setStatus(attendanceService.viewStatus());
-        statusAndList.setAttendanceList(attendanceService.viewAll());
+        statusAndList.setAttendanceList(attendanceService.viewAll(pageRequestDTO));
+        statusAndList.setPageResultDTO(attendanceService.viewAllForPage(pageNo));
         return statusAndList;
     }
 

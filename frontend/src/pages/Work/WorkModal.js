@@ -44,9 +44,10 @@ function WorkModal({
           <label className={styles.label}>
             부서:
             <select value={selectedDept} onChange={handleSelectDept}>
-              {deptLists.map((deptList) => {
+              {deptLists.map((deptList, index) => {
                 return (
                   <DeptOption
+                    key={index}
                     data={deptList}
                     selectedDept={selectedDept}
                     handleSelectDept={handleSelectDept}

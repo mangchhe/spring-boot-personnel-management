@@ -27,12 +27,13 @@ const BlockElements = React.memo(function ({ data, modalOpen }) {
 });
 
 const Block = function ({ searchResult, modalOpen }) {
+  if (searchResult.length === 0) {
+    return <div>Loading...</div>;
+  }
   return (
     <>
-      {searchResult.map((data) => {
-        return (
-          <BlockElements data={data} modalOpen={modalOpen} key={data.workId} />
-        );
+      {searchResult.map((data, index) => {
+        return <BlockElements data={data} modalOpen={modalOpen} key={index} />;
       })}
     </>
   );

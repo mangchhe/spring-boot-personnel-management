@@ -2,15 +2,8 @@ import React from 'react';
 import Modal from 'react-modal';
 import styles from './work.module.css';
 
-const DeptOption = ({ data, selectedDept, handleSelectDept }) => {
-  return (
-    <label className={styles.label}>
-      부서:
-      <select value={selectedDept} onChange={handleSelectDept}>
-        <option value={data.dept_id}>{data}</option>
-      </select>
-    </label>
-  );
+const DeptOption = ({ data }) => {
+  return <option value={data.deptId}>{data.deptName}</option>;
 };
 
 const Button = ({ buttonText }) => {
@@ -48,15 +41,20 @@ function WorkModal({
               name="workName"
             />
           </label>
-          {/* {deptLists.map((deptList) => {
-            return (
-              <DeptOption
-                data={deptList}
-                selectedDept={selectedDept}
-                handleSelectDept={handleSelectDept}
-              />
-            );
-          })} */}
+          <label className={styles.label}>
+            부서:
+            <select value={selectedDept} onChange={handleSelectDept}>
+              {deptLists.map((deptList) => {
+                return (
+                  <DeptOption
+                    data={deptList}
+                    selectedDept={selectedDept}
+                    handleSelectDept={handleSelectDept}
+                  />
+                );
+              })}
+            </select>
+          </label>
           <label className={styles.label}>
             담당자:
             <input

@@ -34,7 +34,7 @@ const Work = function () {
         setLoading(true);
         setError(null);
         const response = await axios.get(
-          `https://jsonplaceholder.typicode.com/users`, //13.124.107.49:8080/work?nameType=workName&name=
+          `/work?nameType=workName&name=`, //13.124.107.49:8080/work?nameType=workName&name=
         );
         setData(response.data);
       } catch (e) {
@@ -47,10 +47,8 @@ const Work = function () {
 
     const fetchDept = async () => {
       try {
-        const response = await axios.get(
-          `http://13.124.107.49:8080/work/create`,
-        );
-        setDeptLists(response.data);
+        const response = await axios.get(`/work/create`);
+        setDeptLists(response.data.departmentList);
       } catch (e) {
         console.log('부서데이터를 가져오는데 문제가 있습니다.');
       }
@@ -80,7 +78,7 @@ const Work = function () {
         setLoading(true);
         setError(null);
         const response = await axios.get(
-          `http://13.124.107.49:8080/work?nameType=${option}&name=${input}`,
+          `/work?nameType=${option}&name=${input}`,
         );
         setData(response.data);
       } catch (e) {
@@ -125,16 +123,17 @@ const Work = function () {
     e.preventDefault();
     const nextId = datas.length + 1;
     alert(
-      `${nextId},${workName}, ${selectedDept}, ${workStartDate}, ${workEndDate}`,
+      `${nextId},${workName}, ${selectedDept}, ${workCharger},${workStartDate}, ${workEndDate}`,
     );
     try {
       axios
-        .post(`http://13.124.107.49:8080/work/create`, {
-          workId: { nextId },
-          workName: { workName },
-          workDept: { selectedDept },
-          workStartDate: { workStartDate },
-          workEndDate: { workEndDate },
+        .post(`/work/create`, {
+          // workId: { nextId },
+          workName: workName,
+          workDept: selectedDept,
+          workChargeName: workCharger,
+          workStartDate: workStartDate,
+          workEndDate: workEndDate,
         })
         .then((response) => setData(response.data));
     } catch (e) {

@@ -4,6 +4,7 @@ import styles from './work.module.css';
 import axios from 'axios';
 import WorkInput from './WorkInput';
 import WorkModal from './WorkModal';
+import { FaPlus } from 'react-icons/fa';
 
 const Work = function () {
   const [input, setInput] = useState('');
@@ -154,7 +155,7 @@ const Work = function () {
       />
       <div className={styles.addButtonWrap}>
         <button onClick={addModalOpen} className={styles.addButton}>
-          업무추가하기
+          <FaPlus />
         </button>
       </div>
       <WorkModal
@@ -169,7 +170,7 @@ const Work = function () {
         workEndDate={workEndDate}
         modalClose={addModalClose}
         deptLists={deptLists}
-        buttonText="추가하기"
+        buttonText="업무추가"
       />
       <Block
         searchResult={datas}
@@ -188,7 +189,7 @@ const Work = function () {
         workEndDate={workEndDate}
         modalClose={correctModalClose}
         deptLists={deptLists}
-        buttonText="수정하기"
+        buttonText="업무수정"
       />
     </div>
   );

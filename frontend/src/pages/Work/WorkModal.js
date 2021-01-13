@@ -7,7 +7,11 @@ const DeptOption = ({ data }) => {
 };
 
 const Button = ({ buttonText }) => {
-  return <button type="submit">{buttonText}</button>;
+  return (
+    <button type="submit" className={styles.modalAddButton}>
+      {buttonText}
+    </button>
+  );
 };
 
 function WorkModal({
@@ -33,7 +37,7 @@ function WorkModal({
       >
         <form onSubmit={handleWork}>
           <label className={styles.label}>
-            업무명:
+            업무명
             <input
               className={styles.addInput}
               onChange={handleModalInput}
@@ -42,8 +46,12 @@ function WorkModal({
             />
           </label>
           <label className={styles.label}>
-            부서:
-            <select value={selectedDept} onChange={handleSelectDept}>
+            부서
+            <select
+              value={selectedDept}
+              onChange={handleSelectDept}
+              className={styles.deptSelect}
+            >
               {deptLists.map((deptList, index) => {
                 return (
                   <DeptOption
@@ -57,7 +65,7 @@ function WorkModal({
             </select>
           </label>
           <label className={styles.label}>
-            담당자:
+            담당자
             <input
               value={workCharger}
               name="workCharger"
@@ -66,7 +74,7 @@ function WorkModal({
             />
           </label>
           <label className={styles.label}>
-            시작:
+            시작일자
             <input
               value={workStartDate}
               name="workStartDate"
@@ -76,7 +84,7 @@ function WorkModal({
             />
           </label>
           <label className={styles.label}>
-            종료:
+            종료일자
             <input
               value={workEndDate}
               name="workEndDate"
@@ -87,7 +95,9 @@ function WorkModal({
           </label>
           <Button buttonText={buttonText}></Button>
         </form>
-        <button onClick={modalClose}>x</button>
+        <button onClick={modalClose} className={styles.modalCloseButton}>
+          닫기
+        </button>
       </Modal>
     </>
   );

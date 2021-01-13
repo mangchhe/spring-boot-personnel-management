@@ -1,12 +1,12 @@
 package team.okky.personnel_management.dto;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 public class DepartmentDTO {
 
     @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
     @Getter @Setter
     public static class Name{
         private Long deptId;

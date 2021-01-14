@@ -5,6 +5,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import team.okky.personnel_management.dto.EmployeeDTO;
+import team.okky.personnel_management.dto.PageRequestDTO;
+import team.okky.personnel_management.dto.PageResultDTO;
 import team.okky.personnel_management.service.EmployeeService;
 
 import java.util.List;
@@ -17,20 +19,29 @@ public class EmployeeController {
     private final EmployeeService employeeService;
 
     @GetMapping("/employee")
-    public List<EmployeeDTO.ListIndex> viewByName(@RequestParam(required = false) String name,
-                                                  @RequestParam(required = false) String deptName){
+    public EmployeeDTO.ListIndexPage viewByName(@RequestParam(required = false) String name,
+                                                  @RequestParam(required = false) String deptName,
+                                                  @RequestParam(value = "page", defaultValue = "1") Integer pageNo){
         List<EmployeeDTO.ListIndex> list = null;
+        PageResultDTO pageResultDTO = null;
+        PageRequestDTO pageRequestDTO = new PageRequestDTO(pageNo);
 
         if(name != null){
-            list = employeeService.viewAllByName(name);
+            list = employeeService.viewAllByName(name, pageRequestDTO);
+            pageResultDTO = employeeService.viewAllByNameForPage(name, pageNo);
         }
         else if(deptName != null){
-            list = employeeService.viewAllByDept(deptName);
+            list = employeeService.viewAllByDept(deptName, pageRequestDTO);
+            pageResultDTO = employeeService.viewAllByDeptNameForPage(deptName, pageNo);
         }
         else{
-            list = employeeService.viewAll();
+            list = employeeService.viewAll(pageRequestDTO);
+            pageResultDTO = employeeService.viewAllForPage(pageNo);
         }
-        return list;
+        return EmployeeDTO.ListIndexPage.builder()
+                .list(list)
+                .pageResultDTO(pageResultDTO)
+                .build();
     }
 
     @PostMapping("/employee")
@@ -41,11 +52,6 @@ public class EmployeeController {
     @PutMapping("/employee")
     public void viewUpdateEmployee(@RequestBody EmployeeDTO.UpdateEmployee updateEmployee){
         employeeService.updateEmployee(updateEmployee);
-    }
-
-    @GetMapping("/employee/duplication/{name}")
-    public List<EmployeeDTO.ListIndex> viewDuplicationName(@PathVariable String name){
-        return employeeService.viewAllByName(name);
     }
 
 }

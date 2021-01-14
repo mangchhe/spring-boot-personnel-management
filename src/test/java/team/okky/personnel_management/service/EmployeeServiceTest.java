@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import team.okky.personnel_management.domain.Department;
 import team.okky.personnel_management.domain.Employee;
 import team.okky.personnel_management.dto.EmployeeDTO;
+import team.okky.personnel_management.dto.PageRequestDTO;
 import team.okky.personnel_management.repository.DepartmentRepository;
 import team.okky.personnel_management.repository.EmployeeRepository;
 
@@ -30,21 +31,17 @@ class EmployeeServiceTest {
     @Test
     public void 전체_직원_목록() throws Exception {
         //given
-        List<Long> findIdList = new ArrayList<>();
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 105; i++) {
             Employee employee = Employee.builder()
                     .empName("테스터" + i)
                     .build();
             employeeRepository.save(employee);
-            findIdList.add(employee.getEmpId());
         }
         //when
-        List<EmployeeDTO.ListIndex> result = employeeService.viewAll();
+        List<EmployeeDTO.ListIndex> result = employeeService.viewAll(new PageRequestDTO(11));
         //then
-        assertThat(result).extracting("empId")
-                .containsAll(findIdList);
-
-        assertThat(result.size()).isEqualTo(findIdList.size());
+        assertThat(105).isEqualTo(employeeRepository.findAllOrderByJoinDateTotal());
+        assertThat(5).isEqualTo(result.size());
 
     }
 
@@ -64,7 +61,7 @@ class EmployeeServiceTest {
             employeeRepository.save(employee2);
         }
         //when
-        List<EmployeeDTO.ListIndex> result = employeeService.viewAllByName("테스터");
+        List<EmployeeDTO.ListIndex> result = employeeService.viewAllByName("테스터", new PageRequestDTO(1));
         //then
         assertThat(result).extracting("empName")
                 .containsAll(findNameList);
@@ -95,7 +92,7 @@ class EmployeeServiceTest {
             employeeRepository.save(employee2);
         }
         //when
-        List<EmployeeDTO.ListIndex> result = employeeService.viewAllByDept("인사과");
+        List<EmployeeDTO.ListIndex> result = employeeService.viewAllByDept("인사과", new PageRequestDTO(1));
         //then
         assertThat(result).extracting("departmentDeptName")
                 .containsAll(findDeptNameList);
@@ -115,7 +112,7 @@ class EmployeeServiceTest {
                 .deptId(department.getDeptId())
                 .build());
         //then
-        assertThat(employeeRepository.findAllByName("테스터")).isNotEmpty();
+        assertThat(employeeRepository.findAllByName("테스터", new PageRequestDTO(1))).isNotEmpty();
     }
     
     @Test

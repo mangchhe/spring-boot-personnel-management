@@ -3,6 +3,7 @@ package team.okky.personnel_management.dto;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class EmployeeDTO {
 
@@ -18,6 +19,16 @@ public class EmployeeDTO {
         private LocalDate empJoinDate;
         private String empPhoneNum;
     }
+
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Getter @Setter
+    public static class ListIndexPage {
+        List<ListIndex> list;
+        PageResultDTO pageResultDTO;
+    }
+
     @Builder
     @Getter @Setter
     public static class ListByStatus {

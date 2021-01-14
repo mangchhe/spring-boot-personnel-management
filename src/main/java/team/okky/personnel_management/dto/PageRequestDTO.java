@@ -1,12 +1,7 @@
 package team.okky.personnel_management.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
 public class PageRequestDTO {
 
     private int page = 1;

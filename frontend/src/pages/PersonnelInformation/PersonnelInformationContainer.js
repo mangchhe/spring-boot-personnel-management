@@ -19,8 +19,28 @@ function PersonnelInformationContainer() {
     empPhoneNum: '',
   });
   const [departmentList, setDepartmentList] = useState([]);
+  const [pageInfo, setPageInfo] = useState({
+    currentPage: 1,
+    totalPage: 1,
+  });
+  const [showPagination, setShowPagination] = useState(true);
 
   const { type, word } = inputValues;
+
+  const fetchEmployeeWithPage = (route) => {
+    axios
+      .get(route)
+      .then((res) => {
+        setEmployeeArr(res.data.list);
+        setPageInfo({
+          ...pageInfo,
+          totalPage: res.data.pageResultDTO.totalPage,
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   const fetchEmployee = (route) => {
     axios
@@ -45,16 +65,18 @@ function PersonnelInformationContainer() {
   };
 
   useEffect(() => {
-    fetchEmployee('/employee');
+    fetchEmployeeWithPage(`/employee?page=${pageInfo.currentPage}`);
     fetchDepartment();
   }, []);
 
   const handleSearch = (e) => {
     e.preventDefault();
     if (word === '') {
-      fetchEmployee('/employee');
+      fetchEmployee(`/employee?page=${pageInfo.currentPage}`);
+      setShowPagination(true);
     } else {
       fetchEmployee(`/employee?${type}=${word}`);
+      setShowPagination(false);
     }
   };
 
@@ -92,7 +114,8 @@ function PersonnelInformationContainer() {
       })
       .then(() => {
         handleModalClose();
-        fetchEmployee('/employee');
+        fetchEmployee(`/employee?page=${pageInfo.currentPage}`);
+        setShowPagination(true);
       })
       .catch((error) => {
         console.log(error);
@@ -117,11 +140,21 @@ function PersonnelInformationContainer() {
         empPhoneNum: phone,
       })
       .then(() => {
-        fetchEmployee('/employee');
+        fetchEmployee(`/employee?page=${pageInfo.currentPage}`);
+        setShowPagination(true);
       })
       .catch((error) => {
         console.log(error);
       });
+  };
+
+  const handlePageChange = (e) => {
+    const pageNum = parseInt(e.target.firstChild.nodeValue);
+    setPageInfo({
+      ...pageInfo,
+      currentPage: pageNum,
+    });
+    fetchEmployee(`/employee?page=${pageNum}`);
   };
 
   return (
@@ -143,6 +176,9 @@ function PersonnelInformationContainer() {
       employeeData={employeeData}
       handleEdit={handleEdit}
       setShowEditModal={setShowEditModal}
+      pageInfo={pageInfo}
+      handlePageChange={handlePageChange}
+      showPagination={showPagination}
     />
   );
 }

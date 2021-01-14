@@ -4,6 +4,7 @@ import styles from './work.module.css';
 import axios from 'axios';
 import WorkInput from './WorkInput';
 import WorkModal from './WorkModal';
+import { FaPlus } from 'react-icons/fa';
 
 const Work = function () {
   const [input, setInput] = useState('');
@@ -24,36 +25,35 @@ const Work = function () {
   });
 
   const [deptLists, setDeptLists] = useState([{ dept: '' }]);
-  const [selectedDept, setSelectedDept] = useState('');
+  const [selectedDept, setSelectedDept] = useState('1');
 
   const { workName, workCharger, workStartDate, workEndDate } = modalInput;
 
+  const fetchusers = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const response = await axios.get(
+        `/work?nameType=workName&name=`, //13.124.107.49:8080/work?nameType=workName&name=
+      );
+      setData(response.data);
+    } catch (e) {
+      setError(e);
+    }
+    setLoading(false);
+  };
+
+  const fetchDept = async () => {
+    try {
+      const response = await axios.get(`/work/create`);
+      setDeptLists(response.data.departmentList);
+    } catch (e) {
+      console.log('부서데이터를 가져오는데 문제가 있습니다.');
+    }
+  };
+
   useEffect(() => {
-    const fetchusers = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        const response = await axios.get(
-          `/work?nameType=workName&name=`, //13.124.107.49:8080/work?nameType=workName&name=
-        );
-        setData(response.data);
-      } catch (e) {
-        setError(e);
-      }
-      setLoading(false);
-    };
-
     fetchusers();
-
-    const fetchDept = async () => {
-      try {
-        const response = await axios.get(`/work/create`);
-        setDeptLists(response.data.departmentList);
-      } catch (e) {
-        console.log('부서데이터를 가져오는데 문제가 있습니다.');
-      }
-    };
-
     fetchDept();
   }, []);
 
@@ -73,7 +73,7 @@ const Work = function () {
     if (!input) {
       return;
     }
-    const fetchusers = async () => {
+    const fetchSearchResult = async () => {
       try {
         setLoading(true);
         setError(null);
@@ -87,7 +87,7 @@ const Work = function () {
       setLoading(false);
     };
 
-    fetchusers();
+    fetchSearchResult();
   };
 
   //모달
@@ -128,19 +128,20 @@ const Work = function () {
     try {
       axios
         .post(`/work/create`, {
-          // workId: { nextId },
           workName: workName,
-          workDept: selectedDept,
+          workDept: Number(selectedDept),
           workChargeName: workCharger,
           workStartDate: workStartDate,
           workEndDate: workEndDate,
         })
-        .then((response) => setData(response.data));
+        .then(() => {
+          fetchusers();
+          setAddModal(false);
+        });
     } catch (e) {
       console.log('업무를 추가하는데 문제가 있습니다.');
     }
   };
-
   const correctWork = (e) => {};
 
   return (
@@ -154,7 +155,7 @@ const Work = function () {
       />
       <div className={styles.addButtonWrap}>
         <button onClick={addModalOpen} className={styles.addButton}>
-          업무추가하기
+          <FaPlus />
         </button>
       </div>
       <WorkModal
@@ -169,7 +170,7 @@ const Work = function () {
         workEndDate={workEndDate}
         modalClose={addModalClose}
         deptLists={deptLists}
-        buttonText="추가하기"
+        buttonText="업무추가"
       />
       <Block
         searchResult={datas}
@@ -188,7 +189,7 @@ const Work = function () {
         workEndDate={workEndDate}
         modalClose={correctModalClose}
         deptLists={deptLists}
-        buttonText="수정하기"
+        buttonText="업무수정"
       />
     </div>
   );

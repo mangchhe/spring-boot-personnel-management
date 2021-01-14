@@ -38,20 +38,4 @@ out/
 
 *.eslintcache
 */node_modules/*
-*.js
-*.md
-*.json
-node_modules/exenv/LICENSE
-node_modules/loose-envify/LICENSE
-node_modules/prop-types/LICENSE
-node_modules/.bin/loose-envify
-*.cmd
-node_modules/object-assign/license
-*.ps1
-node_modules/js-tokens/LICENSE
-*.yml
-node_modules/react-is/LICENSE
-node_modules/react-modal/LICENSE
-node_modules/rodal/docs/index.html
-node_modules/rodal/lib/rodal.css
-node_modules/rodal/LICENSE
+

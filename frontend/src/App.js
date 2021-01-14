@@ -36,7 +36,7 @@ function App() {
                     <Route path="/attendance" component={AttendanceContainer} />
                     <Route path="/payroll" component={Payroll} />
                     <Route path="/work" component={Work} />
-                    <Route path="/performance" component={Performance} />
+                    <Route path="/evaluation" component={Evaluation} />
                     <Route
                       path="/personnelInformation"
                       component={PersonnelInformation}

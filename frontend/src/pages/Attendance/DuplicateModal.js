@@ -57,7 +57,8 @@ function DuplicateModal({
               checked={selectedId === person.empId}
               onChange={handleSelectedIdChange}
             />{' '}
-            {person.deptName} - {person.empPosition} ({person.empInternalNum})
+            {person.departmentDeptName} - {person.empPosition} (
+            {person.empJoinDate} 입사)
           </ModalRadio>
         ))}
         <SubmitButton>

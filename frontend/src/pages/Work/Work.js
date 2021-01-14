@@ -121,15 +121,14 @@ const Work = function () {
 
   const addWork = (e) => {
     e.preventDefault();
-    const nextId = datas.length + 1;
     alert(
-      `${nextId},${workName}, ${selectedDept}, ${workCharger},${workStartDate}, ${workEndDate}`,
+      `${workName}, ${selectedDept}, ${workCharger},${workStartDate}, ${workEndDate}`,
     );
     try {
       axios
         .post(`/work/create`, {
           workName: workName,
-          workDept: Number(selectedDept),
+          workDept: selectedDept,
           workChargeName: workCharger,
           workStartDate: workStartDate,
           workEndDate: workEndDate,

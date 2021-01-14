@@ -62,12 +62,11 @@ function AttendanceContainer() {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    const { date, word } = inputValues;
     if (!date && !word) {
       fetchAttendance('/attendance');
     }
     if (date && !word) {
-      fetchAttendance(`/attendance/search?date=${date}`);
+      fetchAttendance(`/attendance/list?date=${date}`);
     }
     if (word) {
       fetchDuplication(word);
@@ -98,9 +97,9 @@ function AttendanceContainer() {
     const { date } = inputValues;
     handleModalClose();
     if (!date) {
-      fetchAttendance(`/attendance/search?name=${selectedId}`);
+      fetchAttendance(`/attendance/list?name=${selectedId}`);
     } else {
-      fetchAttendance(`/attendance/search?date=${date}&name=${selectedId}`);
+      fetchAttendance(`/attendance/list?date=${date}&name=${selectedId}`);
     }
   };
 

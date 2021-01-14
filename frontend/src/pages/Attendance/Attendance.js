@@ -14,7 +14,6 @@ import styled from 'styled-components';
 import DuplicateModal from './DuplicateModal';
 
 const Container = styled.div`
-  width: 95%;
   .numBoxContainer {
     display: flex;
     justify-content: space-between;

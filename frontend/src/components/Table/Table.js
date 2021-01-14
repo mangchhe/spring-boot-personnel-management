@@ -1,5 +1,6 @@
 import React from 'react';
 import AttendanceRow from './AttendanceRow';
+import EmployeeRow from './EmployeeRow';
 import styled from 'styled-components';
 
 const StyledTable = styled.table`
@@ -16,9 +17,10 @@ const StyledTable = styled.table`
 
 const rowComponents = {
   attendance: AttendanceRow,
+  personnelInformation: EmployeeRow,
 };
 
-function Table({ page, headerArr, dataArr }) {
+function Table({ page, headerArr, dataArr, ...rest }) {
   const RowComponent = rowComponents[page];
 
   if (!dataArr) {
@@ -40,7 +42,7 @@ function Table({ page, headerArr, dataArr }) {
       </thead>
       <tbody>
         {dataArr.map((data, i) => {
-          return <RowComponent data={data} key={i} />;
+          return <RowComponent data={data} key={i} rest={rest} />;
         })}
       </tbody>
     </StyledTable>

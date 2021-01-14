@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.okky.personnel_management.domain.Department;
 import team.okky.personnel_management.domain.Work;
-import team.okky.personnel_management.dto.WorkSearchDTO;
+import team.okky.personnel_management.dto.SearchDTO;
 import team.okky.personnel_management.repository.DepartmentRepository;
 import team.okky.personnel_management.dto.WorkFindDto;
 import team.okky.personnel_management.repository.WorkRepository;
@@ -27,7 +27,7 @@ public class WorkService {
         return workRepository.findOne(id);
     }
 
-    public List<WorkFindDto> filteringList(WorkSearchDTO workSearch) {
+    public List<WorkFindDto> filteringList(SearchDTO workSearch) {
         return workRepository.filteringList(workSearch);
     }
 

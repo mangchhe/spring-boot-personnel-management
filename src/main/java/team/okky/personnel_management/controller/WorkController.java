@@ -1,11 +1,13 @@
 package team.okky.personnel_management.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.converter.json.GsonBuilderUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import team.okky.personnel_management.domain.Work;
+import team.okky.personnel_management.dto.SearchDTO;
 import team.okky.personnel_management.dto.WorkFindDto;
-import team.okky.personnel_management.dto.WorkSearchDTO;
 import team.okky.personnel_management.repository.DepartmentRepository;
 import team.okky.personnel_management.service.WorkService;
 
@@ -14,6 +16,7 @@ import java.util.List;
 @Controller
 @ResponseBody
 @RequiredArgsConstructor
+@Slf4j
 public class WorkController {
     private final WorkService workService;
     private final DepartmentRepository departmentRepository;
@@ -27,14 +30,13 @@ public class WorkController {
     }
 
     @PostMapping("/work/create")
-    public String create(@RequestParam("deptId") Long deptId,
-                         WorkForm.workAndDept workForm){
+    public String create(@RequestBody WorkForm.workCreateForm workForm){
         Work work = Work.builder()
-                .workName(workForm.getWork().getWorkName())
-                .workChargeName(workForm.getWork().getWorkChargeName())
-                .workStartDate(workForm.getWork().getWorkStartDate())
-                .workEndDate(workForm.getWork().getWorkEndDate())
-                .department(departmentRepository.findOne(deptId))
+                .workName(workForm.getWorkName())
+                .department(departmentRepository.findOne(workForm.getWorkDept()))
+                .workChargeName(workForm.getWorkChargeName())
+                .workStartDate(workForm.getWorkStartDate())
+                .workEndDate(workForm.getWorkEndDate())
                 .build();
         workService.save(work);
         return "redirect:/work";
@@ -43,7 +45,7 @@ public class WorkController {
     @GetMapping("/work")
     public List<WorkFindDto> list(@RequestParam("nameType") String nameType,
                                   @RequestParam("name") String name){
-        WorkSearchDTO workSearchDTO = new WorkSearchDTO();
+        SearchDTO workSearchDTO = new SearchDTO();
         workSearchDTO.setNameType(nameType);
         workSearchDTO.setName(name);
 
@@ -62,10 +64,9 @@ public class WorkController {
     }
 
     @PostMapping("/work/{workId}/edit")
-    public String update(@PathVariable Long workId, @RequestParam("deptId") Long deptId,
-                         @ModelAttribute("form") WorkForm.workAndDept form){
-        workService.update(workId,form.getWork().getWorkName(),deptId,form.getWork().getWorkChargeName(),
-                form.getWork().getWorkStartDate(),form.getWork().getWorkEndDate());
+    public String update(@PathVariable Long workId,@RequestBody WorkForm.workCreateForm form ){
+        workService.update(workId,form.getWorkName(),form.getWorkDept(),form.getWorkChargeName(),
+                form.getWorkStartDate(),form.getWorkEndDate());
         return "redirect:/work";
     }
 }

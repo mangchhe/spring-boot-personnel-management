@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import team.okky.personnel_management.domain.*;
 import team.okky.personnel_management.dto.AttendanceDTO;
 import team.okky.personnel_management.dto.EmployeeDTO;
+import team.okky.personnel_management.dto.PageRequestDTO;
 import team.okky.personnel_management.repository.AttendanceRepository;
 import team.okky.personnel_management.repository.EmployeeRepository;
 import team.okky.personnel_management.repository.SickRepository;
@@ -157,7 +158,7 @@ class AttendanceServiceTest {
         }
         //when, then
 
-        for(AttendanceDTO.ListAll a : attendanceService.viewAll()){
+        for(AttendanceDTO.ListAll a : attendanceService.viewAll(new PageRequestDTO(1))){
             if(first | idx % 10 == 0){
                 beforeDate = a.getAttDate();
                 beforeTime = a.getAttOnTime();

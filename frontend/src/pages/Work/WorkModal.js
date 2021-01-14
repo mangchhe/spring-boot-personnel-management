@@ -2,19 +2,16 @@ import React from 'react';
 import Modal from 'react-modal';
 import styles from './work.module.css';
 
-const DeptOption = ({ data, selectedDept, handleSelectDept }) => {
-  return (
-    <label className={styles.label}>
-      부서:
-      <select value={selectedDept} onChange={handleSelectDept}>
-        <option value={data.dept_id}>{data}</option>
-      </select>
-    </label>
-  );
+const DeptOption = ({ data }) => {
+  return <option value={data.deptId}>{data.deptName}</option>;
 };
 
 const Button = ({ buttonText }) => {
-  return <button type="submit">{buttonText}</button>;
+  return (
+    <button type="submit" className={styles.modalAddButton}>
+      {buttonText}
+    </button>
+  );
 };
 
 function WorkModal({
@@ -40,7 +37,7 @@ function WorkModal({
       >
         <form onSubmit={handleWork}>
           <label className={styles.label}>
-            업무명:
+            업무명
             <input
               className={styles.addInput}
               onChange={handleModalInput}
@@ -48,17 +45,27 @@ function WorkModal({
               name="workName"
             />
           </label>
-          {/* {deptLists.map((deptList) => {
-            return (
-              <DeptOption
-                data={deptList}
-                selectedDept={selectedDept}
-                handleSelectDept={handleSelectDept}
-              />
-            );
-          })} */}
           <label className={styles.label}>
-            담당자:
+            부서
+            <select
+              value={selectedDept}
+              onChange={handleSelectDept}
+              className={styles.deptSelect}
+            >
+              {deptLists.map((deptList, index) => {
+                return (
+                  <DeptOption
+                    key={index}
+                    data={deptList}
+                    selectedDept={selectedDept}
+                    handleSelectDept={handleSelectDept}
+                  />
+                );
+              })}
+            </select>
+          </label>
+          <label className={styles.label}>
+            담당자
             <input
               value={workCharger}
               name="workCharger"
@@ -67,7 +74,7 @@ function WorkModal({
             />
           </label>
           <label className={styles.label}>
-            시작:
+            시작일자
             <input
               value={workStartDate}
               name="workStartDate"
@@ -77,7 +84,7 @@ function WorkModal({
             />
           </label>
           <label className={styles.label}>
-            종료:
+            종료일자
             <input
               value={workEndDate}
               name="workEndDate"
@@ -88,7 +95,9 @@ function WorkModal({
           </label>
           <Button buttonText={buttonText}></Button>
         </form>
-        <button onClick={modalClose}>x</button>
+        <button onClick={modalClose} className={styles.modalCloseButton}>
+          닫기
+        </button>
       </Modal>
     </>
   );

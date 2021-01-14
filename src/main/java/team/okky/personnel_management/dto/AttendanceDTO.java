@@ -28,6 +28,7 @@ public class AttendanceDTO {
     public static class StatusAndList {
         private AttendanceDTO.Status status;
         private List<ListAll> attendanceList;
+        private PageResultDTO pageResultDTO;
     }
 
     @Builder

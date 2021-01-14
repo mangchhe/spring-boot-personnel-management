@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-public class WorkSearchDTO {
+public class SearchDTO {
     private String nameType;
     private String name;
 }

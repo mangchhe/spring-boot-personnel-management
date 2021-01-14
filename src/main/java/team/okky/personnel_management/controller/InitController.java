@@ -22,12 +22,14 @@ public class InitController {
     private final SickRepository sickRepository;
     private final DepartmentRepository departmentRepository;
     private final WorkRepository workRepository;
+    private final EvaluationRepository evaluationRepository;
 
     @GetMapping("/init")
     @Transactional
     @ResponseBody
     public void init() {
         String[] position = new String[]{"대리", "사원", "부장", "본부장", "사장", "차장", "과장"};
+        String[] comment = new String[]{"BEST","SOSO","BAD"};
         List<Employee> employeeList = new ArrayList<>();
         List<Department> departmentList = new ArrayList<>();
         List<Work> workList = new ArrayList<>();
@@ -40,20 +42,19 @@ public class InitController {
             departmentRepository.save(department);
         }
 
-        int count=0;
         for(int i=0;i<10;i++) {
             Work work =
                     Work.builder()
                             .workName("업무" + i)
                             .workChargeName("담당자" + i)
                             .workStartDate(LocalDate.of(2020, i + 1, i + 1))
-                            .workEndDate(LocalDate.of(2021, 1, i + 1))
+                            .workEndDate(LocalDate.of(2021, 1, 4 + i))
                             .department(departmentList.get(i/2))
                             .build();
             workRepository.save(work);
             workList.add(work);
         }
-
+        int j=-1;
         for (int i = 0; i < 50; i++) {
             Employee employee = Employee.builder()
                     .empPosition(position[i % 7])
@@ -88,6 +89,12 @@ public class InitController {
                                 .build()
                 );
             }
+                evaluationRepository.save(Evaluation.builder()
+                        .evalResultScore((int) (Math.random() * 100) + 1)
+                        .evalComment(comment[i % 3])
+                        .employee(employeeList.get(i))
+                        .work(workList.get(i%5==0?++j:j))
+                        .build());
 
         }
 
@@ -97,6 +104,7 @@ public class InitController {
         attendanceService.onWork(employeeList.get(1));
         attendanceService.onWork(employeeList.get(2));
         attendanceService.offWork(employeeList.get(2));
+
 
     }
 }

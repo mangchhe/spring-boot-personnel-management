@@ -21,6 +21,11 @@
   border-radius: 1rem;
 }
 
+.title {
+  font-size: 17px;
+  margin-bottom: 4px;
+}
+
 .p {
   margin-bottom: 4px;
 }

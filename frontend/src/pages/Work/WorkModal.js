@@ -14,6 +14,8 @@ const Button = ({ buttonText }) => {
   );
 };
 
+Modal.setAppElement('#modal_root');
+
 function WorkModal({
   modal,
   handleModalInput,

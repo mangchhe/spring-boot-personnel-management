@@ -1,10 +1,14 @@
 package team.okky.personnel_management.controller;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.converter.json.GsonBuilderUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import team.okky.personnel_management.domain.Department;
 import team.okky.personnel_management.domain.Work;
 import team.okky.personnel_management.dto.SearchDTO;
 import team.okky.personnel_management.dto.WorkFindDto;
@@ -16,7 +20,6 @@ import java.util.List;
 @Controller
 @ResponseBody
 @RequiredArgsConstructor
-@Slf4j
 public class WorkController {
     private final WorkService workService;
     private final DepartmentRepository departmentRepository;
@@ -53,11 +56,15 @@ public class WorkController {
     }
 
     @GetMapping("/work/{workId}/edit")
-    public WorkForm.workAndDept updateWorkForm(@PathVariable("workId") Long workId){
+    public WorkForm.workUpdateForm updateWorkForm(@PathVariable("workId") Long workId){
+
+        WorkForm.workUpdateForm form = new WorkForm.workUpdateForm();
         Work work = workService.findOne(workId);
-        WorkForm.workAndDept form = new WorkForm.workAndDept();
-        form.setWork(work);
+        form.setWorkName(work.getWorkName());
         form.setDefaultDeptName(work.getDepartment().getDeptName());
+        form.setWorkChargeName(work.getWorkChargeName());
+        form.setWorkStartDate(work.getWorkStartDate());
+        form.setWorkEndDate(work.getWorkEndDate());
         form.setDepartmentList(departmentRepository.findAll());
 
         return form;

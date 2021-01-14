@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 import team.okky.personnel_management.domain.Attendance;
 import team.okky.personnel_management.domain.AttendanceStatus;
 import team.okky.personnel_management.domain.Employee;
+import team.okky.personnel_management.dto.PageRequestDTO;
 
 import javax.persistence.EntityManager;
 import java.time.LocalDate;
@@ -35,9 +36,16 @@ public class AttendanceRepository {
         return attendance;
     }
 
-    public List<Attendance> findAllOrderByDateAndTime(){
+    public List<Attendance> findAllOrderByDateAndTime(PageRequestDTO pageRequestDTO){
         return em.createQuery("select a from Attendance a order by a.attDate desc, a.attOnTime desc", Attendance.class)
+                .setFirstResult(pageRequestDTO.getPage())
+                .setMaxResults(pageRequestDTO.getSize())
                 .getResultList();
+    }
+
+    public int findAllOrderByDateAndTimeTotal(){
+        return em.createQuery("select count(a.attID) from Attendance a", Long.class)
+                .getSingleResult().intValue();
     }
 
     public List<Attendance> findAllByDate(LocalDate date){
@@ -56,12 +64,6 @@ public class AttendanceRepository {
         return em.createQuery("select a from Attendance a where a.employee.empId = :emp_id and a.attDate = :att_date", Attendance.class)
                 .setParameter("emp_id", id)
                 .setParameter("att_date", date)
-                .getResultList();
-    }
-
-    public List<Employee> findAllByOn(){
-        return em.createQuery("select a.employee from Attendance a where a.attDate = :att_date", Employee.class)
-                .setParameter("att_date", LocalDate.now())
                 .getResultList();
     }
 

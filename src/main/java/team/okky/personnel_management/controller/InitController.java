@@ -62,8 +62,6 @@ public class InitController {
                     )
                     .work(workList.get(i/ 5))
                     .empPhoneNum("010-2472-2117")
-                    .empJumin("123456-1234567")
-                    .empInternalNum("010-1234-5678")
                     .empJoinDate(LocalDate.of(LocalDate.now().getYear(), (int) (Math.random() * 11 + 1), (int) (Math.random() * 25 + 1)))
                     .build();
             employeeList.add(employee);

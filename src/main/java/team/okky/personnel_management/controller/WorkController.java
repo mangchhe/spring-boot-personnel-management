@@ -1,6 +1,8 @@
 package team.okky.personnel_management.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.converter.json.GsonBuilderUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import team.okky.personnel_management.domain.Work;
@@ -14,6 +16,7 @@ import java.util.List;
 @Controller
 @ResponseBody
 @RequiredArgsConstructor
+@Slf4j
 public class WorkController {
     private final WorkService workService;
     private final DepartmentRepository departmentRepository;

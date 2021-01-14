@@ -25,7 +25,7 @@ public class EvaluationDTO {
 
     @Builder @Getter @Setter
     public static class evalPerWork{
-        private Long empId;
+        private Long evalId;
         private String comment;
         private int score;
         private String empName;

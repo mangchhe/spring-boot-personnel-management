@@ -54,7 +54,7 @@ public class InitController {
             workRepository.save(work);
             workList.add(work);
         }
-
+        int j=-1;
         for (int i = 0; i < 50; i++) {
             Employee employee = Employee.builder()
                     .empPosition(position[i % 7])
@@ -89,13 +89,13 @@ public class InitController {
                                 .build()
                 );
             }
+                evaluationRepository.save(Evaluation.builder()
+                        .evalResultScore((int) (Math.random() * 100) + 1)
+                        .evalComment(comment[i % 3])
+                        .employee(employeeList.get(i))
+                        .work(workList.get(i%5==0?++j:j))
+                        .build());
 
-            evaluationRepository.save(Evaluation.builder()
-                    .evalResultScore((int)(Math.random()*100)+1)
-                    .evalComment(comment[i%3])
-                    .employee(employeeList.get(i))
-                    .work(workList.get(i%10))
-                    .build());
         }
 
         attendanceService.autoCreateAttendance();

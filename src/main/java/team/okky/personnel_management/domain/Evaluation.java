@@ -23,4 +23,8 @@ public class Evaluation {
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "emp_id")
     private Employee employee;
 
+    public void change(int score, String comment){
+        evalResultScore = score;
+        evalComment = comment;
+    }
 }

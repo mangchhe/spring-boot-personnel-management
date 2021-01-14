@@ -26,7 +26,7 @@ function PersonnelInformationContainer() {
     axios
       .get(route)
       .then((res) => {
-        setEmployeeArr(res.data);
+        setEmployeeArr(res.data.list);
       })
       .catch((error) => {
         console.log(error);

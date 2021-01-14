@@ -5,7 +5,7 @@ import Login from './pages/Login/Login';
 import AttendanceContainer from './pages/Attendance/AttendanceContainer';
 import Payroll from './pages/Payroll/Payroll';
 import Work from './pages/Work/Work';
-import Performance from './pages/Performance/Performance';
+import Evaluation from './pages/Evaluation/Evaluation';
 import PersonnelInformationContainer from './pages/PersonnelInformation/PersonnelInformationContainer';
 import PersonnelStatus from './pages/PersonnelStatus/PersonnelStatus';
 import Profile from './pages/Profile/Profile';

@@ -6,7 +6,7 @@ import AttendanceContainer from './pages/Attendance/AttendanceContainer';
 import Payroll from './pages/Payroll/Payroll';
 import Work from './pages/Work/Work';
 import Performance from './pages/Performance/Performance';
-import PersonnelInformation from './pages/PersonnelInformation/PersonnelInformation';
+import PersonnelInformationContainer from './pages/PersonnelInformation/PersonnelInformationContainer';
 import PersonnelStatus from './pages/PersonnelStatus/PersonnelStatus';
 import Profile from './pages/Profile/Profile';
 import styles from './app.module.css';
@@ -39,7 +39,7 @@ function App() {
                     <Route path="/performance" component={Performance} />
                     <Route
                       path="/personnelInformation"
-                      component={PersonnelInformation}
+                      component={PersonnelInformationContainer}
                     />
                     <Route
                       path="/personnelStatus"

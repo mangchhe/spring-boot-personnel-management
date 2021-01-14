@@ -43,7 +43,7 @@ public class EmployeeRepository {
     }
 
     public int findAllOrderByJoinDateTotal(){
-        return em.createQuery("select count(e.empId) from Employee e order by e.empJoinDate desc", Long.class)
+        return em.createQuery("select count(e.empId) from Employee e", Long.class)
                 .getSingleResult().intValue();
     }
 

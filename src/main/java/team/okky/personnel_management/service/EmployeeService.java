@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 import team.okky.personnel_management.domain.Attendance;
 import team.okky.personnel_management.domain.Employee;
 import team.okky.personnel_management.dto.EmployeeDTO;
@@ -19,7 +20,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class EmployeeService {
+public class EmployeeService implements EmployeeSerivceImpl{
 
     private final EmployeeRepository employeeRepository;
     private final DepartmentRepository departmentRepository;
@@ -30,6 +31,7 @@ public class EmployeeService {
      * @detail 직원 입사일 기준으로 내림차순
      * @return 직원 정보가 담긴 목록
      */
+    @Override
     public List<EmployeeDTO.ListIndex> viewAll(PageRequestDTO pageRequestDTO){
         return employeeRepository.findAllOrderByJoinDate(pageRequestDTO).stream()
                 .map(m -> modelMapper.map(m, EmployeeDTO.ListIndex.class))
@@ -41,6 +43,7 @@ public class EmployeeService {
      * @param pageNo
      * @return 전체 직원 페이징 정보
      */
+    @Override
     public PageResultDTO viewAllForPage(int pageNo){
         return new PageResultDTO(
                 employeeRepository.findAllOrderByJoinDateTotal(),
@@ -52,6 +55,7 @@ public class EmployeeService {
      * @param name
      * @return 해당하는 이름만 담은 사원 목록, 동명이인 포함
      */
+    @Override
     public List<EmployeeDTO.ListIndex> viewAllByName(String name, PageRequestDTO pageRequestDTO){
         return employeeRepository.findAllByName(name, pageRequestDTO).stream()
                 .map(m -> modelMapper.map(m, EmployeeDTO.ListIndex.class))
@@ -64,6 +68,7 @@ public class EmployeeService {
      * @param name
      * @return 이름으로 검색한 직원 페이징 정보
      */
+    @Override
     public PageResultDTO viewAllByNameForPage(String name, int pageNo){
         return new PageResultDTO(
                 employeeRepository.findAllByNameTotal(name),
@@ -75,6 +80,7 @@ public class EmployeeService {
      * @param deptName
      * @return 해당 부서를 검색한 직원 목록
      */
+    @Override
     public List<EmployeeDTO.ListIndex> viewAllByDept(String deptName, PageRequestDTO pageRequestDTO){
         return employeeRepository.findAllByDept(deptName, pageRequestDTO).stream()
                 .map(m -> modelMapper.map(m, EmployeeDTO.ListIndex.class))
@@ -87,6 +93,7 @@ public class EmployeeService {
      * @param deptName
      * @return 부서이름으로 검색한 직원 페이징 정보
      */
+    @Override
     public PageResultDTO viewAllByDeptNameForPage(String deptName, int pageNo){
         return new PageResultDTO(
                 employeeRepository.findAllByDeptTotal(deptName),
@@ -98,6 +105,7 @@ public class EmployeeService {
      * @param addEmployee
      * @return 등록된 사원
      */
+    @Override
     @Transactional(readOnly = false)
     public Employee createEmployee(EmployeeDTO.AddEmployee addEmployee){
         Employee employee = Employee.builder()
@@ -116,6 +124,7 @@ public class EmployeeService {
      * @param updateEmployee
      * @return 변경된 사원
      */
+    @Override
     @Transactional(readOnly = false)
     public Employee updateEmployee(EmployeeDTO.UpdateEmployee updateEmployee){
         Employee employee = employeeRepository.findOne(updateEmployee.getEmpId());

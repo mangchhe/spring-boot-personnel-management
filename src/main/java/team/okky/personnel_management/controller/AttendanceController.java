@@ -25,26 +25,11 @@ public class AttendanceController {
     private final AttendanceService attendanceService;
 
     @GetMapping("/attendance")
-    public AttendanceDTO.StatusAndList viewIndex(@RequestParam(value = "page", defaultValue = "1") Integer pageNo){
+    public AttendanceDTO.StatusAndList viewIndex(@RequestParam(value = "page", defaultValue = "1") Integer pageNo,
+                                                 @RequestParam(required = false) Long name,
+                                                 @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam(required = false) LocalDate date){
         PageRequestDTO pageRequestDTO = new PageRequestDTO(pageNo);
         AttendanceDTO.StatusAndList statusAndList = new AttendanceDTO.StatusAndList();
-        statusAndList.setStatus(attendanceService.viewStatus());
-        statusAndList.setAttendanceList(attendanceService.viewAll(pageRequestDTO));
-        statusAndList.setPageResultDTO(attendanceService.viewAllForPage(pageNo));
-        return statusAndList;
-    }
-
-    @GetMapping("/attendance/status/{status}")
-    public List<AttendanceDTO.ListAll> viewStatusDetail(@PathVariable String status){
-
-        List<AttendanceDTO.ListAll> listByStatuses = attendanceService.viewStatusDetail(AttendanceStatus.valueOf(status.toUpperCase()));
-
-        return listByStatuses;
-    }
-
-    @GetMapping("/attendance/search")
-    public AttendanceDTO.StatusAndList viewByDateOrDate(@RequestParam(required = false) Long name,
-                                   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam(required = false) LocalDate date){
 
         List<AttendanceDTO.ListAll> attendanceList = null;
 
@@ -56,12 +41,23 @@ public class AttendanceController {
         }
         else if(name != null && date != null){
             attendanceList = attendanceService.viewByDateAndName(date, name);
+        }else{
+            attendanceList = attendanceService.viewAll(pageRequestDTO);
+            statusAndList.setPageResultDTO(attendanceService.viewAllForPage(pageNo));
         }
 
-        AttendanceDTO.StatusAndList statusAndList = new AttendanceDTO.StatusAndList();
         statusAndList.setStatus(attendanceService.viewStatus());
         statusAndList.setAttendanceList(attendanceList);
+
         return statusAndList;
+    }
+
+    @GetMapping("/attendance/status/{status}")
+    public List<AttendanceDTO.ListAll> viewStatusDetail(@PathVariable String status){
+
+        List<AttendanceDTO.ListAll> listByStatuses = attendanceService.viewStatusDetail(AttendanceStatus.valueOf(status.toUpperCase()));
+
+        return listByStatuses;
     }
 
 }

@@ -14,11 +14,9 @@ public class Employee {
     @Id @GeneratedValue
     @Column(name = "emp_id")
     private Long empId;
-    private String empJumin;
     private String empPosition;
     private String empName;
     private String empPhoneNum;
-    private String empInternalNum;
     private LocalDate empJoinDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -35,5 +33,13 @@ public class Employee {
 
     public void setWork(Work work) {
         this.work = work;
+    }
+
+    public void changePhoneNum(String empPhoneNum){
+        this.empPhoneNum = empPhoneNum;
+    }
+
+    public void changeJoinDate(LocalDate empJoinDate){
+        this.empJoinDate = empJoinDate;
     }
 }

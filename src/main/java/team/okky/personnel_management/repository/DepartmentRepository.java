@@ -23,7 +23,7 @@ public class DepartmentRepository {
     }
 
     public List<Department> findAll(){
-        return em.createQuery("select a from Department a")
+        return em.createQuery("select a from Department a", Department.class)
                 .getResultList();
     }
 

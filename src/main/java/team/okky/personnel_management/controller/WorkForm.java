@@ -15,7 +15,6 @@ public class WorkForm {
     public static class workAndDept{
         private Work work;
         private List<Department> departmentList;
-        private String defaultDeptName;
     }
 
     @Getter @Setter
@@ -27,5 +26,14 @@ public class WorkForm {
         private LocalDate workEndDate;
     }
 
+    @Getter @Setter
+    public static class workUpdateForm{
+        private String workName;
+        private String defaultDeptName;
+        private String workChargeName;
+        private LocalDate workStartDate;
+        private LocalDate workEndDate;
+        private List<Department> departmentList;
+    }
 
 }

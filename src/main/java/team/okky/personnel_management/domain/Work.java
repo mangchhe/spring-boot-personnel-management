@@ -22,7 +22,7 @@ public class Work {
     private LocalDate workStartDate;
     private LocalDate workEndDate;
 
-    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "dept_id")
+    @ManyToOne @JoinColumn(name = "dept_id")
     Department department;
 
     @OneToMany(mappedBy = "work")

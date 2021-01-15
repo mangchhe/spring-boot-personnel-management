@@ -69,6 +69,13 @@ public class EmployeeRepository {
                 .getResultList();
     }
 
+    public List<Employee> findAllByDeptId(Long deptId){
+        return em.createQuery("select e from Employee e where e.department.deptId = :deptId", Employee.class)
+                .setParameter("deptId", deptId)
+                .setMaxResults(5)
+                .getResultList();
+    }
+
     public int findAllByDeptTotal(String deptName){
         return em.createQuery("select count(e.empId) from Employee e where e.department.deptName = :deptName", Long.class)
                 .setParameter("deptName", deptName)

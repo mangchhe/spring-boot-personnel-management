@@ -36,7 +36,7 @@ public class WorkFindDto {
 
     private Boolean findStatus(LocalDate workStartDate, LocalDate workEndDate) {
         LocalDate today = LocalDate.now();
-        if(today.isAfter(workStartDate) && today.isBefore(workEndDate)){
+        if(today.isAfter(workStartDate)&& (today.isBefore(workEndDate)) || today.equals(workStartDate) || today.equals(workEndDate)){
             return true;
         }
         else {

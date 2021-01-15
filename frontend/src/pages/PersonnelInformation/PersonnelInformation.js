@@ -4,6 +4,7 @@ import { HEADER_ARR } from './Constants';
 import styled from 'styled-components';
 import AddEmployeeModal from './AddEmployeeModal';
 import EditEmployeeModal from './EditEmployeeModal';
+import Pagination from '@material-ui/lab/Pagination';
 
 const StyledForm = styled.form`
   display: flex;
@@ -28,6 +29,14 @@ const StyledForm = styled.form`
   }
 `;
 
+const PaginationContainer = styled.div`
+  text-align: center;
+  margin-top: 5em;
+  margin-bottom: 3em;
+  display: flex;
+  justify-content: center;
+`;
+
 function PersonnelInformation({
   type,
   word,
@@ -46,6 +55,9 @@ function PersonnelInformation({
   employeeData,
   handleEdit,
   setShowEditModal,
+  pageInfo,
+  handlePageChange,
+  showPagination,
 }) {
   return (
     <div>
@@ -77,6 +89,15 @@ function PersonnelInformation({
         dataArr={employeeArr}
         editEmployeeModal={editEmployeeModal}
       />
+      {showPagination && (
+        <PaginationContainer>
+          <Pagination
+            count={pageInfo.totalPage}
+            page={pageInfo.currentPage}
+            onChange={handlePageChange}
+          />
+        </PaginationContainer>
+      )}
       <AddEmployeeModal
         showModal={showModal}
         handleModalClose={handleModalClose}

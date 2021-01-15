@@ -15,6 +15,7 @@ const Work = function () {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  const [workId, setWorkId] = useState('');
   const [addModal, setAddModal] = useState(false);
   const [correctModal, setCorrectModal] = useState(false);
   const [modalInput, setModalInput] = useState({
@@ -99,7 +100,9 @@ const Work = function () {
     setAddModal(false);
   };
 
-  const correctModalOpen = () => {
+  const correctModalOpen = (e) => {
+    let getId = e.target.closest('div').id;
+    setWorkId(getId);
     setCorrectModal(true);
   };
 
@@ -141,7 +144,25 @@ const Work = function () {
       console.log('업무를 추가하는데 문제가 있습니다.');
     }
   };
-  const correctWork = (e) => {};
+  const correctWork = (e) => {
+    e.preventDefault();
+    try {
+      axios
+        .post(`work/${workId}/edit`, {
+          workName: workName,
+          workDept: selectedDept,
+          workChargeName: workCharger,
+          workStartDate: workStartDate,
+          workEndDate: workEndDate,
+        })
+        .then(() => {
+          fetchusers();
+          setCorrectModal(false);
+        });
+    } catch (e) {
+      console.log('업무를 수정하는데 문제가 있습니다.');
+    }
+  };
 
   return (
     <div className={styles.container}>

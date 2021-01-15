@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.okky.personnel_management.domain.Department;
+import team.okky.personnel_management.domain.Employee;
 import team.okky.personnel_management.domain.Work;
 import team.okky.personnel_management.dto.SearchDTO;
 import team.okky.personnel_management.repository.DepartmentRepository;
@@ -42,5 +43,13 @@ public class WorkService {
 
         findWork.change(workName, chargeName, startDate, endDate, selectDept);
         return findWork;
+    }
+
+    @Transactional
+    public void updateWork(List<Employee> empList,Work newWork){
+        for(Employee e: empList){
+            Work oldWork = e.getWork();
+            e.setWork(newWork);
+        }
     }
 }

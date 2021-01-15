@@ -39,7 +39,7 @@ public class WorkController {
 
     @PostMapping("/work/create")
     public String create(@RequestBody WorkForm.workCreateForm workForm){
-        Department department = departmentRepository.findOne(workForm.getWorkDept()); //service로 위임
+        Department department = departmentRepository.findOne(workForm.getWorkDept());
         List<Employee> empList = employeeRepository.findAllByDeptId(department.getDeptId());
 
         Work work = Work.builder()

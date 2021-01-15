@@ -35,8 +35,9 @@ public class EvaluationService {
 
     public EvaluationDTO.evalBlock findOneByEvalBlock(Long evalBlockId){
         SearchDTO evalSearch = new SearchDTO();
-        evalSearch.setNameType("");
-        evalSearch.setName("");
+        evalSearch.setNameType("workName");
+        Work work = workRepository.findOne(evalBlockId);
+        evalSearch.setName(work.getWorkName());
         return findAll(evalSearch).get(0);
     }
 

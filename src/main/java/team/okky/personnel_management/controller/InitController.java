@@ -10,8 +10,7 @@ import team.okky.personnel_management.repository.*;
 import team.okky.personnel_management.service.AttendanceService;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Controller
 @RequiredArgsConstructor
@@ -30,6 +29,7 @@ public class InitController {
     public void init() {
         String[] position = new String[]{"대리", "사원", "부장", "본부장", "사장", "차장", "과장"};
         String[] comment = new String[]{"BEST","SOSO","BAD"};
+        int score = 0;
         List<Employee> employeeList = new ArrayList<>();
         List<Department> departmentList = new ArrayList<>();
         List<Work> workList = new ArrayList<>();
@@ -47,8 +47,8 @@ public class InitController {
                     Work.builder()
                             .workName("업무" + i)
                             .workChargeName("담당자" + i)
-                            .workStartDate(LocalDate.of(2020, i + 1, i + 1))
-                            .workEndDate(LocalDate.of(2021, 1, 4 + i))
+                            .workStartDate(LocalDate.of(2020,  12, i + 1))
+                            .workEndDate(LocalDate.of(2021, 1, 10+i))
                             .department(departmentList.get(i/2))
                             .build();
             workRepository.save(work);
@@ -87,12 +87,21 @@ public class InitController {
                                 .build()
                 );
             }
-                evaluationRepository.save(Evaluation.builder()
-                        .evalResultScore((int) (Math.random() * 100) + 1)
-                        .evalComment(comment[i % 3])
-                        .employee(employeeList.get(i))
-                        .work(workList.get(i%5==0?++j:j))
-                        .build());
+
+            if(comment[i%3].equals("BEST")){
+                score = 90;
+            }
+            else if(comment[i%3].equals("SOSO")){
+                score = 60;
+            }
+            else{ score = 30;}
+
+            evaluationRepository.save(Evaluation.builder()
+                    .evalResultScore(score)
+                    .evalComment(comment[i%3])
+                    .employee(employeeList.get(i))
+                    .work(workList.get(i%5==0?++j:j))
+                    .build());
 
         }
 

@@ -2,6 +2,7 @@ package team.okky.personnel_management.repository;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import team.okky.personnel_management.domain.Employee;
 import team.okky.personnel_management.domain.Evaluation;
 import team.okky.personnel_management.dto.EvaluationDTO;
 import team.okky.personnel_management.dto.SearchDTO;
@@ -47,6 +48,20 @@ public class EvaluationRepository {
                 .setParameter("empName",empName)
                 .getResultList();
     }
+
+    public List<Employee> empListPerWork(Long workId){
+        return em.createQuery("select e.employee from Evaluation e where e.work.workId = :workId")
+                .setParameter("workId",workId)
+                .getResultList();
+    }
+
+    public List<Evaluation> findEvalByWorkId(Long workId){
+        return em.createQuery("select e from Evaluation e where e.work.workId = :workId")
+                .setParameter("workId",workId)
+                .getResultList();
+    }
+
+
 
 
     public Evaluation remove(Evaluation evaluation){

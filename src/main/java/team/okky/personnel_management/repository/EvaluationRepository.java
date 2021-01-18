@@ -8,6 +8,7 @@ import team.okky.personnel_management.dto.EvaluationDTO;
 import team.okky.personnel_management.dto.SearchDTO;
 
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 import java.util.List;
 
 @Repository
@@ -37,12 +38,6 @@ public class EvaluationRepository {
                 .getResultList();
     }
 
-    public List<Evaluation> findByDeptName(String deptName){
-        return em.createQuery("select e from Evaluation e inner join Work w on e.work = w inner join Department d on w.department = d and d.deptName =:deptName")
-                .setParameter("deptName",deptName)
-                .getResultList();
-    }
-
     public List<Evaluation> findByEmpName(String empName){
         return em.createQuery("select e from Evaluation e join Employee em on e.employee = em and em.empName =: empName")
                 .setParameter("empName",empName)
@@ -55,17 +50,9 @@ public class EvaluationRepository {
                 .getResultList();
     }
 
-    public List<Evaluation> findEvalByWorkId(Long workId){
-        return em.createQuery("select e from Evaluation e where e.work.workId = :workId")
-                .setParameter("workId",workId)
-                .getResultList();
-    }
-
-
-
-
     public Evaluation remove(Evaluation evaluation){
         em.remove(evaluation);
         return evaluation;
     }
+
 }

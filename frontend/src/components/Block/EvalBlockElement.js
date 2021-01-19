@@ -4,7 +4,7 @@ import { FaPen } from 'react-icons/fa';
 
 const EvalBlockElement = React.memo(function ({ data, modalOpen }) {
   return (
-    <div id={data.evalInfo.evalBlockId} className={styles.blockCompleted}>
+    <div id={data.evalInfo.evalBlockId} className={styles.blockElements}>
       <p className={styles.p}>
         {data.evalInfo.deptName}:{data.evalInfo.workName}
       </p>

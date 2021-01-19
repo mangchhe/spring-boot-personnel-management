@@ -14,7 +14,7 @@ const Evaluation = function () {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const [evalId, setEvalId] = useState('');
+  const [evalBlockId, setEvalBlockId] = useState('');
   const [correctModal, setCorrectModal] = useState(false);
   const [modalInput, setModalInput] = useState({
     score: '',
@@ -41,7 +41,7 @@ const Evaluation = function () {
   //수정
   const fetchEmp = async () => {
     try {
-      const response = await axios.get(`/evaluation/${evalId}/edit`);
+      const response = await axios.get(`/evaluation/${evalBlockId}/edit`);
       setEmpLists(response.data.evalPerWorkList);
     } catch (e) {
       console.log('직원데이터를 가져오는데 문제가 있습니다.');
@@ -87,7 +87,7 @@ const Evaluation = function () {
 
   const correctModalOpen = (e) => {
     let getId = e.target.closest('div').id;
-    setEvalId(getId);
+    setEvalBlockId(getId);
     fetchEmp();
     setCorrectModal(true);
   };
@@ -108,14 +108,14 @@ const Evaluation = function () {
     setSelectedEmp(e.target.value);
   };
 
-  const correctWork = (e) => {
+  const correctEval = (e) => {
     e.preventDefault();
     try {
       axios
-        .post(`evaluation/${evalId}/edit`, {
+        .post(`evaluation/${evalBlockId}/edit`, {
           evalId: selectedEmp,
-          score: score,
           comment: comment,
+          score: score,
         })
         .then(() => {
           fetchusers();
@@ -145,7 +145,7 @@ const Evaluation = function () {
         modal={correctModal}
         handleModalInput={handleModalInput}
         handleSelectEmp={handleSelectEmp}
-        handleWork={correctWork}
+        handleWork={correctEval}
         selectedEmp={selectedEmp}
         score={score}
         comment={comment}

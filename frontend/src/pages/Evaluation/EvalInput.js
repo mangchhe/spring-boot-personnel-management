@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './eval.module.css';
 
-const WorkInput = function ({
+const EvalInput = function ({
   handleSubmit,
   optionValue,
   handleSelectChange,
@@ -34,4 +34,4 @@ const WorkInput = function ({
   );
 };
 
-export default WorkInput;
+export default EvalInput;

@@ -52,13 +52,13 @@
 .modal {
   position: absolute;
   width: 500px;
-  height: 430px;
+  height: 400px;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   background: #f1f1f1;
   box-sizing: border-box;
-  padding: 40px;
+  padding: 35px;
   text-align: left;
   outline: none;
 }
@@ -93,7 +93,7 @@
 }
 
 .modalSubmitButton {
-  margin-top: 35px;
+  margin-top: 20px;
   cursor: pointer;
   background: #2d93f0;
   width: 100px;

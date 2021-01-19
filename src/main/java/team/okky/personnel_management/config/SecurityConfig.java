@@ -9,6 +9,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.filter.CorsFilter;
+import team.okky.personnel_management.config.awt.JwtAuthenticationFilter;
+import team.okky.personnel_management.config.awt.JwtAuthorizationFilter;
+import team.okky.personnel_management.repository.ManagerRepository;
 
 @Configuration
 @EnableWebSecurity
@@ -16,6 +19,7 @@ import org.springframework.web.filter.CorsFilter;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final CorsFilter corsFilter;
+    private final ManagerRepository managerRepository;
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder(){
@@ -28,10 +32,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .addFilter(corsFilter)
+                .addFilter(new JwtAuthenticationFilter(authenticationManager()))
+                .addFilter(new JwtAuthorizationFilter(authenticationManager(), managerRepository))
                 .formLogin().disable()
                 .httpBasic().disable()
                 .authorizeRequests()
+                .antMatchers("/join")
+                .permitAll()
                 .anyRequest()
-                .permitAll();
+                .access("hasRole('ROLE_MANAGER')");
     }
 }

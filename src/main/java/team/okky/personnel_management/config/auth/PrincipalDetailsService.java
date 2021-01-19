@@ -20,7 +20,7 @@ public class PrincipalDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         List<Manager> managers = managerRepository.findByEmail(username);
         if(managers.isEmpty()){
-            return null;
+            throw new UsernameNotFoundException("아이디를 찾을 수 없습니다.");
         }else{
             return new PrincipalDetails(managers.get(0));
         }

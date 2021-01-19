@@ -12,6 +12,7 @@ import {
 } from './Constants';
 import styled from 'styled-components';
 import DuplicateModal from './DuplicateModal';
+import Pagination from '@material-ui/lab/Pagination';
 
 const Container = styled.div`
   .numBoxContainer {
@@ -43,6 +44,14 @@ const StyledForm = styled.form`
   }
 `;
 
+const PaginationContainer = styled.div`
+  text-align: center;
+  margin-top: 5em;
+  margin-bottom: 3em;
+  display: flex;
+  justify-content: center;
+`;
+
 const numBoxNames = [
   { name: 'onCnt', type: ON },
   { name: 'offCnt', type: OFF },
@@ -67,6 +76,10 @@ function Attendance({
   selectedId,
   handleSelectedIdChange,
   handleChoose,
+  pageInfo,
+
+  handlePageChange,
+  showPagination,
 }) {
   return (
     <Container>
@@ -101,6 +114,15 @@ function Attendance({
         <button type="submit">검색</button>
       </StyledForm>
       <Table page="attendance" headerArr={HEADER_ARR} dataArr={attendanceArr} />
+      {showPagination && (
+        <PaginationContainer>
+          <Pagination
+            count={pageInfo.totalPage}
+            page={pageInfo.currentPage}
+            onChange={handlePageChange}
+          />
+        </PaginationContainer>
+      )}
       <DuplicateModal
         showModal={showModal}
         handleModalClose={handleModalClose}

@@ -1,9 +1,15 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 const Button = styled.button`
   cursor: pointer;
   background-color: white;
+  font-size: 14px;
+  ${({ theme }) => {
+    return css`
+      color: ${theme.palette['blue']};
+    `;
+  }}
 `;
 
 function EmployeeRow({ data, rest }) {
@@ -16,7 +22,7 @@ function EmployeeRow({ data, rest }) {
   return (
     <tr>
       <td>{data.empName}</td>
-      <td>{data.departmentDeptName}</td>
+      <td>{data.deptName}</td>
       <td>{data.empPosition}</td>
       <td>{data.empJoinDate}</td>
       <td>{data.empPhoneNum}</td>

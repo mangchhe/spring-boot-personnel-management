@@ -12,7 +12,31 @@ function AttendanceContainer() {
   const [duplicateArr, setDuplicateArr] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [selectedId, setSelectedId] = useState('');
+  const [pageInfo, setPageInfo] = useState({
+    currentPage: 1,
+    totalPage: 1,
+  });
+  const [showPagination, setShowPagination] = useState(true);
+
   const { date, word } = inputValues;
+
+  const fetchAttendanceWithPage = (route) => {
+    axios
+      .get(route)
+      .then((res) => {
+        const { attendanceList, status } = res.data;
+        setAttendanceArr(attendanceList);
+        setStatusArr(status);
+        setPageInfo({
+          ...pageInfo,
+          currentPage: 1,
+          totalPage: res.data.pageResultDTO.totalPage,
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   const fetchAttendance = (route) => {
     axios
@@ -29,15 +53,15 @@ function AttendanceContainer() {
 
   const fetchDuplication = (name) => {
     axios
-      .get(`/employee/duplication/${name}`)
+      .get(`/employee?name=${name}`)
       .then((res) => {
-        setDuplicateArr(res.data);
-        if (res.data.length === 0) {
+        setDuplicateArr(res.data.list);
+        if (res.data.list.length === 0) {
           setAttendanceArr([]);
           return;
         }
         setShowModal(true);
-        setSelectedId(res.data[0].empId);
+        setSelectedId(res.data.list[0].empId);
       })
       .catch((error) => {
         console.log(error);
@@ -45,7 +69,7 @@ function AttendanceContainer() {
   };
 
   useEffect(() => {
-    fetchAttendance('/attendance');
+    fetchAttendanceWithPage(`/attendance?page=${pageInfo.currentPage}`);
   }, []);
 
   const handleAllDates = () => {
@@ -63,13 +87,16 @@ function AttendanceContainer() {
   const handleSearch = (e) => {
     e.preventDefault();
     if (!date && !word) {
-      fetchAttendance('/attendance');
+      fetchAttendanceWithPage('/attendance');
+      setShowPagination(true);
     }
     if (date && !word) {
-      fetchAttendance(`/attendance/list?date=${date}`);
+      fetchAttendance(`/attendance?date=${date}`);
+      setShowPagination(false);
     }
     if (word) {
       fetchDuplication(word);
+      setShowPagination(false);
     }
   };
 
@@ -78,6 +105,7 @@ function AttendanceContainer() {
       .get(`/attendance/status/${status}`)
       .then((res) => {
         setAttendanceArr(res.data);
+        setShowPagination(false);
       })
       .catch((error) => {
         console.log(error);
@@ -97,10 +125,19 @@ function AttendanceContainer() {
     const { date } = inputValues;
     handleModalClose();
     if (!date) {
-      fetchAttendance(`/attendance/list?name=${selectedId}`);
+      fetchAttendance(`/attendance?name=${selectedId}`);
     } else {
-      fetchAttendance(`/attendance/list?date=${date}&name=${selectedId}`);
+      fetchAttendance(`/attendance?date=${date}&name=${selectedId}`);
     }
+  };
+
+  const handlePageChange = (e) => {
+    const pageNum = parseInt(e.target.firstChild.nodeValue);
+    setPageInfo({
+      ...pageInfo,
+      currentPage: pageNum,
+    });
+    fetchAttendance(`/attendance?page=${pageInfo.currentPage}`);
   };
 
   return (
@@ -119,6 +156,9 @@ function AttendanceContainer() {
       selectedId={selectedId}
       handleSelectedIdChange={handleSelectedIdChange}
       handleChoose={handleChoose}
+      pageInfo={pageInfo}
+      handlePageChange={handlePageChange}
+      showPagination={showPagination}
     />
   );
 }

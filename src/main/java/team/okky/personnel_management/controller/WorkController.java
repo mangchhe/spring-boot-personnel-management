@@ -9,12 +9,16 @@ import org.springframework.http.converter.json.GsonBuilderUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import team.okky.personnel_management.domain.Department;
+import team.okky.personnel_management.domain.Employee;
 import team.okky.personnel_management.domain.Work;
 import team.okky.personnel_management.dto.SearchDTO;
 import team.okky.personnel_management.dto.WorkFindDto;
 import team.okky.personnel_management.repository.DepartmentRepository;
+import team.okky.personnel_management.repository.EmployeeRepository;
+import team.okky.personnel_management.repository.EvaluationRepository;
 import team.okky.personnel_management.service.WorkService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -23,6 +27,7 @@ import java.util.List;
 public class WorkController {
     private final WorkService workService;
     private final DepartmentRepository departmentRepository;
+    private final EmployeeRepository employeeRepository;
 
     @GetMapping("/work/create")
     public WorkForm.workAndDept createWorkForm(){
@@ -34,14 +39,19 @@ public class WorkController {
 
     @PostMapping("/work/create")
     public String create(@RequestBody WorkForm.workCreateForm workForm){
+        Department department = departmentRepository.findOne(workForm.getWorkDept());
+        List<Employee> empList = employeeRepository.findAllByDeptId(department.getDeptId());
+
         Work work = Work.builder()
                 .workName(workForm.getWorkName())
-                .department(departmentRepository.findOne(workForm.getWorkDept()))
+                .department(department)
                 .workChargeName(workForm.getWorkChargeName())
                 .workStartDate(workForm.getWorkStartDate())
                 .workEndDate(workForm.getWorkEndDate())
                 .build();
         workService.save(work);
+        workService.updateWork(empList,work);
+
         return "redirect:/work";
     }
 

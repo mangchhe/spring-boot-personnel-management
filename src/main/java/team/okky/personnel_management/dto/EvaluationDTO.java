@@ -1,8 +1,6 @@
 package team.okky.personnel_management.dto;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import team.okky.personnel_management.domain.Evaluation;
 
 import java.util.ArrayList;

@@ -7,6 +7,7 @@ import team.okky.personnel_management.dto.WorkFindDto;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import java.util.List;
 
 @Repository
@@ -23,47 +24,27 @@ public class WorkRepository {
         return em.find(Work.class, id);
     }
 
-    public List<WorkFindDto> findByWorkName(String workName){
-        return em.createQuery("select new team.okky.personnel_management.dto.WorkFindDto(w)" +
-                "from Work w where w.workName = :name")
-                .setParameter("name",workName)
-                .getResultList();
+    public Work findByWorkName(String workName){
+        TypedQuery<Work> query = em.createQuery("select w from Work w where w.workName = :name",Work.class)
+                .setParameter("name",workName);
+        return query.getSingleResult();
     }
 
-    public List<WorkFindDto> findByEmpName(String empName){
-        return em.createQuery("select new team.okky.personnel_management.dto.WorkFindDto(w) " +
-                "from Work w join Employee e on w = e.work and e.empName = :name")
-                .setParameter("name",empName)
-                .getResultList();
+    public Work findByEmpName(String empName){
+        TypedQuery<Work> query = em.createQuery("select w from Work w join Employee e on w = e.work and e.empName = :name",Work.class)
+                .setParameter("name",empName);
+        return query.getSingleResult();
     }
 
-    public List<WorkFindDto> findByDeptName(String deptName){
-        return em.createQuery("select new team.okky.personnel_management.dto.WorkFindDto(w) " +
-                "from Work w join Department d on w.department = d and d.deptName = :name")
+    public List<Work> findByDeptName(String deptName){
+        return em.createQuery("select w from Work w join Department d on w.department = d and d.deptName = :name")
                 .setParameter("name",deptName)
                 .getResultList();
     }
 
-    public List<WorkFindDto> findAll() {
-        return em.createQuery("select new team.okky.personnel_management.dto.WorkFindDto(w) " +
-                "from Work w order by w.workEndDate desc")
+    public List<Work> findAll() {
+        return em.createQuery("select w from Work w order by w.workEndDate desc")
                 .getResultList();
-    }
-
-    public List<WorkFindDto> filteringList(SearchDTO workSearch) {
-        String nameType = workSearch.getNameType();
-        String name = workSearch.getName();
-        if(nameType.equals("workName") && !name.isEmpty()) {
-            return findByWorkName(name);
-        }
-        else if(nameType.equals("deptName")&& !name.isEmpty()) {
-            return findByDeptName(name);
-        }
-        else if(nameType.equals("empName")&& !name.isEmpty()){
-            return findByEmpName(name);
-        }
-        else return findAll();
-
     }
 
     public List<Long> findWorkId(){

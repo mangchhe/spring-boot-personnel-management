@@ -1,6 +1,7 @@
 package team.okky.personnel_management.domain;
 
 import lombok.*;
+import team.okky.personnel_management.dto.EmployeeDTO;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -41,5 +42,16 @@ public class Employee {
 
     public void changeJoinDate(LocalDate empJoinDate){
         this.empJoinDate = empJoinDate;
+    }
+
+    public EmployeeDTO.ListIndex entityToListIndex(){
+        return EmployeeDTO.ListIndex.builder()
+                .empId(getEmpId())
+                .empName(getEmpName())
+                .deptName(getDepartment().getDeptName())
+                .empPosition(getEmpPosition())
+                .empJoinDate(getEmpJoinDate())
+                .empPhoneNum(getEmpPhoneNum())
+                .build();
     }
 }

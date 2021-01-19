@@ -1,10 +1,13 @@
 package team.okky.personnel_management.domain;
 
 import lombok.*;
+import team.okky.personnel_management.dto.AttendanceDTO;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.TextStyle;
+import java.util.Locale;
 
 @Entity
 @Getter
@@ -46,4 +49,18 @@ public class Attendance {
     public void setAttStatus(AttendanceStatus attStatus) {
         this.attStatus = attStatus;
     }
+
+    public AttendanceDTO.ListAll entityToListAll(){
+        return AttendanceDTO.ListAll.builder()
+                .attDate(getAttDate())
+                .dayOfWeek(getAttDate().getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.KOREAN))
+                .empName(getEmployee().getEmpName())
+                .deptName(getEmployee().getDepartment().getDeptName())
+                .empPosition(getEmployee().getEmpPosition())
+                .attOnTime(getAttOnTime())
+                .attOffTime(getAttOffTime())
+                .attStatus(getAttStatus())
+                .build();
+    }
+
 }

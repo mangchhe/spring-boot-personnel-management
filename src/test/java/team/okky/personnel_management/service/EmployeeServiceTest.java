@@ -34,6 +34,9 @@ class EmployeeServiceTest {
         for (int i = 0; i < 105; i++) {
             Employee employee = Employee.builder()
                     .empName("테스터" + i)
+                    .department(Department.builder()
+                            .deptName("부서" + i)
+                            .build())
                     .build();
             employeeRepository.save(employee);
         }
@@ -52,6 +55,9 @@ class EmployeeServiceTest {
         for (int i = 0; i < 3; i++) {
             Employee employee = Employee.builder()
                     .empName("테스터")
+                    .department(Department.builder()
+                            .deptName("부서" + i)
+                            .build())
                     .build();
             Employee employee2 = Employee.builder()
                     .empName("테스터" + i)
@@ -94,7 +100,7 @@ class EmployeeServiceTest {
         //when
         List<EmployeeDTO.ListIndex> result = employeeService.viewAllByDept("인사과", new PageRequestDTO(1));
         //then
-        assertThat(result).extracting("departmentDeptName")
+        assertThat(result).extracting("deptName")
                 .containsAll(findDeptNameList);
         assertThat(result.size()).isEqualTo(findDeptNameList.size());
     }

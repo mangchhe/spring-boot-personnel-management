@@ -193,6 +193,7 @@ const Work = function () {
         buttonText="업무추가"
       />
       <Block
+        page="work"
         searchResult={datas}
         modalOpen={correctModalOpen}
         className={styles.block}

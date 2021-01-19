@@ -115,6 +115,7 @@ function PersonnelInformationContainer() {
       .then(() => {
         handleModalClose();
         fetchEmployee(`/employee?page=${pageInfo.currentPage}`);
+        setInputValues({ ...inputValues, type: 'name', word: '' });
         setShowPagination(true);
       })
       .catch((error) => {
@@ -141,6 +142,7 @@ function PersonnelInformationContainer() {
       })
       .then(() => {
         fetchEmployee(`/employee?page=${pageInfo.currentPage}`);
+        setInputValues({ ...inputValues, type: 'name', word: '' });
         setShowPagination(true);
       })
       .catch((error) => {

@@ -8,7 +8,7 @@ const DeptOption = ({ data }) => {
 
 const Button = ({ buttonText }) => {
   return (
-    <button type="submit" className={styles.modalAddButton}>
+    <button type="submit" className={styles.modalSubmitButton}>
       {buttonText}
     </button>
   );

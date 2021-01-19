@@ -17,16 +17,14 @@ const Evaluation = function () {
   const [evalId, setEvalId] = useState('');
   const [correctModal, setCorrectModal] = useState(false);
   const [modalInput, setModalInput] = useState({
-    workName: '',
-    workCharger: '',
-    workStartDate: '',
-    workEndDate: '',
+    score: '',
+    comment: '',
   });
 
   const [empLists, setEmpLists] = useState([{ emp: '' }]);
   const [selectedEmp, setSelectedEmp] = useState('1');
 
-  const { workName, workCharger, workStartDate, workEndDate } = modalInput;
+  const { score, comment } = modalInput;
 
   const fetchusers = async () => {
     try {
@@ -52,7 +50,6 @@ const Evaluation = function () {
 
   useEffect(() => {
     fetchusers();
-    fetchEmp();
   }, []);
 
   if (loading) return <div>Loading..</div>;
@@ -76,7 +73,7 @@ const Evaluation = function () {
         setLoading(true);
         setError(null);
         const response = await axios.get(
-          `/work?nameType=${option}&name=${input}`,
+          `/evaluation?nameType=${option}&name=${input}`,
         );
         setData(response.data);
       } catch (e) {
@@ -91,6 +88,7 @@ const Evaluation = function () {
   const correctModalOpen = (e) => {
     let getId = e.target.closest('div').id;
     setEvalId(getId);
+    fetchEmp();
     setCorrectModal(true);
   };
 
@@ -115,11 +113,9 @@ const Evaluation = function () {
     try {
       axios
         .post(`evaluation/${evalId}/edit`, {
-          workName: workName,
-          workDept: selectedEmp,
-          workChargeName: workCharger,
-          workStartDate: workStartDate,
-          workEndDate: workEndDate,
+          evalId: selectedEmp,
+          score: score,
+          comment: comment,
         })
         .then(() => {
           fetchusers();
@@ -150,13 +146,11 @@ const Evaluation = function () {
         handleModalInput={handleModalInput}
         handleSelectEmp={handleSelectEmp}
         handleWork={correctWork}
-        selectedDept={selectedEmp}
-        workName={workName}
-        workCharger={workCharger}
-        workStartDate={workStartDate}
-        workEndDate={workEndDate}
+        selectedEmp={selectedEmp}
+        score={score}
+        comment={comment}
         modalClose={correctModalClose}
-        emptLists={empLists}
+        empLists={empLists}
         buttonText="업무수정"
       />
     </div>

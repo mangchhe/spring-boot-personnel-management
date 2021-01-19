@@ -8,7 +8,7 @@ const EmpOption = ({ data }) => {
 
 const Button = ({ buttonText }) => {
   return (
-    <button type="submit" className={styles.modalAddButton}>
+    <button type="submit" className={styles.modalSubmitButton}>
       {buttonText}
     </button>
   );
@@ -16,16 +16,14 @@ const Button = ({ buttonText }) => {
 
 Modal.setAppElement('#modal_root');
 
-function WorkModal({
+function EvalModal({
   modal,
   handleModalInput,
   handleSelectEmp,
   handleWork,
   selectedEmp,
-  workName,
-  workCharger,
-  workStartDate,
-  workEndDate,
+  score,
+  comment,
   modalClose,
   empLists,
   buttonText,
@@ -38,15 +36,6 @@ function WorkModal({
         overlayClassName={styles.overlay}
       >
         <form onSubmit={handleWork}>
-          <label className={styles.label}>
-            업무명
-            <input
-              className={styles.addInput}
-              onChange={handleModalInput}
-              value={workName}
-              name="workName"
-            />
-          </label>
           <label className={styles.label}>
             직원
             <select
@@ -67,32 +56,21 @@ function WorkModal({
             </select>
           </label>
           <label className={styles.label}>
-            담당자
+            점수
             <input
-              value={workCharger}
-              name="workCharger"
+              value={score}
+              name="score"
               onChange={handleModalInput}
               className={styles.addInput}
             />
           </label>
           <label className={styles.label}>
-            시작일자
+            코멘트
             <input
-              value={workStartDate}
-              name="workStartDate"
+              value={comment}
+              name="comment"
               onChange={handleModalInput}
               className={styles.addInput}
-              type="date"
-            />
-          </label>
-          <label className={styles.label}>
-            종료일자
-            <input
-              value={workEndDate}
-              name="workEndDate"
-              onChange={handleModalInput}
-              className={styles.addInput}
-              type="date"
             />
           </label>
           <Button buttonText={buttonText}></Button>
@@ -104,4 +82,4 @@ function WorkModal({
     </>
   );
 }
-export default WorkModal;
+export default EvalModal;

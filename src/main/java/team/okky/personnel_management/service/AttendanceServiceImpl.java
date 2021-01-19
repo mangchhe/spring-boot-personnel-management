@@ -14,11 +14,9 @@ import team.okky.personnel_management.repository.VacationRepository;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 
 @Service
 @RequiredArgsConstructor
@@ -106,18 +104,7 @@ public class AttendanceServiceImpl implements AttendanceService{
     public List<AttendanceDTO.ListAll> viewAll(PageRequestDTO pageRequestDTO){
         List<AttendanceDTO.ListAll> list = new ArrayList<>();
         for (Attendance a : attendanceRepository.findAllOrderByDateAndTime(pageRequestDTO)){
-            list.add(
-                    AttendanceDTO.ListAll.builder()
-                            .attDate(a.getAttDate())
-                            .dayOfWeek(a.getAttDate().getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.KOREAN))
-                            .empName(a.getEmployee().getEmpName())
-                            .deptName(a.getEmployee().getDepartment().getDeptName())
-                            .empPosition(a.getEmployee().getEmpPosition())
-                            .attOnTime(a.getAttOnTime())
-                            .attOffTime(a.getAttOffTime())
-                            .attStatus(a.getAttStatus())
-                            .build()
-            );
+            list.add(a.entityToListAll());
         }
         return list;
     }
@@ -166,18 +153,7 @@ public class AttendanceServiceImpl implements AttendanceService{
     public List<AttendanceDTO.ListAll> viewStatusDetail(AttendanceStatus status){
         List<AttendanceDTO.ListAll> list = new ArrayList<>();
         for(Attendance a : attendanceRepository.findAllByStatus(status)){
-            list.add(
-                    AttendanceDTO.ListAll.builder()
-                            .attDate(a.getAttDate())
-                            .dayOfWeek(a.getAttDate().getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.KOREAN))
-                            .empName(a.getEmployee().getEmpName())
-                            .deptName(a.getEmployee().getDepartment().getDeptName())
-                            .empPosition(a.getEmployee().getEmpPosition())
-                            .attOnTime(a.getAttOnTime())
-                            .attOffTime(a.getAttOffTime())
-                            .attStatus(a.getAttStatus())
-                            .build()
-            );
+            list.add(a.entityToListAll());
         }
         return list;
     }
@@ -193,18 +169,7 @@ public class AttendanceServiceImpl implements AttendanceService{
         List<AttendanceDTO.ListAll> list = new ArrayList<>();
 
         for (Attendance a : attendanceRepository.findAllByDate(date)){
-            list.add(
-                    AttendanceDTO.ListAll.builder()
-                            .attDate(a.getAttDate())
-                            .dayOfWeek(a.getAttDate().getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.KOREAN))
-                            .empName(a.getEmployee().getEmpName())
-                            .deptName(a.getEmployee().getDepartment().getDeptName())
-                            .empPosition(a.getEmployee().getEmpPosition())
-                            .attOnTime(a.getAttOnTime())
-                            .attOffTime(a.getAttOffTime())
-                            .attStatus(a.getAttStatus())
-                            .build()
-            );
+            list.add(a.entityToListAll());
         }
         return list;
     }
@@ -220,18 +185,7 @@ public class AttendanceServiceImpl implements AttendanceService{
         List<AttendanceDTO.ListAll> list = new ArrayList<>();
 
         for (Attendance a : attendanceRepository.findAllById(id)){
-            list.add(
-                    AttendanceDTO.ListAll.builder()
-                            .attDate(a.getAttDate())
-                            .dayOfWeek(a.getAttDate().getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.KOREAN))
-                            .empName(a.getEmployee().getEmpName())
-                            .deptName(a.getEmployee().getDepartment().getDeptName())
-                            .empPosition(a.getEmployee().getEmpPosition())
-                            .attOnTime(a.getAttOnTime())
-                            .attOffTime(a.getAttOffTime())
-                            .attStatus(a.getAttStatus())
-                            .build()
-            );
+            list.add(a.entityToListAll());
         }
         return list;
     }
@@ -248,18 +202,7 @@ public class AttendanceServiceImpl implements AttendanceService{
         List<AttendanceDTO.ListAll> list = new ArrayList<>();
 
         for (Attendance a : attendanceRepository.findAllByDateAndId(date, id)){
-            list.add(
-                    AttendanceDTO.ListAll.builder()
-                            .attDate(a.getAttDate())
-                            .dayOfWeek(a.getAttDate().getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.KOREAN))
-                            .empName(a.getEmployee().getEmpName())
-                            .deptName(a.getEmployee().getDepartment().getDeptName())
-                            .empPosition(a.getEmployee().getEmpPosition())
-                            .attOnTime(a.getAttOnTime())
-                            .attOffTime(a.getAttOffTime())
-                            .attStatus(a.getAttStatus())
-                            .build()
-            );
+            list.add(a.entityToListAll());
         }
         return list;
     }

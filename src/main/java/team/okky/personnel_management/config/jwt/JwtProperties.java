@@ -1,4 +1,4 @@
-package team.okky.personnel_management.config.awt;
+package team.okky.personnel_management.config.jwt;
 
 public interface JwtProperties {
     String SECRET = "okky";

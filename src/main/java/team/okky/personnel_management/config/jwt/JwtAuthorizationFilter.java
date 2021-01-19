@@ -1,4 +1,4 @@
-package team.okky.personnel_management.config.awt;
+package team.okky.personnel_management.config.jwt;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;

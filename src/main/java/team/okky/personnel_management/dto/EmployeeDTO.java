@@ -14,7 +14,7 @@ public class EmployeeDTO {
     public static class ListIndex {
         private Long empId;
         private String empName;
-        private String departmentDeptName;
+        private String deptName;
         private String empPosition;
         private LocalDate empJoinDate;
         private String empPhoneNum;
@@ -27,15 +27,6 @@ public class EmployeeDTO {
     public static class ListIndexPage {
         List<ListIndex> list;
         PageResultDTO pageResultDTO;
-    }
-
-    @Builder
-    @Getter @Setter
-    public static class ListByStatus {
-        private String empPosition;
-        private String empName;
-        private LocalDate empJoinDate;
-        private String deptName;
     }
 
     @Builder

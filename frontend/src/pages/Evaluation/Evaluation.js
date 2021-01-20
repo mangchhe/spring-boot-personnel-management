@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import Block from '../../components/Block/Block.js';
 import styles from './eval.module.css';
 import axios from 'axios';
@@ -67,8 +67,13 @@ const Evaluation = function () {
     }
   };
 
+  const mounted = useRef();
   useEffect(() => {
-    fetchEmp();
+    if (!mounted.current) {
+      mounted.current = true;
+    } else {
+      fetchEmp();
+    }
   }, [evalBlockId]);
 
   useEffect(() => {

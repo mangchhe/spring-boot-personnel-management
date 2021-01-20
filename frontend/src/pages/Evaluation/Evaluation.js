@@ -127,7 +127,6 @@ const Evaluation = function () {
 
   const correctEval = (e) => {
     e.preventDefault();
-    alert(`${selectedEmp}, ${score}, ${comment}`);
     try {
       axios
         .post(`evaluation/${evalBlockId}/edit`, {

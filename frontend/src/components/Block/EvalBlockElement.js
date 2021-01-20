@@ -15,8 +15,8 @@ const EvalBlockElement = React.memo(function ({ data, modalOpen }) {
           </p>
         );
       })}
-      <button onClick={modalOpen}>
-        <i className={styles.icon}>
+      <button onClick={modalOpen} className={styles.button}>
+        <i>
           <FaPen />
         </i>
       </button>

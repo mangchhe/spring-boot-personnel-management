@@ -6,7 +6,7 @@ const convertLocation = {
   '/attendance': '근태 관리',
   '/payroll': '급여 관리',
   '/work': '업무 관리',
-  '/evalution': '성과 관리',
+  '/evaluation': '성과 관리',
   '/personnelInformation': '인적사항 관리',
   '/personnelStatus': '인사 현황',
   '/profile': '프로필',

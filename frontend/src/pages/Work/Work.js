@@ -124,9 +124,6 @@ const Work = function () {
 
   const addWork = (e) => {
     e.preventDefault();
-    alert(
-      `${workName}, ${selectedDept}, ${workCharger},${workStartDate}, ${workEndDate}`,
-    );
     try {
       axios
         .post(`/work/create`, {

@@ -13,7 +13,6 @@ import team.okky.personnel_management.domain.Evaluation;
 import team.okky.personnel_management.domain.Work;
 import team.okky.personnel_management.dto.EvaluationDTO;
 import team.okky.personnel_management.dto.SearchDTO;
-import team.okky.personnel_management.dto.WorkFindDto;
 import team.okky.personnel_management.repository.DepartmentRepository;
 import team.okky.personnel_management.repository.EmployeeRepository;
 import team.okky.personnel_management.repository.EvaluationRepository;
@@ -21,10 +20,9 @@ import team.okky.personnel_management.repository.WorkRepository;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
@@ -140,14 +138,12 @@ public class EvaluationServiceTest {
         if(!findEvalBlock3.get(0).getEvalInfo().getDeptName().equals("부서1")){
             Assertions.fail("해당 부서명으로 검색되지 않았습니다.");
         }
-
-        assertEquals(size,findEvalBlock4.size());
     }
 
     @Test
     public void 성과수정(){
         //given
-        EvaluationDTO.evalBlock selectEvalBlock = evaluationService.findOneByEvalBlock(6L);
+        EvaluationDTO.evalBlock selectEvalBlock = evaluationService.findOneByEvalBlock(workRepository.findAll().get(0).getWorkId());
         List<EvaluationDTO.evalPerWork> evalPerWorks = selectEvalBlock.getEvalPerWorkList();
 
         int score = 100;

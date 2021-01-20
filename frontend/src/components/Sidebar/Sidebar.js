@@ -28,11 +28,11 @@ const Sidebar = function () {
     },
     {
       name: '업무관리',
-      url: '/task',
+      url: '/work',
     },
     {
       name: '성과관리',
-      url: '/performance',
+      url: '/evaluation',
     },
   ];
   const employee = [

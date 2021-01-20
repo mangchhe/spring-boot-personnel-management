@@ -9,7 +9,7 @@ import { FaPlus } from 'react-icons/fa';
 const Work = function () {
   const [input, setInput] = useState('');
   const [datas, setData] = useState([{ data: '' }]);
-  const [option, setOption] = useState('');
+  const [option, setOption] = useState('workName');
 
   //로딩 및 에러처리
   const [loading, setLoading] = useState(false);
@@ -26,7 +26,7 @@ const Work = function () {
   });
 
   const [deptLists, setDeptLists] = useState([{ dept: '' }]);
-  const [selectedDept, setSelectedDept] = useState('1');
+  const [selectedDept, setSelectedDept] = useState('');
 
   const { workName, workCharger, workStartDate, workEndDate } = modalInput;
 
@@ -34,8 +34,20 @@ const Work = function () {
     try {
       setLoading(true);
       setError(null);
+      const response = await axios.get(`/work?nameType=workName&name=`);
+      setData(response.data);
+    } catch (e) {
+      setError(e);
+    }
+    setLoading(false);
+  };
+
+  const fetchSearchResult = async () => {
+    try {
+      setLoading(true);
+      setError(null);
       const response = await axios.get(
-        `/work?nameType=workName&name=`, //13.124.107.49:8080/work?nameType=workName&name=
+        `/work?nameType=${option}&name=${input}`,
       );
       setData(response.data);
     } catch (e) {
@@ -47,7 +59,9 @@ const Work = function () {
   const fetchDept = async () => {
     try {
       const response = await axios.get(`/work/create`);
-      setDeptLists(response.data.departmentList);
+      const responsedDeptList = response.data.departmentList;
+      setDeptLists(responsedDeptList);
+      setSelectedDept(responsedDeptList[0].deptId);
     } catch (e) {
       console.log('부서데이터를 가져오는데 문제가 있습니다.');
     }
@@ -74,24 +88,10 @@ const Work = function () {
     if (!input) {
       return;
     }
-    const fetchSearchResult = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        const response = await axios.get(
-          `/work?nameType=${option}&name=${input}`,
-        );
-        setData(response.data);
-      } catch (e) {
-        setError(e);
-      }
-      setLoading(false);
-    };
 
     fetchSearchResult();
   };
 
-  //모달
   const addModalOpen = () => {
     setAddModal(true);
   };

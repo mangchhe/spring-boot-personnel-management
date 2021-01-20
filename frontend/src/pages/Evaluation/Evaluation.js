@@ -7,10 +7,14 @@ import EvalModal from './EvalModal';
 
 const Evaluation = function () {
   const [input, setInput] = useState('');
-  const [datas, setData] = useState([{ data: '' }]);
-  const [option, setOption] = useState('');
+  const [datas, setData] = useState([
+    {
+      evalInfo: {},
+      evalPerWorkList: [],
+    },
+  ]);
+  const [option, setOption] = useState('workName');
 
-  //로딩 및 에러처리
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -22,11 +26,11 @@ const Evaluation = function () {
   });
 
   const [empLists, setEmpLists] = useState([{ emp: '' }]);
-  const [selectedEmp, setSelectedEmp] = useState('1');
+  const [selectedEmp, setSelectedEmp] = useState('');
 
   const { score, comment } = modalInput;
 
-  const fetchusers = async () => {
+  const fetchDatas = async () => {
     try {
       setLoading(true);
       setError(null);
@@ -38,19 +42,40 @@ const Evaluation = function () {
     setLoading(false);
   };
 
-  //수정
+  const fetchSearchResult = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const response = await axios.get(
+        `/evaluation?nameType=${option}&name=${input}`,
+      );
+      setData(response.data);
+    } catch (e) {
+      setError(e);
+    }
+    setLoading(false);
+  };
+
   const fetchEmp = async () => {
     try {
       const response = await axios.get(`/evaluation/${evalBlockId}/edit`);
-      setEmpLists(response.data.evalPerWorkList);
+      const responsedEmp = response.data.evalPerWorkList;
+      setEmpLists(responsedEmp);
+      setSelectedEmp(responsedEmp[0].evalId);
     } catch (e) {
       console.log('직원데이터를 가져오는데 문제가 있습니다.');
     }
   };
 
   useEffect(() => {
-    fetchusers();
+    fetchEmp();
+  }, [evalBlockId]);
+
+  useEffect(() => {
+    fetchDatas();
   }, []);
+
+  useEffect(() => {}, [empLists]);
 
   if (loading) return <div>Loading..</div>;
   if (error) return <div>Error Occurred</div>;
@@ -68,27 +93,14 @@ const Evaluation = function () {
     if (!input) {
       return;
     }
-    const fetchSearchResult = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        const response = await axios.get(
-          `/evaluation?nameType=${option}&name=${input}`,
-        );
-        setData(response.data);
-      } catch (e) {
-        setError(e);
-      }
-      setLoading(false);
-    };
 
     fetchSearchResult();
+    console.log(datas);
   };
 
-  const correctModalOpen = (e) => {
+  const correctModalOpen = async (e) => {
     let getId = e.target.closest('div').id;
     setEvalBlockId(getId);
-    fetchEmp();
     setCorrectModal(true);
   };
 
@@ -110,6 +122,7 @@ const Evaluation = function () {
 
   const correctEval = (e) => {
     e.preventDefault();
+    alert(`${selectedEmp}, ${score}, ${comment}`);
     try {
       axios
         .post(`evaluation/${evalBlockId}/edit`, {
@@ -118,7 +131,8 @@ const Evaluation = function () {
           score: score,
         })
         .then(() => {
-          fetchusers();
+          fetchDatas();
+
           setCorrectModal(false);
         });
     } catch (e) {

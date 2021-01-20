@@ -8,10 +8,10 @@ const EvalBlockElement = React.memo(function ({ data, modalOpen }) {
       <p className={styles.p}>
         {data.evalInfo.deptName}:{data.evalInfo.workName}
       </p>
-      {data.evalPerWorkList.map((evalPerWork) => {
+      {data.evalPerWorkList.map((evalPerWork, index) => {
         return (
-          <p className={styles.p}>
-            {evalPerWork.empName}:{evalPerWork.score}, {evalPerWork.comment}
+          <p className={styles.span} key={index}>
+            {evalPerWork.empName}: {evalPerWork.score}, {evalPerWork.comment}
           </p>
         );
       })}

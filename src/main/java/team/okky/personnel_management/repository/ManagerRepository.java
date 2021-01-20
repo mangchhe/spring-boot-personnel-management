@@ -23,12 +23,18 @@ public class ManagerRepository {
     }
 
     public List<Manager> findAll(){
-        return em.createQuery("select m from Manager m")
+        return em.createQuery("select m from Manager m", Manager.class)
                 .getResultList();
     }
 
     public Manager remove(Manager manager){
         em.remove(manager);
         return manager;
+    }
+
+    public List<Manager> findByEmail(String email){
+        return em.createQuery("select m from Manager m where m.mnEmail = :email", Manager.class)
+                .setParameter("email", email)
+                .getResultList();
     }
 }

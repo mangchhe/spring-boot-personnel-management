@@ -80,7 +80,7 @@ public class WorkController {
         return form;
     }
 
-    @PostMapping("/work/{workId}/edit")
+    @PutMapping("/work/{workId}/edit")
     public String update(@PathVariable Long workId,@RequestBody WorkForm.workCreateForm form ){
         workService.update(workId,form.getWorkName(),form.getWorkDept(),form.getWorkChargeName(),
                 form.getWorkStartDate(),form.getWorkEndDate());

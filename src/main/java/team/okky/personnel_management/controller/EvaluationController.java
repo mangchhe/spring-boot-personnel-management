@@ -35,7 +35,7 @@ public class EvaluationController {
         return form;
     }
 
-    @PostMapping("/evaluation/{evalBlockId}/edit")
+    @PutMapping("/evaluation/{evalBlockId}/edit")
     public String update(@PathVariable("evalBlockId") Long evalBlockId,@RequestBody EvaluationDTO.evalPerWork evalPerWork) {
         evaluationService.update(evalPerWork.getEvalId(),evalPerWork.getScore(),evalPerWork.getComment());
         return "redirect:/evaluation";

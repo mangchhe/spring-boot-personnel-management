@@ -8,6 +8,7 @@ import team.okky.personnel_management.domain.Employee;
 import team.okky.personnel_management.dto.PageRequestDTO;
 
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 import java.util.List;
 
 @Repository
@@ -55,6 +56,12 @@ public class EmployeeRepository {
                 .getResultList();
     }
 
+    public List<Employee> findByEmpName(String empName){
+        return em.createQuery("select e from Employee e where e.empName = :name", Employee.class)
+                .setParameter("name", empName)
+                .getResultList();
+    }
+
     public int findAllByNameTotal(String name){
         return em.createQuery("select count(e.empId) from Employee e where e.empName = :name", Long.class)
                 .setParameter("name", name)
@@ -81,5 +88,6 @@ public class EmployeeRepository {
                 .setParameter("deptName", deptName)
                 .getSingleResult().intValue();
     }
+
 
 }

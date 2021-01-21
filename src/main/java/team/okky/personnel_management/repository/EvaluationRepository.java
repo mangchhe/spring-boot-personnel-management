@@ -50,6 +50,14 @@ public class EvaluationRepository {
                 .getResultList();
     }
 
+    public Integer currentIncentive(String empName){
+        TypedQuery<Integer> query = em.createQuery("select e.evalResultScore from Evaluation e where e.employee.empName =: empName " +
+                "order by e.work.workStartDate desc",Integer.class)
+                .setParameter("empName",empName);
+        return query.getSingleResult();
+
+    }
+
     public Evaluation remove(Evaluation evaluation){
         em.remove(evaluation);
         return evaluation;

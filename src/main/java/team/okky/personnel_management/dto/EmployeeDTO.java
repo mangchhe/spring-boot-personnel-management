@@ -46,4 +46,13 @@ public class EmployeeDTO {
         private String empPhoneNum;
         private LocalDate empJoinDate;
     }
+
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Getter @Setter
+    public static class employeeDTO {
+        private Long empId;
+        private String empName;
+    }
 }

@@ -145,7 +145,7 @@ const Work = function () {
     e.preventDefault();
     try {
       axios
-        .post(`work/${workId}/edit`, {
+        .put(`work/${workId}/edit`, {
           workName: workName,
           workDept: selectedDept,
           workChargeName: workCharger,

@@ -129,7 +129,7 @@ const Evaluation = function () {
     e.preventDefault();
     try {
       axios
-        .post(`evaluation/${evalBlockId}/edit`, {
+        .put(`evaluation/${evalBlockId}/edit`, {
           evalId: selectedEmp,
           comment: comment,
           score: score,

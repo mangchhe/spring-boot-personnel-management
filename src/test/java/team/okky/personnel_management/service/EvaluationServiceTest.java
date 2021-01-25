@@ -106,7 +106,6 @@ public class EvaluationServiceTest {
         SearchDTO workSearch1 = new SearchDTO();
         SearchDTO workSearch2 = new SearchDTO();
         SearchDTO workSearch3 = new SearchDTO();
-        SearchDTO workSearch4 = new SearchDTO();
 
         workSearch1.setNameType("workName");
         workSearch1.setName("업무0");
@@ -117,14 +116,11 @@ public class EvaluationServiceTest {
         workSearch3.setNameType("deptName");
         workSearch3.setName("부서1");
 
-        workSearch4.setNameType("workName");
-        workSearch4.setNameType("");
 
         //when
         List<EvaluationDTO.evalBlock> findEvalBlock1 = evaluationService.findAll(workSearch1);
         List<EvaluationDTO.evalBlock> findEvalBlock2 = evaluationService.findAll(workSearch2);
         List<EvaluationDTO.evalBlock> findEvalBlock3 = evaluationService.findAll(workSearch3);
-        List<EvaluationDTO.evalBlock> findEvalBlock4 = evaluationService.findAll(workSearch4);
 
         //then
         if(!findEvalBlock1.get(0).getEvalInfo().getWorkName().equals("업무0")){

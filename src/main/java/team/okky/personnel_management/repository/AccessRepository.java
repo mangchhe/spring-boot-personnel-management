@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 import team.okky.personnel_management.domain.Access;
 
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 import java.util.List;
 
 @Repository
@@ -30,5 +31,12 @@ public class AccessRepository {
     public Access remove(Access access){
         em.remove(access);
         return access;
+    }
+
+    public Access findCurrentAccessByEmail(String email){
+        return em.createQuery("select a from Access a where a.manager.mnEmail =:email order by a.accessDate desc",Access.class)
+                .setParameter("email",email)
+                .setMaxResults(1)
+                .getSingleResult();
     }
 }

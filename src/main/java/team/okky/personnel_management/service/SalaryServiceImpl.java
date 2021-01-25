@@ -25,6 +25,7 @@ public class SalaryServiceImpl implements SalaryService {
     private static List<SalaryDTO.updateForm> checkChange = new ArrayList<>();
     private Map<String, Integer> salaryMap = new HashMap<>();
 
+    @Override
     public List<SalaryDTO.indexSalary> viewAll(PageRequestDTO pageRequestDTO) {
 
         List<SalaryDTO.indexSalary> list = new ArrayList<>();
@@ -35,12 +36,14 @@ public class SalaryServiceImpl implements SalaryService {
         return list;
     }
 
+    @Override
     public PageResultDTO viewAllForPage(int pageNo){
         return new PageResultDTO(
                 employeeRepository.findAllOrderByJoinDateTotal(),
                 pageNo);
     }
 
+    @Override
     public List<SalaryDTO.indexSalary> viewAllByName(String empName,PageRequestDTO pageRequestDTO){
         List<SalaryDTO.indexSalary> list = new ArrayList<>();
         for (Employee e : employeeRepository.findAllByName(empName,pageRequestDTO)) {
@@ -49,12 +52,14 @@ public class SalaryServiceImpl implements SalaryService {
         return list;
     }
 
+    @Override
     public PageResultDTO viewAllByNameForPage(String empName, int pageNo){
         return new PageResultDTO(
                 employeeRepository.findAllByNameTotal(empName),
                 pageNo);
     }
 
+    @Override
     public List<SalaryDTO.indexSalary> findByName(String empName){
         List<SalaryDTO.indexSalary> list = new ArrayList<>();
         for (Employee e : employeeRepository.findByEmpName(empName)) {
@@ -63,6 +68,7 @@ public class SalaryServiceImpl implements SalaryService {
         return list;
     }
 
+    @Override
     public SalaryDTO.indexSalary salaryListPerEmployee(Employee e){
         salaryMap.put("사원", 3000);
         salaryMap.put("대리", 3500);
@@ -91,6 +97,7 @@ public class SalaryServiceImpl implements SalaryService {
         return salaryDTO;
     }
 
+    @Override
     public void update(SalaryDTO.updateForm salaryPerEmp){
         if(checkChange.isEmpty()){
             checkChange.add(salaryPerEmp);

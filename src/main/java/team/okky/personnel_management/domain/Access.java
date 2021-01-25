@@ -14,8 +14,7 @@ public class Access {
     @Column(name = "access_id")
     private Long accessId;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date accessDate;
+    private LocalDate accessDate;
     private String accessArea;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -1,79 +1,18 @@
 package team.okky.personnel_management.service;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import team.okky.personnel_management.domain.Employee;
+import team.okky.personnel_management.dto.PageRequestDTO;
+import team.okky.personnel_management.dto.PageResultDTO;
 import team.okky.personnel_management.dto.SalaryDTO;
-import team.okky.personnel_management.repository.EmployeeRepository;
-import team.okky.personnel_management.repository.EvaluationRepository;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-@Service
-@RequiredArgsConstructor
-@Transactional(readOnly = true)
-@Slf4j
-public class SalaryService {
-    private final EvaluationRepository evaluationRepository;
-    private final EmployeeRepository employeeRepository;
-    private SalaryDTO.SalaryList checkChange = SalaryDTO.SalaryList.builder().build();
-
-    public List<SalaryDTO> filteringList(String empName) {
-        Map<String, Integer> salaryMap = new HashMap<>();
-        salaryMap.put("사원", 3000);
-        salaryMap.put("대리", 3500);
-        salaryMap.put("차장", 4000);
-        salaryMap.put("과장", 4500);
-        salaryMap.put("본부장", 5000);
-        salaryMap.put("부장", 5500);
-        salaryMap.put("사장", 6000);
-
-        List<SalaryDTO> list = new ArrayList<>();
-
-        if (empName.isEmpty()) {
-            for (Employee e : employeeRepository.findAll()) {
-                Long evalScore = evaluationRepository.currentIncentive(e.getEmpName()).longValue();
-
-                SalaryDTO salaryDTO = SalaryDTO.builder()
-                        .empId(e.getEmpId())
-                        .empName(e.getEmpName())
-                        .deptName(e.getDepartment().getDeptName())
-                        .empPosition(e.getEmpPosition())
-                        .salary(salaryMap.get(e.getEmpPosition()))
-                        .incentive((int) (evalScore * 2.4))
-                        .build();
-
-                if(salaryDTO.getEmpId()==checkChange.getEmpId()){
-                    salaryDTO.setSalary(checkChange.getSalary());
-                    salaryDTO.setIncentive(checkChange.getIncentive());
-                }
-
-                list.add(salaryDTO);
-            }
-        } else {
-            for (Employee e : employeeRepository.findByEmpName(empName)) {
-                Long evalScore = evaluationRepository.currentIncentive(e.getEmpName()).longValue();
-                SalaryDTO salaryDTO = SalaryDTO.builder()
-                        .empId(e.getEmpId())
-                        .empName(e.getEmpName())
-                        .deptName(e.getDepartment().getDeptName())
-                        .empPosition(e.getEmpPosition())
-                        .salary(salaryMap.get(e.getEmpPosition()))
-                        .incentive((int) (evalScore * 2.4))
-                        .build();
-                list.add(salaryDTO);
-            }
-        }
-        return list;
-    }
-
-    public void update(SalaryDTO.SalaryList salaryPerEmp){
-        checkChange = salaryPerEmp;
-    }
-
+public interface SalaryService {
+    public List<SalaryDTO.indexSalary> viewAll(PageRequestDTO pageRequestDTO);
+    public PageResultDTO viewAllForPage(int pageNo);
+    public List<SalaryDTO.indexSalary> viewAllByName(String empName,PageRequestDTO PageRequestDTO);
+    public PageResultDTO viewAllByNameForPage(String empName,int pageNo);
+    public List<SalaryDTO.indexSalary> findByName(String empName);
+    public SalaryDTO.indexSalary salaryListPerEmployee(Employee e);
+    public void update(SalaryDTO.updateForm salaryPerEmp);
 }

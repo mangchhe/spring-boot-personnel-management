@@ -52,8 +52,9 @@ public class EvaluationRepository {
 
     public Integer currentIncentive(String empName){
         TypedQuery<Integer> query = em.createQuery("select e.evalResultScore from Evaluation e where e.employee.empName =: empName " +
-                "order by e.work.workStartDate desc",Integer.class)
-                .setParameter("empName",empName);
+                "order by e.work.workEndDate desc",Integer.class)
+                .setParameter("empName",empName)
+                .setMaxResults(1);
         return query.getSingleResult();
 
     }

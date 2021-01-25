@@ -2,20 +2,31 @@ package team.okky.personnel_management.dto;
 
 import lombok.*;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-@Getter @Setter
+
 public class SalaryDTO {
-    private Long empId;
-    private String empName;
-    private String deptName;
-    private String empPosition;
-    private int salary;
-    private int incentive;
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Getter @Setter
+    public static class indexSalary {
+        private Long empId;
+        private String empName;
+        private String deptName;
+        private String empPosition;
+        private int salary;
+        private int incentive;
+    }
+
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Getter @Setter
+    public static class indexPage {
+        List<indexSalary> list;
+        PageResultDTO pageResultDTO;
+    }
 
     @Builder
     @Getter @Setter
@@ -29,7 +40,7 @@ public class SalaryDTO {
 
     @Builder
     @Getter @Setter
-    public static class SalaryList{
+    public static class updateForm{
         private Long empId;
         private int salary;
         private int incentive;

@@ -25,15 +25,6 @@ public class Work {
     @ManyToOne @JoinColumn(name = "dept_id")
     Department department;
 
-    @OneToMany(mappedBy = "work")
-    List<Employee> employees = new ArrayList<>();
-
-    public void addEmployee(Employee employee){
-        employees.add(employee);
-        employee.setWork(this);
-    }
-
-
     public void change(String workName, String chargeName, LocalDate startDate, LocalDate endDate, Department department) {
         this.workName = workName;
         this.workChargeName = chargeName;

@@ -1,6 +1,7 @@
 package team.okky.personnel_management.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import team.okky.personnel_management.domain.*;
 import team.okky.personnel_management.repository.*;
 import team.okky.personnel_management.service.AttendanceService;
+import team.okky.personnel_management.service.ManagerService;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -22,6 +24,9 @@ public class InitController {
     private final DepartmentRepository departmentRepository;
     private final WorkRepository workRepository;
     private final EvaluationRepository evaluationRepository;
+    private final ManagerService managerService;
+
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @GetMapping("/init")
     @Transactional
@@ -102,6 +107,16 @@ public class InitController {
                     .employee(employeeList.get(i))
                     .work(workList.get(i%5==0?++j:j))
                     .build());
+
+            if (i % 10 == 0) {
+                Manager manager = Manager.builder()
+                        .mnEmail("test"+i+"@okky.kr")
+                        .mnPw(bCryptPasswordEncoder.encode("1234"))
+                        .mnAuthority("ROLE_MANAGER")
+                        .mnCreateDate(LocalDate.now())
+                        .build();
+                managerService.save(manager);
+            }
 
         }
 

@@ -1,7 +1,89 @@
-import React from 'react';
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import { withRouter } from 'react-router-dom';
+import LoginInput from './LoginInput';
+import LoginButton from './LoginButton';
+import axios from 'axios';
 
-function Login() {
-  return <div>login page</div>;
+const LoginContainer = styled.div`
+  width: 500px;
+  margin: 200px auto;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+`;
+
+const StyledSpan = styled.span`
+  color: #a6a6a6;
+  font-weight: 300;
+  font-size: 30px;
+  margin-bottom: 30px;
+`;
+
+function Login({ history }) {
+  const [inputs, setInput] = useState({
+    userId: '',
+    userPw: '',
+  });
+
+  const { userId, userPw } = inputs;
+
+  const onChange = (e) => {
+    const { value, name } = e.target;
+    setInput({
+      ...inputs,
+      [name]: value,
+    });
+  };
+
+  const loginUser = async () => {
+    const loginData = {
+      mnEmail: 'test@okky.kr',
+      mnpw: '1234',
+    };
+    axios
+      .post('/login', loginData)
+      .then((response) => {
+        const { accessToken } = response.data;
+        axios.defaults.headers.common[
+          'Authorization'
+        ] = `Bearer ${accessToken}`;
+        history.push('./attendance');
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    if (!userId || !userPw) {
+      alert('필수 항목을 작성하세요!');
+    } else {
+      loginUser();
+    }
+  };
+
+  return (
+    <LoginContainer>
+      <StyledSpan>인사 관리 시스템</StyledSpan>
+      <form onSubmit={onSubmit}>
+        <LoginInput
+          name="userId"
+          placeholder="아이디"
+          onChange={onChange}
+          value={userId}
+        />
+        <LoginInput
+          name="userPw"
+          placeholder="비밀번호"
+          onChange={onChange}
+          value={userPw}
+        />
+        <LoginButton type="submit">로그인</LoginButton>
+      </form>
+    </LoginContainer>
+  );
 }
 
-export default Login;
+export default withRouter(Login);

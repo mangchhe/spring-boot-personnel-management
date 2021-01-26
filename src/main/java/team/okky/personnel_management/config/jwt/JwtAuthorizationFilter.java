@@ -11,8 +11,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import team.okky.personnel_management.config.auth.PrincipalDetails;
-import team.okky.personnel_management.domain.Manager;
-import team.okky.personnel_management.repository.ManagerRepository;
+import team.okky.personnel_management.manager.Manager;
+import team.okky.personnel_management.manager.ManagerRepository;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;

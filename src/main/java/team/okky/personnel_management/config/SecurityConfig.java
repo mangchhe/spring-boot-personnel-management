@@ -3,25 +3,17 @@ package team.okky.personnel_management.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.AuthenticationEntryPoint;
-import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.web.filter.CorsFilter;
 import team.okky.personnel_management.config.exception.AuthenticationException;
 import team.okky.personnel_management.config.exception.AuthorizationException;
 import team.okky.personnel_management.config.jwt.JwtAuthenticationFilter;
 import team.okky.personnel_management.config.jwt.JwtAuthorizationFilter;
-import team.okky.personnel_management.repository.ManagerRepository;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import team.okky.personnel_management.manager.ManagerRepository;
 
 @Configuration
 @EnableWebSecurity

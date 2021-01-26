@@ -10,7 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import team.okky.personnel_management.config.auth.PrincipalDetails;
-import team.okky.personnel_management.domain.Manager;
+import team.okky.personnel_management.manager.Manager;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;

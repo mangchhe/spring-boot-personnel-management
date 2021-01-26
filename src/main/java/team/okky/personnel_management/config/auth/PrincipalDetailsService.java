@@ -5,8 +5,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import team.okky.personnel_management.domain.Manager;
-import team.okky.personnel_management.repository.ManagerRepository;
+import team.okky.personnel_management.manager.Manager;
+import team.okky.personnel_management.manager.ManagerRepository;
 
 import java.util.List;
 

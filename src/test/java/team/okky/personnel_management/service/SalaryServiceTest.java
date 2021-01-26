@@ -6,13 +6,14 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-import team.okky.personnel_management.domain.Department;
-import team.okky.personnel_management.domain.Employee;
-import team.okky.personnel_management.domain.Evaluation;
-import team.okky.personnel_management.dto.PageRequestDTO;
-import team.okky.personnel_management.dto.SalaryDTO;
-import team.okky.personnel_management.repository.EmployeeRepository;
-import team.okky.personnel_management.repository.EvaluationRepository;
+import team.okky.personnel_management.department.Department;
+import team.okky.personnel_management.employee.Employee;
+import team.okky.personnel_management.evaluation.Evaluation;
+import team.okky.personnel_management.utils.dto.PageRequestDTO;
+import team.okky.personnel_management.salary.SalaryDTO;
+import team.okky.personnel_management.employee.EmployeeRepository;
+import team.okky.personnel_management.evaluation.EvaluationRepository;
+import team.okky.personnel_management.salary.SalaryService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +22,8 @@ import java.util.stream.Collectors;
 @SpringBootTest
 @Transactional
 public class SalaryServiceTest {
-    @Autowired SalaryService salaryService;
+    @Autowired
+    SalaryService salaryService;
     @Autowired EmployeeRepository employeeRepository;
     @Autowired EvaluationRepository evaluationRepository;
 

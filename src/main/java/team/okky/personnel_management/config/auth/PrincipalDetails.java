@@ -2,7 +2,7 @@ package team.okky.personnel_management.config.auth;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import team.okky.personnel_management.domain.Manager;
+import team.okky.personnel_management.manager.Manager;
 
 import java.util.ArrayList;
 import java.util.Collection;

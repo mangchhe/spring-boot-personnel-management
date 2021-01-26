@@ -1,6 +1,7 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 import styles from './header.module.css';
+import { withRouter } from 'react-router-dom';
 
 const convertLocation = {
   '/attendance': '근태 관리',
@@ -12,12 +13,12 @@ const convertLocation = {
   '/profile': '프로필',
 };
 
-function Header() {
+function Header({ history }) {
   const location = useLocation();
   const pathname = location.pathname;
 
   const handleLogout = () => {
-    alert('Handle Logout');
+    localStorage.removeItem('token');
   };
 
   return (
@@ -30,4 +31,4 @@ function Header() {
   );
 }
 
-export default Header;
+export default withRouter(Header);

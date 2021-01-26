@@ -39,16 +39,21 @@ function Login({ history }) {
   const loginUser = async () => {
     const loginData = {
       mnEmail: 'test@okky.kr',
-      mnpw: '1234',
+      mnPw: '1234',
     };
+    alert(`'test@okky.kr','1234'`);
     axios
       .post('/login', loginData)
       .then((response) => {
-        const { accessToken } = response.data;
-        axios.defaults.headers.common[
-          'Authorization'
-        ] = `Bearer ${accessToken}`;
-        history.push('./attendance');
+        console.log(response);
+        if (response.headers.authorizaion) {
+          localStorage.setItem('token', response.headers.authorizaion);
+          let token = localStorage.getItem('token');
+          axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+          history.push('./attendance');
+        } else {
+          alert(`로그인이 완료되지 않았습니다.`);
+        }
       })
       .catch((e) => {
         console.log(e);
@@ -57,11 +62,11 @@ function Login({ history }) {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    if (!userId || !userPw) {
-      alert('필수 항목을 작성하세요!');
-    } else {
-      loginUser();
-    }
+    // if (!userId || !userPw) {
+    //   alert('필수 항목을 작성하세요!');
+    // } else {
+    loginUser();
+    // }
   };
 
   return (

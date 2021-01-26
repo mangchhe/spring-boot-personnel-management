@@ -1,21 +1,21 @@
 package team.okky.personnel_management.domain;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
-@Getter @Setter
+@Getter @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Access {
     @Id @GeneratedValue
     @Column(name = "access_id")
     private Long accessId;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date accessDate;
+    private LocalDate accessDate;
     private String accessArea;
 
     @ManyToOne(fetch = FetchType.LAZY)

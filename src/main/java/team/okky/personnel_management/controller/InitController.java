@@ -35,6 +35,7 @@ public class InitController {
         String[] position = new String[]{"대리", "사원", "부장", "본부장", "사장", "차장", "과장"};
         String[] comment = new String[]{"BEST","SOSO","BAD"};
         int score = 0;
+        List<Manager> managerList = new ArrayList<>();
         List<Employee> employeeList = new ArrayList<>();
         List<Department> departmentList = new ArrayList<>();
         List<Work> workList = new ArrayList<>();
@@ -59,8 +60,18 @@ public class InitController {
             workRepository.save(work);
             workList.add(work);
         }
-        int j=-1;
+        int j=-1; int k=0;
         for (int i = 0; i < 50; i++) {
+            if (i % 10 == 0) {
+                Manager manager = Manager.builder()
+                        .mnEmail("test"+i+"@okky.kr")
+                        .mnPw(bCryptPasswordEncoder.encode("1234"))
+                        .mnAuthority("ROLE_MANAGER")
+                        .mnCreateDate(LocalDate.now())
+                        .build();
+                managerService.save(manager);
+                managerList.add(manager);
+            }
             Employee employee = Employee.builder()
                     .empPosition(position[i % 7])
                     .empName("테스터" + i)
@@ -70,6 +81,7 @@ public class InitController {
                     .work(workList.get(i/ 5))
                     .empPhoneNum("010-2472-2117")
                     .empJoinDate(LocalDate.of(LocalDate.now().getYear(), (int) (Math.random() * 11 + 1), (int) (Math.random() * 25 + 1)))
+                    .manager(i%10==0?managerList.get(k++):null)
                     .build();
             employeeList.add(employee);
             employeeRepository.save(employee);
@@ -107,16 +119,6 @@ public class InitController {
                     .employee(employeeList.get(i))
                     .work(workList.get(i%5==0?++j:j))
                     .build());
-
-            if (i % 10 == 0) {
-                Manager manager = Manager.builder()
-                        .mnEmail("test"+i+"@okky.kr")
-                        .mnPw(bCryptPasswordEncoder.encode("1234"))
-                        .mnAuthority("ROLE_MANAGER")
-                        .mnCreateDate(LocalDate.now())
-                        .build();
-                managerService.save(manager);
-            }
 
         }
 

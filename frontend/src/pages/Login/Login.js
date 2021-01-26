@@ -46,8 +46,8 @@ function Login({ history }) {
       .post('/login', loginData)
       .then((response) => {
         console.log(response);
-        if (response.headers.authorizaion) {
-          localStorage.setItem('token', response.headers.authorizaion);
+        if (response.headers.authorization) {
+          localStorage.setItem('token', response.headers.authorization);
           let token = localStorage.getItem('token');
           axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
           history.push('./attendance');

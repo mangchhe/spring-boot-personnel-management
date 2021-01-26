@@ -17,7 +17,6 @@ public class Transfer {
     private String transPosition;
     private String transCurPosition;
     private String transCurDept;
-    @Temporal(TemporalType.TIMESTAMP)
     private LocalDate approveDate;
     private LocalDate appointDate;
 

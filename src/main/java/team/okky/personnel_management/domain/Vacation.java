@@ -13,7 +13,7 @@ import java.util.Date;
 @NoArgsConstructor
 public class Vacation{
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "vac_id")
     private Long vacId;
     private String vacType;

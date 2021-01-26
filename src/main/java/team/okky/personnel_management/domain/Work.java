@@ -15,7 +15,7 @@ import java.util.List;
 @Getter
 public class Work {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long workId;
     private String workName;
     private String workChargeName;

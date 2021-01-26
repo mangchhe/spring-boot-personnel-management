@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -11,11 +12,11 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Access {
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "access_id")
     private Long accessId;
 
-    private LocalDate accessDate;
+    private LocalDateTime accessDate;
     private String accessArea;
 
     @ManyToOne(fetch = FetchType.LAZY)

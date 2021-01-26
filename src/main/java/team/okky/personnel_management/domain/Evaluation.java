@@ -11,7 +11,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class Evaluation {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "eval_id")
     private Long evalId;
     private int evalResultScore;

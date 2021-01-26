@@ -15,7 +15,7 @@ import java.util.Locale;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Attendance {
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "att_id")
     private Long attID;
 

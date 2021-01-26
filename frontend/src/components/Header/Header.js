@@ -19,6 +19,7 @@ function Header({ history }) {
 
   const handleLogout = () => {
     localStorage.removeItem('token');
+    history.push('/');
   };
 
   return (

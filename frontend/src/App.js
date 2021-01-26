@@ -11,6 +11,7 @@ import PersonnelStatus from './pages/PersonnelStatus/PersonnelStatus';
 import Profile from './pages/Profile/Profile';
 import styles from './app.module.css';
 import { ThemeProvider } from 'styled-components';
+import AuthRoute from './AuthRoute';
 
 function App() {
   return (
@@ -33,19 +34,22 @@ function App() {
                   </div>
                   <div className={styles.body}>
                     <Header />
-                    <Route path="/attendance" component={AttendanceContainer} />
-                    <Route path="/payroll" component={Payroll} />
-                    <Route path="/work" component={Work} />
-                    <Route path="/evaluation" component={Evaluation} />
-                    <Route
+                    <AuthRoute
+                      path="/attendance"
+                      component={AttendanceContainer}
+                    />
+                    <AuthRoute path="/payroll" component={Payroll} />
+                    <AuthRoute path="/work" component={Work} />
+                    <AuthRoute path="/evaluation" component={Evaluation} />
+                    <AuthRoute
                       path="/personnelInformation"
                       component={PersonnelInformationContainer}
                     />
-                    <Route
+                    <AuthRoute
                       path="/personnelStatus"
                       component={PersonnelStatus}
                     />
-                    <Route path="/profile" component={Profile} />
+                    <AuthRoute path="/profile" component={Profile} />
                   </div>
                 </div>
               )}

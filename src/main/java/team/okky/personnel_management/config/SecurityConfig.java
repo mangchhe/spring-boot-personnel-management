@@ -43,7 +43,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .accessDeniedHandler(new AuthorizationException())
                 .and()
                 .authorizeRequests()
-                .antMatchers("/join")
+                .antMatchers("/init")
                 .permitAll()
                 .anyRequest()
                 .access("hasRole('ROLE_MANAGER')");

@@ -23,9 +23,9 @@ public class Transfer {
     private LocalDate approveDate;
     private LocalDate appointDate;
 
-    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "dept_id")
+    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "cur_dept_id")
     private Department curDepartment;
-    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "dept_id")
+    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "trans_dept_id")
     private Department transDepartment;
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "emp_id")
     private Employee employee;

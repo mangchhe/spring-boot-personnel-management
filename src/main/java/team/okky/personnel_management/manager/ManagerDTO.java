@@ -14,6 +14,13 @@ public class ManagerDTO {
         private String mnEmail;
         private LocalDateTime currentAccessDate;
         private String accessArea;
-        private String mnPw;
+    }
+
+    @Builder
+    @Getter @Setter
+    public static class updatePw{
+        private String curPw;
+        private String newPw;
+        private String newPwCheck;
     }
 }

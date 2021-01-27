@@ -38,10 +38,10 @@ function Login({ history }) {
 
   const loginUser = async () => {
     const loginData = {
-      mnEmail: 'test@okky.kr',
+      mnEmail: 'test10@okky.kr',
       mnPw: '1234',
     };
-    alert(`'test@okky.kr','1234'`);
+    alert(`'test10@okky.kr','1234'`);
     axios
       .post('/login', loginData)
       .then((response) => {

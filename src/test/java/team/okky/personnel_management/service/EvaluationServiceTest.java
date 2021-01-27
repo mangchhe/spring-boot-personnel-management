@@ -23,12 +23,10 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @Transactional
-@Rollback(value = false)
 public class EvaluationServiceTest {
     @Autowired private EvaluationService evaluationService;
     @Autowired private DepartmentRepository departmentRepository;
@@ -102,7 +100,7 @@ public class EvaluationServiceTest {
     }
 
     @Test
-    public void 성과목록_상세조회(){
+    public void 성과목록_상세조회()throws Exception{
         //given
         SearchDTO workSearch1 = new SearchDTO();
         SearchDTO workSearch2 = new SearchDTO();
@@ -138,7 +136,7 @@ public class EvaluationServiceTest {
     }
 
     @Test
-    public void 성과수정(){
+    public void 성과수정()throws Exception{
         //given
         EvaluationDTO.evalBlock selectEvalBlock = evaluationService.findOneByEvalBlock(workRepository.findAll().get(0).getWorkId());
         List<EvaluationDTO.evalPerWork> evalPerWorks = selectEvalBlock.getEvalPerWorkList();

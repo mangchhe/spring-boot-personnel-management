@@ -48,11 +48,11 @@ public class AttendanceServiceImpl implements AttendanceService{
         }
         // 오늘 휴가인 사람 체크
         for(Vacation v : vacationRepository.findAllByDate(LocalDate.now())){
-            attendanceRepository.findAllByEmployeeAndDate(v.getEmployee(), LocalDate.now()).get(0).setAttStatus(AttendanceStatus.VACATION);
+            attendanceRepository.findAllByEmployeeAndDate(v.getEmployee(), LocalDate.now()).get(0).changeAttStatus(AttendanceStatus.VACATION);
         }
         // 오늘 병가인 사람 체크
         for(Sick s : sickRepository.findAllByDate(LocalDate.now())){
-            attendanceRepository.findAllByEmployeeAndDate(s.getEmployee(), LocalDate.now()).get(0).setAttStatus(AttendanceStatus.SICK);
+            attendanceRepository.findAllByEmployeeAndDate(s.getEmployee(), LocalDate.now()).get(0).changeAttStatus(AttendanceStatus.SICK);
         }
         return attendanceRepository.findAllByDate(LocalDate.now());
     }
@@ -69,12 +69,12 @@ public class AttendanceServiceImpl implements AttendanceService{
 
         // 출근 시간 전이라면
         if(LocalTime.now().isBefore(AttendanceTime.ON_TIME.getLocalTime())) {
-            attendanceList.get(0).setAttStatus(AttendanceStatus.ON);
-            attendanceList.get(0).setAttOnTime(LocalTime.now());
+            attendanceList.get(0).changeAttStatus(AttendanceStatus.ON);
+            attendanceList.get(0).changeAttOnTime(LocalTime.now());
             // 출근 시간 이후라면
         }else{
-            attendanceList.get(0).setAttStatus(AttendanceStatus.LATE);
-            attendanceList.get(0).setAttOnTime(LocalTime.now());
+            attendanceList.get(0).changeAttStatus(AttendanceStatus.LATE);
+            attendanceList.get(0).changeAttOnTime(LocalTime.now());
         }
         return attendanceList.get(0);
     }
@@ -88,8 +88,8 @@ public class AttendanceServiceImpl implements AttendanceService{
     @Transactional(readOnly = false)
     public Attendance offWork(Employee employee){
         List<Attendance> attendanceList = attendanceRepository.findAllByEmployeeAndDate(employee, LocalDate.now());
-        attendanceList.get(0).setAttStatus(AttendanceStatus.OFF);
-        attendanceList.get(0).setAttOnTime(LocalTime.now());
+        attendanceList.get(0).changeAttStatus(AttendanceStatus.OFF);
+        attendanceList.get(0).changeAttOnTime(LocalTime.now());
 
         return attendanceList.get(0);
     }

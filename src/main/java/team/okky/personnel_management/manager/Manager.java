@@ -22,4 +22,8 @@ public class Manager {
     private String mnAuthority;
 
     private LocalDate mnCreateDate;
+
+    public void updatePw(String newPw){
+        mnPw = newPw;
+    }
 }

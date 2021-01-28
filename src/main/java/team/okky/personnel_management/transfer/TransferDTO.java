@@ -4,17 +4,17 @@ import java.time.LocalDate;
 
 public class TransferDTO {
 
-    public static class TransferResultDTO {
-        String employeeId;
+    public static class Info {
         String employeeName;
-        String departmentName;
+        String curDepartmentName;
         String transferDepartmentName;
-        String position;
+        String curPosition;
         String transferPosition;
-        String transferDate;
+        LocalDate approveDate;
+        LocalDate appointDate;
     }
 
-    public static class TransferUpdateFormDTO {
+    public static class updateForm {
         String employeeId;
         String departmentName;
         String transferPosition;

@@ -41,7 +41,7 @@ class AttendanceServiceTest {
         Map<AttendanceStatus, Integer> statusMap = new HashMap<>();
 
         for (int i = 0; i < 10; i++) {
-            Employee employee = new Employee();
+            Employee employee = Employee.builder().build();
             employeeRepository.save(employee);
 
             if(i % 4 == 0 && i != 0){
@@ -86,7 +86,7 @@ class AttendanceServiceTest {
     @Test
     public void 출근() throws Exception {
         //given
-        Employee employee = new Employee();
+        Employee employee = Employee.builder().build();
         employeeRepository.save(employee);
 
         attendanceRepository.save(
@@ -115,7 +115,7 @@ class AttendanceServiceTest {
     @Test
     public void 퇴근() throws Exception {
         //given
-        Employee employee = new Employee();
+        Employee employee = Employee.builder().build();
         employeeRepository.save(employee);
 
         attendanceService.autoCreateAttendance();
@@ -187,7 +187,7 @@ class AttendanceServiceTest {
         int on = 0, off = 0, absence = 10, late = 0, vacation = 0, sick = 0;
 
         for (int i = 0; i < 10; i++) {
-            Employee employee = new Employee();
+            Employee employee = Employee.builder().build();
             employeelist.add(employee);
             employeeRepository.save(employee);
 

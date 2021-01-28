@@ -1,38 +1,44 @@
 package team.okky.personnel_management.transfer;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.thymeleaf.util.StringUtils;
+import team.okky.personnel_management.employee.EmployeeDTO;
+import team.okky.personnel_management.employee.EmployeeService;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
 public class TransferController {
 
+    private final TransferService transferService;
+
     @GetMapping("/transfer")
-    public void transfer(@RequestParam(value = "employee", required = false) String employeeName,
-                           @RequestParam(value = "department", required = false) String departmentName,
-                           @RequestParam(value = "position", required = false) String position){
+    public List<TransferDTO.Info> transfer(@RequestParam(value = "employee", required = false) String empName,
+                           @RequestParam(value = "department", required = false) String deptName,
+                           @RequestParam(value = "position", required = false) String empPosition){
 
-        if(!StringUtils.isEmpty(employeeName)){
+        List<TransferDTO.Info> transferList = null;
 
+        if(!StringUtils.isEmpty(empName)){
+            transferList = transferService.findAllByEmpName(empName);
         }
-        else if(!StringUtils.isEmpty(departmentName)){
-
+        else if(!StringUtils.isEmpty(deptName)){
+            transferList = transferService.findAllByDeptName(deptName);
         }
-        else if(!StringUtils.isEmpty(position)){
-
-        }else{
-
+        else if(!StringUtils.isEmpty(empPosition)){
+            transferList = transferService.findAllByEmpPosition(empPosition);
         }
-
+        else{
+            transferList = transferService.findAll();
+        }
+        return transferList;
     }
 
     @PostMapping("/transfer")
-    public void tranferForm(){
-
+    public void tranferForm(@ModelAttribute TransferDTO.AddForm addForm){
+        transferService.addTransfer(addForm);
     }
 
 }

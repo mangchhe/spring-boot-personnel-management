@@ -11,9 +11,7 @@ import java.util.Locale;
 
 @Entity
 @Getter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Attendance {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "att_id")
@@ -30,24 +28,25 @@ public class Attendance {
     private Employee employee;
 
 
-    public Attendance(LocalDate attDate, LocalTime attOnTime, LocalTime attOffTime, AttendanceStatus attStatus, Employee employee) {
+    public void changeAttOnTime(LocalTime attOnTime) {
+        this.attOnTime = attOnTime;
+    }
+
+    public void changeAttOffTime(LocalTime attOffTime) {
+        this.attOffTime = attOffTime;
+    }
+
+    public void changeAttStatus(AttendanceStatus attStatus) {
+        this.attStatus = attStatus;
+    }
+
+    @Builder
+    public Attendance(LocalDate attDate, LocalTime attOnTime, LocalTime attOffTime, AttendanceStatus attStatus, Employee employee){
         this.attDate = attDate;
         this.attOnTime = attOnTime;
         this.attOffTime = attOffTime;
         this.attStatus = attStatus;
         this.employee = employee;
-    }
-
-    public void setAttOnTime(LocalTime attOnTime) {
-        this.attOnTime = attOnTime;
-    }
-
-    public void setAttOffTime(LocalTime attOffTime) {
-        this.attOffTime = attOffTime;
-    }
-
-    public void setAttStatus(AttendanceStatus attStatus) {
-        this.attStatus = attStatus;
     }
 
     public AttendanceDTO.ListAll entityToListAll(){
@@ -56,7 +55,7 @@ public class Attendance {
                 .dayOfWeek(getAttDate().getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.KOREAN))
                 .empName(getEmployee().getEmpName())
                 .deptName(getEmployee().getDepartment().getDeptName())
-                .empPosition(getEmployee().getEmpPosition())
+                .empPosition(getEmployee().getEmpPosition().getPosition())
                 .attOnTime(getAttOnTime())
                 .attOffTime(getAttOffTime())
                 .attStatus(getAttStatus())

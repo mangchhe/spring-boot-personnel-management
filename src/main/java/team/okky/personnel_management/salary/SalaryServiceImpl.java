@@ -83,7 +83,7 @@ public class SalaryServiceImpl implements SalaryService {
                 .empId(e.getEmpId())
                 .empName(e.getEmpName())
                 .deptName(e.getDepartment().getDeptName())
-                .empPosition(e.getEmpPosition())
+                .empPosition(e.getEmpPosition().getPosition())
                 .salary(salaryMap.get(e.getEmpPosition()))
                 .incentive((int) (evalScore * 2.4))
                 .build();

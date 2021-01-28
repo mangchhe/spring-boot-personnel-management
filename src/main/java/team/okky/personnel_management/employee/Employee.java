@@ -10,14 +10,14 @@ import java.time.LocalDate;
 
 @Entity
 @Getter
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Employee {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "emp_id")
     private Long empId;
-    private String empPosition;
+
+    @Enumerated(value = EnumType.STRING)
+    private EmployeePosition empPosition;
     private String empName;
     private String empPhoneNum;
     private LocalDate empJoinDate;
@@ -34,7 +34,7 @@ public class Employee {
     @JoinColumn(name="mn_id")
     private Manager manager;
 
-    public void setWork(Work work) {
+    public void changeWork(Work work) {
         this.work = work;
     }
 
@@ -46,12 +46,23 @@ public class Employee {
         this.empJoinDate = empJoinDate;
     }
 
+    @Builder
+    public Employee(EmployeePosition empPosition, String empName, String empPhoneNum, LocalDate empJoinDate, Work work, Department department, Manager manager) {
+        this.empPosition = empPosition;
+        this.empName = empName;
+        this.empPhoneNum = empPhoneNum;
+        this.empJoinDate = empJoinDate;
+        this.work = work;
+        this.department = department;
+        this.manager = manager;
+    }
+
     public EmployeeDTO.ListIndex entityToListIndex(){
         return EmployeeDTO.ListIndex.builder()
                 .empId(getEmpId())
                 .empName(getEmpName())
                 .deptName(getDepartment().getDeptName())
-                .empPosition(getEmpPosition())
+                .empPosition(getEmpPosition().getPosition())
                 .empJoinDate(getEmpJoinDate())
                 .empPhoneNum(getEmpPhoneNum())
                 .build();

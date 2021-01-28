@@ -9,6 +9,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import team.okky.personnel_management.department.Department;
 import team.okky.personnel_management.employee.Employee;
+import team.okky.personnel_management.employee.EmployeePosition;
 import team.okky.personnel_management.evaluation.Evaluation;
 import team.okky.personnel_management.utils.dto.PageRequestDTO;
 import team.okky.personnel_management.salary.SalaryDTO;
@@ -51,8 +52,8 @@ public class SalaryServiceTest {
         int j=-1;
         for (int i = 0; i < 50; i++) {
             Employee employee = Employee.builder()
-                    .empName("테스터"+i)
-                    .empPosition(position[i % 7])
+                    .empName("테스터" + i)
+                    .empPosition(EmployeePosition.findByEmployeePosition(position[i % 7]))
                     .department(Department.builder()
                             .deptName("부서" + i)
                             .build())

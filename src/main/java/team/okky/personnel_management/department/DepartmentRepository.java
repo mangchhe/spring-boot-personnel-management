@@ -30,4 +30,10 @@ public class DepartmentRepository {
         em.remove(department);
         return department;
     }
+
+    public Department findByName(String name){
+        return em.createQuery("select d from Department d where d.deptName = :name", Department.class)
+                .setParameter("name", name)
+                .getSingleResult();
+    }
 }

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Route, Redirect } from 'react-router-dom';
+import axios from 'axios';
 
 const AuthRoute = ({ component: Component, ...rest }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(null);
@@ -7,6 +8,8 @@ const AuthRoute = ({ component: Component, ...rest }) => {
   useEffect(() => {
     let token = localStorage.getItem('token');
     if (token) {
+      let token = localStorage.getItem('token');
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       setIsAuthenticated(true);
     } else {
       setIsAuthenticated(false);

@@ -55,7 +55,7 @@ public class Attendance {
                 .dayOfWeek(getAttDate().getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.KOREAN))
                 .empName(getEmployee().getEmpName())
                 .deptName(getEmployee().getDepartment().getDeptName())
-                .empPosition(getEmployee().getEmpPosition())
+                .empPosition(getEmployee().getEmpPosition().getPosition())
                 .attOnTime(getAttOnTime())
                 .attOffTime(getAttOffTime())
                 .attStatus(getAttStatus())

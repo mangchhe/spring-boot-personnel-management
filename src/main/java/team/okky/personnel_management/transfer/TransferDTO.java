@@ -1,9 +1,12 @@
 package team.okky.personnel_management.transfer;
 
+import lombok.Builder;
+
 import java.time.LocalDate;
 
 public class TransferDTO {
 
+    @Builder
     public static class Info {
         String employeeName;
         String curDepartmentName;
@@ -14,7 +17,8 @@ public class TransferDTO {
         LocalDate appointDate;
     }
 
-    public static class updateForm {
+    @Builder
+    public static class UpdateForm {
         String employeeId;
         String departmentName;
         String transferPosition;

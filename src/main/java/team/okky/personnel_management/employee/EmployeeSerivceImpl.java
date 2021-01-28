@@ -103,7 +103,7 @@ public class EmployeeSerivceImpl implements EmployeeService{
         Employee employee = Employee.builder()
                 .empName(addEmployee.getEmpName())
                 .department(departmentRepository.findOne(addEmployee.getDeptId()))
-                .empPosition(addEmployee.getEmpPosition())
+                .empPosition(EmployeePosition.findByEmployeePosition(addEmployee.getEmpPosition()))
                 .empJoinDate(addEmployee.getEmpJoinDate())
                 .empPhoneNum(addEmployee.getEmpPhoneNum())
                 .build();

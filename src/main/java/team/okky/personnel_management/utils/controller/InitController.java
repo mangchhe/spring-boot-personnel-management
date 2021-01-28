@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import team.okky.personnel_management.department.Department;
 import team.okky.personnel_management.department.DepartmentRepository;
 import team.okky.personnel_management.employee.Employee;
+import team.okky.personnel_management.employee.EmployeePosition;
 import team.okky.personnel_management.employee.EmployeeRepository;
 import team.okky.personnel_management.evaluation.EvaluationRepository;
 import team.okky.personnel_management.attendance.AttendanceService;
@@ -84,7 +85,7 @@ public class InitController {
                 managerList.add(manager);
             }
             Employee employee = Employee.builder()
-                    .empPosition(position[i % 7])
+                    .empPosition(EmployeePosition.findByEmployeePosition(position[i % 7]))
                     .empName("테스터" + i)
                     .department(
                             departmentList.get(i / 10)

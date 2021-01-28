@@ -18,8 +18,8 @@ public class Transfer {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "trans_id")
     private Long transId;
+    private String curPosition;
     private String transPosition;
-    private String transCurPosition;
     private LocalDate approveDate;
     private LocalDate appointDate;
 
@@ -31,13 +31,25 @@ public class Transfer {
     private Employee employee;
 
     @Builder
-    public Transfer(String transPosition, String transCurPosition, LocalDate approveDate, LocalDate appointDate, Department curDepartment, Department transDepartment, Employee employee) {
+    public Transfer(String transPosition, String curPosition, LocalDate approveDate, LocalDate appointDate, Department curDepartment, Department transDepartment, Employee employee) {
         this.transPosition = transPosition;
-        this.transCurPosition = transCurPosition;
+        this.curPosition = curPosition;
         this.approveDate = approveDate;
         this.appointDate = appointDate;
         this.curDepartment = curDepartment;
         this.transDepartment = transDepartment;
         this.employee = employee;
+    }
+
+    public TransferDTO.Info entityToInfo(){
+        return TransferDTO.Info.builder()
+                .employeeName(getEmployee().getEmpName())
+                .curDepartmentName(getCurDepartment().getDeptName())
+                .transferDepartmentName(getTransDepartment().getDeptName())
+                .curPosition(getCurPosition())
+                .transferPosition(getTransPosition())
+                .approveDate(getApproveDate())
+                .appointDate(getAppointDate())
+                .build();
     }
 }

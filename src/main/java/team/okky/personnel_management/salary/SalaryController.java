@@ -45,7 +45,7 @@ public class SalaryController {
 
         SalaryDTO.SalaryForm salaryForm = SalaryDTO.SalaryForm.builder()
                 .deptName(selectEmployee.getDepartment().getDeptName())
-                .position(selectEmployee.getEmpPosition())
+                .position(selectEmployee.getEmpPosition().getPosition())
                 .empName(selectEmployee.getEmpName())
                 .salary(salaryPerEmp.get(0).getSalary())
                 .incentive(salaryPerEmp.get(0).getIncentive())

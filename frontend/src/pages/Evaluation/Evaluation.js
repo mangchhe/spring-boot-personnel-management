@@ -7,12 +7,7 @@ import EvalModal from './EvalModal';
 
 const Evaluation = function () {
   const [input, setInput] = useState('');
-  const [datas, setData] = useState([
-    {
-      evalInfo: {},
-      evalPerWorkList: [],
-    },
-  ]);
+  const [datas, setData] = useState([]);
   const [option, setOption] = useState('workName');
 
   const [loading, setLoading] = useState(false);
@@ -25,7 +20,7 @@ const Evaluation = function () {
     comment: '',
   });
 
-  const [empLists, setEmpLists] = useState([{ emp: '' }]);
+  const [empLists, setEmpLists] = useState([]);
   const [selectedEmp, setSelectedEmp] = useState('');
 
   const { score, comment } = modalInput;

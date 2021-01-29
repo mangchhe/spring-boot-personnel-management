@@ -12,7 +12,7 @@ public class EmployeeDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     @Getter @Setter
-    public static class ListIndex {
+    public static class Index {
         private Long empId;
         private String empName;
         private String deptName;
@@ -25,14 +25,14 @@ public class EmployeeDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     @Getter @Setter
-    public static class ListIndexPage {
-        List<ListIndex> list;
+    public static class IndexWithPage {
+        List<Index> list;
         PageResultDTO pageResultDTO;
     }
 
     @Builder
     @Getter @Setter
-    public static class AddEmployee {
+    public static class AddForm {
         private String empName;
         private Long deptId;
         private String empPosition;
@@ -42,7 +42,7 @@ public class EmployeeDTO {
 
     @Builder
     @Getter @Setter
-    public static class UpdateEmployee {
+    public static class UpdateForm {
         private Long empId;
         private String empPhoneNum;
         private LocalDate empJoinDate;

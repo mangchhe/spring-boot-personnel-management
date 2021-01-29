@@ -79,7 +79,9 @@ class AttendanceServiceTest {
                 .sickCnt(statusMap.get(AttendanceStatus.SICK) != null ? statusMap.get(AttendanceStatus.SICK) : 0)
                 .build();
 
-        Assertions.assertEquals(status, attendanceService.viewStatus());
+        org.assertj.core.api.Assertions.assertThat(attendanceService.findAllOnlyStatus())
+                .usingRecursiveComparison()
+                .isEqualTo(status);
 
     }
     
@@ -159,7 +161,7 @@ class AttendanceServiceTest {
         }
         //when, then
 
-        for(AttendanceDTO.ListAll a : attendanceService.viewAll(new PageRequestDTO(1))){
+        for(AttendanceDTO.Index a : attendanceService.findAll(new PageRequestDTO(1))){
             if(first | idx % 10 == 0){
                 beforeDate = a.getAttDate();
                 beforeTime = a.getAttOnTime();
@@ -234,7 +236,7 @@ class AttendanceServiceTest {
         off ++;
 
         //when, then
-        AttendanceDTO.Status status = attendanceService.viewStatus();
+        AttendanceDTO.Status status = attendanceService.findAllOnlyStatus();
 
         if(status.getAbsenceCnt() != absence){
             Assertions.fail("결근 상태가 맞지 않다");
@@ -304,15 +306,15 @@ class AttendanceServiceTest {
         //when, then
 
         if(LocalTime.now().isAfter(AttendanceTime.ON_TIME.getLocalTime())){
-            Assertions.assertEquals(attendanceService.viewStatusDetail(AttendanceStatus.LATE).size(), 3);
+            Assertions.assertEquals(attendanceService.findAllByStatus(AttendanceStatus.LATE).size(), 3);
         }else{
-            Assertions.assertEquals(attendanceService.viewStatusDetail(AttendanceStatus.ON).size(), 3);
+            Assertions.assertEquals(attendanceService.findAllByStatus(AttendanceStatus.ON).size(), 3);
 
         }
-        Assertions.assertEquals(attendanceService.viewStatusDetail(AttendanceStatus.OFF).size(), 1);
-        Assertions.assertEquals(attendanceService.viewStatusDetail(AttendanceStatus.VACATION).size(), 2);
-        Assertions.assertEquals(attendanceService.viewStatusDetail(AttendanceStatus.SICK).size(), 1);
-        Assertions.assertEquals(attendanceService.viewStatusDetail(AttendanceStatus.ABSENCE).size(), 3);
+        Assertions.assertEquals(attendanceService.findAllByStatus(AttendanceStatus.OFF).size(), 1);
+        Assertions.assertEquals(attendanceService.findAllByStatus(AttendanceStatus.VACATION).size(), 2);
+        Assertions.assertEquals(attendanceService.findAllByStatus(AttendanceStatus.SICK).size(), 1);
+        Assertions.assertEquals(attendanceService.findAllByStatus(AttendanceStatus.ABSENCE).size(), 3);
 
     }
 
@@ -342,12 +344,12 @@ class AttendanceServiceTest {
 
         }
         //when, then
-        for(AttendanceDTO.ListAll a : attendanceService.viewByDate(LocalDate.now())){
+        for(AttendanceDTO.Index a : attendanceService.findAllByDate(LocalDate.now())){
             Assertions.assertEquals(a.getAttDate(), LocalDate.now());
         }
 
-        Assertions.assertEquals(attendanceService.viewByDate(LocalDate.now()).size()
-                , attendanceRepository.findAll().stream()
+        Assertions.assertEquals(attendanceService.findAllByDate(LocalDate.now()).size()
+                , attendanceRepository.findAll(new PageRequestDTO(1)).stream()
                         .filter(x -> x.getAttDate().isEqual(LocalDate.now()))
                         .count());
     }
@@ -381,10 +383,10 @@ class AttendanceServiceTest {
 
         //when, then
         for (int i = 0; i < 3; i++) {
-            if(!attendanceService.viewByName(employee.getEmpId()).get(i).getEmpName().equals("테스터1")){
+            if(!attendanceService.findAllByName(employee.getEmpId()).get(i).getEmpName().equals("테스터1")){
                 Assertions.fail("해당이름 검색에 문제가 있습니다.(1)");
             }
-            if(!attendanceService.viewByName(employee2.getEmpId()).get(i).getEmpName().equals("테스터2")){
+            if(!attendanceService.findAllByName(employee2.getEmpId()).get(i).getEmpName().equals("테스터2")){
                 Assertions.fail("해당이름 검색에 문제가 있습니다.(2)");
             }
         }
@@ -417,7 +419,7 @@ class AttendanceServiceTest {
             attendanceRepository.save(attendance2);
         }
         //when, then
-        for(AttendanceDTO.ListAll list : attendanceService.viewByDateAndName(LocalDate.now(), employee.getEmpId())){
+        for(AttendanceDTO.Index list : attendanceService.findAllByDateAndName(LocalDate.now(), employee.getEmpId())){
             Assertions.assertEquals(list.getEmpName(), "테스터");
             Assertions.assertEquals(list.getAttDate(), LocalDate.now());
         }

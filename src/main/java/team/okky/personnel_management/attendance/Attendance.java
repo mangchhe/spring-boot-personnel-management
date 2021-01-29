@@ -32,9 +32,7 @@ public class Attendance {
         this.attOnTime = attOnTime;
     }
 
-    public void changeAttOffTime(LocalTime attOffTime) {
-        this.attOffTime = attOffTime;
-    }
+    public void changeAttOffTime(LocalTime attOffTime) {this.attOffTime = attOffTime; }
 
     public void changeAttStatus(AttendanceStatus attStatus) {
         this.attStatus = attStatus;
@@ -49,8 +47,8 @@ public class Attendance {
         this.employee = employee;
     }
 
-    public AttendanceDTO.ListAll entityToListAll(){
-        return AttendanceDTO.ListAll.builder()
+    public AttendanceDTO.Index entityToIndex(){
+        return AttendanceDTO.Index.builder()
                 .attDate(getAttDate())
                 .dayOfWeek(getAttDate().getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.KOREAN))
                 .empName(getEmployee().getEmpName())

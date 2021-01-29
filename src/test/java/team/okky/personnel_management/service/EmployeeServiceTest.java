@@ -3,7 +3,6 @@ package team.okky.personnel_management.service;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import team.okky.personnel_management.department.Department;
 import team.okky.personnel_management.employee.Employee;
@@ -43,9 +42,9 @@ class EmployeeServiceTest {
             employeeRepository.save(employee);
         }
         //when
-        List<EmployeeDTO.ListIndex> result = employeeService.viewAll(new PageRequestDTO(11));
+        List<EmployeeDTO.Index> result = employeeService.viewAll(new PageRequestDTO(11));
         //then
-        assertThat(105).isEqualTo(employeeRepository.findAllOrderByJoinDateTotal());
+        assertThat(105).isEqualTo(employeeRepository.findTotal());
         assertThat(5).isEqualTo(result.size());
 
     }
@@ -69,7 +68,7 @@ class EmployeeServiceTest {
             employeeRepository.save(employee2);
         }
         //when
-        List<EmployeeDTO.ListIndex> result = employeeService.viewAllByName("테스터", new PageRequestDTO(1));
+        List<EmployeeDTO.Index> result = employeeService.viewAllByName("테스터", new PageRequestDTO(1));
         //then
         assertThat(result).extracting("empName")
                 .containsAll(findNameList);
@@ -97,7 +96,7 @@ class EmployeeServiceTest {
             employeeRepository.save(employee2);
         }
         //when
-        List<EmployeeDTO.ListIndex> result = employeeService.viewAllByDept("인사과", new PageRequestDTO(1));
+        List<EmployeeDTO.Index> result = employeeService.viewAllByDept("인사과", new PageRequestDTO(1));
         //then
         assertThat(result).extracting("deptName")
                 .containsOnly("인사과");
@@ -112,12 +111,12 @@ class EmployeeServiceTest {
                 .build();
         departmentRepository.save(department);
         //when
-        employeeService.createEmployee(EmployeeDTO.AddEmployee.builder()
+        employeeService.createEmployee(EmployeeDTO.AddForm.builder()
                 .empName("테스터")
                 .deptId(department.getDeptId())
                 .build());
         //then
-        assertThat(employeeRepository.findAllByName("테스터", new PageRequestDTO(1))).isNotEmpty();
+        assertThat(employeeRepository.findAllByEmpName("테스터", new PageRequestDTO(1))).isNotEmpty();
     }
     
     @Test
@@ -133,7 +132,7 @@ class EmployeeServiceTest {
         assertThat("010-1234-5678").isEqualTo(employee.getEmpPhoneNum());
         assertThat(LocalDate.now().minusDays(1)).isEqualTo(employee.getEmpJoinDate());
         employeeService.updateEmployee(
-                EmployeeDTO.UpdateEmployee.builder()
+                EmployeeDTO.UpdateForm.builder()
                         .empId(employee.getEmpId())
                         .empPhoneNum("010-5678-1234")
                         .empJoinDate(LocalDate.now())

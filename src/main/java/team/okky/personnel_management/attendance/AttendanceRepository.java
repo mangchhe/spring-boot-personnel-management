@@ -24,24 +24,19 @@ public class AttendanceRepository {
         return em.find(Attendance.class, id);
     }
 
-    public List<Attendance> findAll(){
-        return em.createQuery("select a from Attendance a", Attendance.class)
-                .getResultList();
-    }
-
     public Attendance remove(Attendance attendance){
         em.remove(attendance);
         return attendance;
     }
 
-    public List<Attendance> findAllOrderByDateAndTime(PageRequestDTO pageRequestDTO){
+    public List<Attendance> findAll(PageRequestDTO pageRequestDTO){
         return em.createQuery("select a from Attendance a order by a.attDate desc, a.attOnTime desc", Attendance.class)
                 .setFirstResult(pageRequestDTO.getPage())
                 .setMaxResults(pageRequestDTO.getSize())
                 .getResultList();
     }
 
-    public int findAllOrderByDateAndTimeTotal(){
+    public int findTotal(){
         return em.createQuery("select count(a.attID) from Attendance a", Long.class)
                 .getSingleResult().intValue();
     }

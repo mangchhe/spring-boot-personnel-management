@@ -8,14 +8,14 @@ import java.util.List;
 public interface TransferService {
 
     public List<Transfer> autoAppointTransfer();
-    public Transfer addTransfer(TransferDTO.AddForm addForm);
-    public List<TransferDTO.Info> findAll(PageRequestDTO pageRequestDTO);
+    public Transfer craeteTransfer(TransferDTO.AddForm addForm);
+    public List<TransferDTO.Index> findAll(PageRequestDTO pageRequestDTO);
     public PageResultDTO findPage(int pageNo);
-    public List<TransferDTO.Info> findAllByEmpName(String empName, PageRequestDTO pageRequestDTO);
+    public List<TransferDTO.Index> findAllByEmpName(String empName, PageRequestDTO pageRequestDTO);
     public PageResultDTO findPageByEmpName(String empName, int pageNo);
-    public List<TransferDTO.Info> findAllByDeptName(String deptName, PageRequestDTO pageRequestDTO);
+    public List<TransferDTO.Index> findAllByDeptName(String deptName, PageRequestDTO pageRequestDTO);
     public PageResultDTO findPageByDeptName(String deptName, int pageNo);
-    public List<TransferDTO.Info> findAllByEmpPosition(String empPosition, PageRequestDTO pageRequestDTO);
+    public List<TransferDTO.Index> findAllByEmpPosition(String empPosition, PageRequestDTO pageRequestDTO);
     public PageResultDTO findPageByEmpPosition(String empPosition, int pageNo);
 
 }

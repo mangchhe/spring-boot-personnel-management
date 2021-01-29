@@ -65,8 +65,8 @@ public class Employee {
         this.manager = manager;
     }
 
-    public EmployeeDTO.ListIndex entityToListIndex(){
-        return EmployeeDTO.ListIndex.builder()
+    public EmployeeDTO.Index entityToIndex(){
+        return EmployeeDTO.Index.builder()
                 .empId(getEmpId())
                 .empName(getEmpName())
                 .deptName(getDepartment().getDeptName())

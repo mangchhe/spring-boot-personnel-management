@@ -52,9 +52,9 @@ public class Transfer {
         this.employee = employee;
     }
 
-    public TransferDTO.Info entityToInfo(){
+    public TransferDTO.Index entityToIndex(){
         LocalDate nowDate = LocalDate.now();
-        return TransferDTO.Info.builder()
+        return TransferDTO.Index.builder()
                 .employeeName(getEmployee().getEmpName())
                 .curDepartmentName(getCurDepartment().getDeptName())
                 .transferDepartmentName(getTransDepartment().getDeptName())

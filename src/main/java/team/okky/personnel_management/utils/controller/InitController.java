@@ -143,7 +143,7 @@ public class InitController {
                     .departmentName(departmentList.get(i % 5).getDeptName())
                     .build();
             //when
-            Transfer result = transferService.addTransfer(addForm);
+            Transfer result = transferService.craeteTransfer(addForm);
 
         }
 

@@ -2,7 +2,6 @@ package team.okky.personnel_management.transfer;
 
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
-import team.okky.personnel_management.employee.EmployeeDTO;
 import team.okky.personnel_management.utils.dto.PageResultDTO;
 
 import java.time.LocalDate;
@@ -12,7 +11,7 @@ public class TransferDTO {
 
     @Builder
     @Getter
-    public static class Info {
+    public static class Index {
         String employeeName;
         String curDepartmentName;
         String transferDepartmentName;
@@ -25,9 +24,9 @@ public class TransferDTO {
 
     @Builder
     @Getter
-    public static class InfoWithPage {
-        List<Info> transInfo;
-        PageResultDTO pageResult;
+    public static class IndexWithPage {
+        List<Index> transList;
+        PageResultDTO pageResultDTO;
     }
 
     @Builder

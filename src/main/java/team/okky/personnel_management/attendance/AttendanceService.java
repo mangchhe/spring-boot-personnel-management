@@ -13,12 +13,12 @@ public interface AttendanceService {
     public List<Attendance> autoCreateAttendance();
     public Attendance onWork(Employee employee);
     public Attendance offWork(Employee employee);
-    public List<AttendanceDTO.ListAll> viewAll(PageRequestDTO pageRequestDTO);
-    public PageResultDTO viewAllForPage(int pageNo);
-    public AttendanceDTO.Status viewStatus();
-    public List<AttendanceDTO.ListAll> viewStatusDetail(AttendanceStatus status);
-    public List<AttendanceDTO.ListAll> viewByDate(LocalDate date);
-    public List<AttendanceDTO.ListAll> viewByName(Long id);
-    public List<AttendanceDTO.ListAll> viewByDateAndName(LocalDate date, Long id);
+    public List<AttendanceDTO.Index> findAll(PageRequestDTO pageRequestDTO);
+    public PageResultDTO findPage(int pageNo);
+    public AttendanceDTO.Status findAllOnlyStatus();
+    public List<AttendanceDTO.Index> findAllByStatus(AttendanceStatus status);
+    public List<AttendanceDTO.Index> findAllByDate(LocalDate date);
+    public List<AttendanceDTO.Index> findAllByName(Long id);
+    public List<AttendanceDTO.Index> findAllByDateAndName(LocalDate date, Long id);
 
 }

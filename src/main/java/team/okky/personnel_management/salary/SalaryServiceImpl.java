@@ -30,7 +30,7 @@ public class SalaryServiceImpl implements SalaryService {
 
         List<SalaryDTO.indexSalary> list = new ArrayList<>();
 
-        for (Employee e : employeeRepository.findAllOrderByJoinDate(pageRequestDTO)) {
+        for (Employee e : employeeRepository.findAll(pageRequestDTO)) {
             list.add(salaryListPerEmployee(e));
         }
         return list;
@@ -39,14 +39,14 @@ public class SalaryServiceImpl implements SalaryService {
     @Override
     public PageResultDTO viewAllForPage(int pageNo){
         return new PageResultDTO(
-                employeeRepository.findAllOrderByJoinDateTotal(),
+                employeeRepository.findTotal(),
                 pageNo);
     }
 
     @Override
     public List<SalaryDTO.indexSalary> viewAllByName(String empName,PageRequestDTO pageRequestDTO){
         List<SalaryDTO.indexSalary> list = new ArrayList<>();
-        for (Employee e : employeeRepository.findAllByName(empName,pageRequestDTO)) {
+        for (Employee e : employeeRepository.findAllByEmpName(empName,pageRequestDTO)) {
             list.add(salaryListPerEmployee(e));
         }
         return list;
@@ -55,14 +55,14 @@ public class SalaryServiceImpl implements SalaryService {
     @Override
     public PageResultDTO viewAllByNameForPage(String empName, int pageNo){
         return new PageResultDTO(
-                employeeRepository.findAllByNameTotal(empName),
+                employeeRepository.findTotalByName(empName),
                 pageNo);
     }
 
     @Override
     public List<SalaryDTO.indexSalary> findByName(String empName){
         List<SalaryDTO.indexSalary> list = new ArrayList<>();
-        for (Employee e : employeeRepository.findByEmpName(empName)) {
+        for (Employee e : employeeRepository.findAllByEmpName(empName)) {
             list.add(salaryListPerEmployee(e));
         }
         return list;

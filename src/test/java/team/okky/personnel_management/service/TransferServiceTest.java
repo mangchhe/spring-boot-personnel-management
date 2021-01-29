@@ -20,8 +20,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @SpringBootTest
 @Transactional
 class TransferServiceTest {
@@ -102,7 +100,7 @@ class TransferServiceTest {
                 .departmentName(transDepartment.getDeptName())
                 .build();
         //when
-        Transfer result = transferService.addTransfer(addForm);
+        Transfer result = transferService.craeteTransfer(addForm);
         //then
         Assertions.assertThat(result).isEqualTo(transferRepository.findAll(new PageRequestDTO(1)).get(0));
     }

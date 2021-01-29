@@ -45,7 +45,7 @@ public class TransferSeriveImpl implements TransferService{
      */
     @Override
     @Transactional(readOnly = false)
-    public Transfer addTransfer(TransferDTO.AddForm addForm) {
+    public Transfer craeteTransfer(TransferDTO.AddForm addForm) {
         Employee employee = employeeRepository.findOne(addForm.employeeId);
         Transfer transfer = Transfer.builder()
                 .employee(employee)
@@ -65,9 +65,9 @@ public class TransferSeriveImpl implements TransferService{
      * @return 모든 인사기록
      */
     @Override
-    public List<TransferDTO.Info> findAll(PageRequestDTO pageRequestDTO) {
+    public List<TransferDTO.Index> findAll(PageRequestDTO pageRequestDTO) {
         return transferRepository.findAll(pageRequestDTO).stream()
-                .map(Transfer::entityToInfo)
+                .map(Transfer::entityToIndex)
                 .collect(Collectors.toList());
     }
     
@@ -89,9 +89,9 @@ public class TransferSeriveImpl implements TransferService{
      * @return 사원 이름으로 검색한 인사기록 목록
      */
     @Override
-    public List<TransferDTO.Info> findAllByEmpName(String empName, PageRequestDTO pageRequestDTO) {
+    public List<TransferDTO.Index> findAllByEmpName(String empName, PageRequestDTO pageRequestDTO) {
         return transferRepository.findAllByEmpName(empName, pageRequestDTO).stream()
-                .map(Transfer::entityToInfo)
+                .map(Transfer::entityToIndex)
                 .collect(Collectors.toList());
     }
 
@@ -114,9 +114,9 @@ public class TransferSeriveImpl implements TransferService{
      * @return 부서 이름으로 검색한 인사기록 목록
      */
     @Override
-    public List<TransferDTO.Info> findAllByDeptName(String deptName, PageRequestDTO pageRequestDTO) {
+    public List<TransferDTO.Index> findAllByDeptName(String deptName, PageRequestDTO pageRequestDTO) {
         return transferRepository.findAllByDeptName(deptName, pageRequestDTO).stream()
-                .map(Transfer::entityToInfo)
+                .map(Transfer::entityToIndex)
                 .collect(Collectors.toList());
     }
 
@@ -139,9 +139,9 @@ public class TransferSeriveImpl implements TransferService{
      * @return 사원 직급으로 검색한 인사기록 목록
      */
     @Override
-    public List<TransferDTO.Info> findAllByEmpPosition(String empPosition, PageRequestDTO pageRequestDTO) {
+    public List<TransferDTO.Index> findAllByEmpPosition(String empPosition, PageRequestDTO pageRequestDTO) {
         return transferRepository.findAllByEmpPosition(empPosition, pageRequestDTO).stream()
-                .map(Transfer::entityToInfo)
+                .map(Transfer::entityToIndex)
                 .collect(Collectors.toList());
     }
 

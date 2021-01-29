@@ -34,6 +34,14 @@ public class Employee {
     @JoinColumn(name="mn_id")
     private Manager manager;
 
+    public void changeDepartment(Department department){
+        this.department = department;
+    }
+
+    public void changePosition(EmployeePosition empPosition){
+        this.empPosition = empPosition;
+    }
+
     public void changeWork(Work work) {
         this.work = work;
     }

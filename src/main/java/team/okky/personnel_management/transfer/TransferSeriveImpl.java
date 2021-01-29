@@ -23,6 +23,44 @@ public class TransferSeriveImpl implements TransferService{
     private final EmployeeRepository employeeRepository;
 
     /**
+     * 인사이동이 필요한 사원들을 인사이동
+     * @return 인사이동이 완료된 인사목록
+     */
+    @Override
+    @Transactional(readOnly = false)
+    public List<Transfer> autoAppointTransfer(){
+        List<Transfer> nowAppointList = transferRepository.findAllByNowAppointDate();
+        for (Transfer t: nowAppointList) {
+            Employee employee = t.getEmployee();
+            employee.changeDepartment(t.getTransDepartment());
+            employee.changePosition(t.getTransPosition());
+        }
+        return nowAppointList;
+    }
+
+    /**
+     * 인사기록 추가
+     * @param addForm
+     * @return 추가 된 Transfer
+     */
+    @Override
+    @Transactional(readOnly = false)
+    public Transfer addTransfer(TransferDTO.AddForm addForm) {
+        Employee employee = employeeRepository.findOne(addForm.employeeId);
+        Transfer transfer = Transfer.builder()
+                .employee(employee)
+                .curPosition(employee.getEmpPosition().getPosition())
+                .transPosition(addForm.getTransferPosition())
+                .curDepartment(employee.getDepartment())
+                .transDepartment(departmentRepository.findByName(addForm.getDepartmentName()))
+                .approveDate(LocalDate.now())
+                .appointDate(addForm.getTransferDate())
+                .build();
+        transferRepository.save(transfer);
+        return transfer;
+    }
+
+    /**
      * 모든 인사기록 검색
      * @return 모든 인사기록
      */
@@ -120,25 +158,4 @@ public class TransferSeriveImpl implements TransferService{
                 pageNo);
     }
 
-    /**
-     * 인사기록 추가
-     * @param addForm
-     * @return 추가 된 Transfer
-     */
-    @Override
-    @Transactional(readOnly = false)
-    public Transfer addTransfer(TransferDTO.AddForm addForm) {
-        Employee employee = employeeRepository.findOne(addForm.employeeId);
-        Transfer transfer = Transfer.builder()
-                .employee(employee)
-                .curPosition(employee.getEmpPosition().getPosition())
-                .transPosition(addForm.getTransferPosition())
-                .curDepartment(employee.getDepartment())
-                .transDepartment(departmentRepository.findByName(addForm.getDepartmentName()))
-                .approveDate(LocalDate.now())
-                .appointDate(addForm.getTransferDate())
-                .build();
-        transferRepository.save(transfer);
-        return transfer;
-    }
 }

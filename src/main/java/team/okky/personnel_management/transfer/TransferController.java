@@ -17,7 +17,7 @@ public class TransferController {
     private final TransferService transferService;
 
     @GetMapping("/transfer")
-    public List<TransferDTO.Info> transfer(@RequestParam(value = "employee", required = false) String empName,
+    public TransferDTO.InfoWithPage transfer(@RequestParam(value = "employee", required = false) String empName,
                                            @RequestParam(value = "department", required = false) String deptName,
                                            @RequestParam(value = "position", required = false) String empPosition,
                                            @RequestParam(value = "page", defaultValue = "1") Integer pageNo){
@@ -42,7 +42,11 @@ public class TransferController {
             transferList = transferService.findAll(pageRequestDTO);
             pageResultDTO = transferService.findPage(pageNo);
         }
-        return transferList;
+
+        return TransferDTO.InfoWithPage.builder()
+                .transInfo(transferList)
+                .pageResult(pageResultDTO)
+                .build();
     }
 
     @PostMapping("/transfer")

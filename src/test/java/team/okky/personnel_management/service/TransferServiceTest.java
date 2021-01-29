@@ -36,6 +36,49 @@ class TransferServiceTest {
     private DepartmentRepository departmentRepository;
     
     @Test
+    public void 자동인사이동() throws Exception {
+        //given
+        Department department = Department.builder().build();
+        Department department2 = Department.builder().build();
+        departmentRepository.save(department);
+        departmentRepository.save(department2);
+        Employee employee = Employee.builder()
+                .department(department)
+                .empPosition(EmployeePosition.INTERN)
+                .build();
+        Employee employee2 = Employee.builder()
+                .department(department)
+                .empPosition(EmployeePosition.INTERN)
+                .build();
+        employeeRepository.save(employee);
+        employeeRepository.save(employee2);
+        transferRepository.save(Transfer.builder()
+                .employee(employee)
+                .transPosition("임원")
+                .transDepartment(department2)
+                .appointDate(LocalDate.now())
+                .build());
+        transferRepository.save(Transfer.builder()
+                .employee(employee)
+                .transPosition("임원")
+                .transDepartment(department2)
+                .appointDate(LocalDate.now().plusDays(1))
+                .build());
+        //when
+        List<Transfer> result = transferService.autoAppointTransfer();
+        //then
+        Assertions.assertThat(result.size()).isEqualTo(1);
+        Assertions.assertThat(employee.getDepartment())
+                .isEqualTo(department2);
+        Assertions.assertThat(employee.getEmpPosition())
+                .isEqualTo(EmployeePosition.EXECUTIVES);
+        Assertions.assertThat(employee2.getDepartment())
+                .isEqualTo(department);
+        Assertions.assertThat(employee2.getEmpPosition())
+                .isEqualTo(EmployeePosition.INTERN);
+    }
+    
+    @Test
     public void 인사발령() throws Exception {
         //given
         Department curDepartment = Department.builder()

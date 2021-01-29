@@ -8,6 +8,7 @@ import team.okky.personnel_management.utils.dto.PageResultDTO;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -86,4 +87,12 @@ public class TransferRepository {
                 .setParameter("position", position)
                 .getSingleResult().intValue();
     }
+
+    public List<Transfer> findAllByNowAppointDate(){
+        LocalDate nowDate = LocalDate.now();
+        return em.createQuery("select t from Transfer t where t.appointDate = :nowDate", Transfer.class)
+                .setParameter("nowDate", nowDate)
+                .getResultList();
+    }
+
 }

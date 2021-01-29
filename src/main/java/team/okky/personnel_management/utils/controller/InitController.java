@@ -18,6 +18,9 @@ import team.okky.personnel_management.manager.Manager;
 import team.okky.personnel_management.manager.ManagerService;
 import team.okky.personnel_management.sick.Sick;
 import team.okky.personnel_management.sick.SickRepository;
+import team.okky.personnel_management.transfer.Transfer;
+import team.okky.personnel_management.transfer.TransferDTO;
+import team.okky.personnel_management.transfer.TransferService;
 import team.okky.personnel_management.vacation.Vacation;
 import team.okky.personnel_management.vacation.VacationRepository;
 import team.okky.personnel_management.work.Work;
@@ -37,6 +40,7 @@ public class InitController {
     private final WorkRepository workRepository;
     private final EvaluationRepository evaluationRepository;
     private final ManagerService managerService;
+    private final TransferService transferService;
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
@@ -131,6 +135,15 @@ public class InitController {
                     .employee(employeeList.get(i))
                     .work(workList.get(i%5==0?++j:j))
                     .build());
+
+            TransferDTO.AddForm addForm = TransferDTO.AddForm.builder()
+                    .employeeId(employee.getEmpId())
+                    .transferPosition(position[(i+1) % 7])
+                    .transferDate(LocalDate.now().plusDays(i))
+                    .departmentName(departmentList.get(i % 5).getDeptName())
+                    .build();
+            //when
+            Transfer result = transferService.addTransfer(addForm);
 
         }
 

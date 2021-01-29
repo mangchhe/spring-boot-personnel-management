@@ -14,6 +14,7 @@ import team.okky.personnel_management.transfer.Transfer;
 import team.okky.personnel_management.transfer.TransferDTO;
 import team.okky.personnel_management.transfer.TransferRepository;
 import team.okky.personnel_management.transfer.TransferService;
+import team.okky.personnel_management.utils.dto.PageRequestDTO;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -60,7 +61,7 @@ class TransferServiceTest {
         //when
         Transfer result = transferService.addTransfer(addForm);
         //then
-        Assertions.assertThat(result).isEqualTo(transferRepository.findAll().get(0));
+        Assertions.assertThat(result).isEqualTo(transferRepository.findAll(new PageRequestDTO(1)).get(0));
     }
     
     @Test
@@ -84,7 +85,7 @@ class TransferServiceTest {
             transfers.add(transfer);
         }
         //when
-        List<Transfer> result = transferRepository.findAll();
+        List<Transfer> result = transferRepository.findAll(new PageRequestDTO(1));
         //then
         Assertions.assertThat(result)
                 .usingRecursiveComparison()
@@ -115,9 +116,9 @@ class TransferServiceTest {
             transfers.add(transfer);
         }
         //when
-        Transfer resultByEmpName = transferRepository.findAllByEmpName("테스터0").get(0);
-        Transfer resultByDeptName = transferRepository.findAllByDeptName("부서1").get(0);
-        Transfer resultByEmpPosition = transferRepository.findAllByEmpPosition("차장").get(0);
+        Transfer resultByEmpName = transferRepository.findAllByEmpName("테스터0", new PageRequestDTO(1)).get(0);
+        Transfer resultByDeptName = transferRepository.findAllByDeptName("부서1", new PageRequestDTO(1)).get(0);
+        Transfer resultByEmpPosition = transferRepository.findAllByEmpPosition("차장", new PageRequestDTO(1)).get(0);
         //then
         Assertions.assertThat(resultByEmpName).isEqualTo(transfers.get(0));
         Assertions.assertThat(resultByDeptName).isEqualTo(transfers.get(1));

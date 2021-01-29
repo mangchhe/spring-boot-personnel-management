@@ -3,6 +3,7 @@ package team.okky.personnel_management.transfer;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 import team.okky.personnel_management.employee.EmployeeDTO;
+import team.okky.personnel_management.utils.dto.PageResultDTO;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -19,6 +20,13 @@ public class TransferDTO {
         String transferPosition;
         LocalDate approveDate;
         LocalDate appointDate;
+    }
+
+    @Builder
+    @Getter
+    public static class InfoWithPage {
+        List<Info> transInfo;
+        PageResultDTO pageResult;
     }
 
     @Builder

@@ -6,6 +6,8 @@ import org.springframework.transaction.annotation.Transactional;
 import team.okky.personnel_management.department.DepartmentRepository;
 import team.okky.personnel_management.employee.Employee;
 import team.okky.personnel_management.employee.EmployeeRepository;
+import team.okky.personnel_management.utils.dto.PageRequestDTO;
+import team.okky.personnel_management.utils.dto.PageResultDTO;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -25,10 +27,22 @@ public class TransferSeriveImpl implements TransferService{
      * @return 모든 인사기록
      */
     @Override
-    public List<TransferDTO.Info> findAll() {
-        return transferRepository.findAll().stream()
+    public List<TransferDTO.Info> findAll(PageRequestDTO pageRequestDTO) {
+        return transferRepository.findAll(pageRequestDTO).stream()
                 .map(Transfer::entityToInfo)
                 .collect(Collectors.toList());
+    }
+    
+    /**
+     * 모든 인사기록 페이징 데이터 생성
+     * @param pageNo
+     * @return 모든 인사기록 페이징 정보
+     */
+    @Override
+    public PageResultDTO findPage(int pageNo) {
+        return new PageResultDTO(
+                transferRepository.findTotal(),
+                pageNo);
     }
 
     /**
@@ -37,10 +51,23 @@ public class TransferSeriveImpl implements TransferService{
      * @return 사원 이름으로 검색한 인사기록 목록
      */
     @Override
-    public List<TransferDTO.Info> findAllByEmpName(String empName) {
-        return transferRepository.findAllByEmpName(empName).stream()
+    public List<TransferDTO.Info> findAllByEmpName(String empName, PageRequestDTO pageRequestDTO) {
+        return transferRepository.findAllByEmpName(empName, pageRequestDTO).stream()
                 .map(Transfer::entityToInfo)
                 .collect(Collectors.toList());
+    }
+
+    /**
+     * 사원 이름으로 검색한 인사기록 페이징 데이터 생성
+     * @param empName
+     * @param pageNo
+     * @return 사원 이름으로 검색한 인사기록 페이징 정보
+     */
+    @Override
+    public PageResultDTO findPageByEmpName(String empName, int pageNo) {
+        return new PageResultDTO(
+                transferRepository.findTotalByEmpName(empName),
+                pageNo);
     }
 
     /**
@@ -49,10 +76,23 @@ public class TransferSeriveImpl implements TransferService{
      * @return 부서 이름으로 검색한 인사기록 목록
      */
     @Override
-    public List<TransferDTO.Info> findAllByDeptName(String deptName) {
-        return transferRepository.findAllByDeptName(deptName).stream()
+    public List<TransferDTO.Info> findAllByDeptName(String deptName, PageRequestDTO pageRequestDTO) {
+        return transferRepository.findAllByDeptName(deptName, pageRequestDTO).stream()
                 .map(Transfer::entityToInfo)
                 .collect(Collectors.toList());
+    }
+
+    /**
+     * 부서 이름으로 검색한 인사기록 페이징 데이터 생성
+     * @param deptName
+     * @param pageNo
+     * @return 부서 이름으로 검색한 인사기록 페이징 정보
+     */
+    @Override
+    public PageResultDTO findPageByDeptName(String deptName, int pageNo) {
+        return new PageResultDTO(
+                transferRepository.findTotalByDeptName(deptName),
+                pageNo);
     }
 
     /**
@@ -61,10 +101,23 @@ public class TransferSeriveImpl implements TransferService{
      * @return 사원 직급으로 검색한 인사기록 목록
      */
     @Override
-    public List<TransferDTO.Info> findAllByEmpPosition(String empPosition) {
-        return transferRepository.findAllByEmpPosition(empPosition).stream()
+    public List<TransferDTO.Info> findAllByEmpPosition(String empPosition, PageRequestDTO pageRequestDTO) {
+        return transferRepository.findAllByEmpPosition(empPosition, pageRequestDTO).stream()
                 .map(Transfer::entityToInfo)
                 .collect(Collectors.toList());
+    }
+
+    /**
+     * 사원 직책으로 검색한 페이징 인사기록 데이터 생성
+     * @param empPosition
+     * @param pageNo
+     * @return 사원 직책으로 검색한 인사기록 페이징 정보
+     */
+    @Override
+    public PageResultDTO findPageByEmpPosition(String empPosition, int pageNo) {
+        return new PageResultDTO(
+                transferRepository.findTotalByEmpPosition(empPosition),
+                pageNo);
     }
 
     /**

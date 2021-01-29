@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.okky.personnel_management.employee.Employee;
+import team.okky.personnel_management.employee.EmployeePosition;
 import team.okky.personnel_management.utils.dto.PageRequestDTO;
 import team.okky.personnel_management.utils.dto.PageResultDTO;
 import team.okky.personnel_management.employee.EmployeeRepository;
@@ -22,7 +23,7 @@ public class SalaryServiceImpl implements SalaryService {
     private final EvaluationRepository evaluationRepository;
     private final EmployeeRepository employeeRepository;
     private static List<SalaryDTO.updateForm> checkChange = new ArrayList<>();
-    private Map<String, Integer> salaryMap = new HashMap<>();
+    private Map<EmployeePosition, Integer> salaryMap = new HashMap<>();
 
     @Override
     public List<SalaryDTO.indexSalary> viewAll(PageRequestDTO pageRequestDTO) {
@@ -69,13 +70,15 @@ public class SalaryServiceImpl implements SalaryService {
 
     @Override
     public SalaryDTO.indexSalary salaryListPerEmployee(Employee e){
-        salaryMap.put("사원", 3000);
-        salaryMap.put("대리", 3500);
-        salaryMap.put("차장", 4000);
-        salaryMap.put("과장", 4500);
-        salaryMap.put("본부장", 5000);
-        salaryMap.put("부장", 5500);
-        salaryMap.put("사장", 6000);
+        salaryMap.put(EmployeePosition.valueOf("DEFAULT"), 0);
+        salaryMap.put(EmployeePosition.valueOf("INTERN"), 2800);
+        salaryMap.put(EmployeePosition.valueOf("STAFF"), 3000);
+        salaryMap.put(EmployeePosition.valueOf("SENIOR_STAFF"), 3500);
+        salaryMap.put(EmployeePosition.valueOf("ASSISTANT_MANAGER"), 4000);
+        salaryMap.put(EmployeePosition.valueOf("MANAGER"), 4500);
+        salaryMap.put(EmployeePosition.valueOf("DEPUTY_GENERAL_MANAGER"), 5000);
+        salaryMap.put(EmployeePosition.valueOf("GENERAL_MANAGER"), 5500);
+        salaryMap.put(EmployeePosition.valueOf("EXECUTIVES"), 7000);
 
         Long evalScore = evaluationRepository.currentIncentive(e.getEmpName()).longValue();
 

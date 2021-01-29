@@ -35,15 +35,20 @@ public class ManagerController {
     }
 
     @PutMapping("/profile")
-    public String updatePw(@AuthenticationPrincipal PrincipalDetails principalDetails,@RequestBody ManagerDTO.updatePw updatePw){
+    public String updatePw(@AuthenticationPrincipal PrincipalDetails principalDetails,@RequestBody ManagerDTO.updatePw updatePw) {
         Manager manager = managerService.findByEmail(principalDetails.getUsername()).get(0);
-        if(!bCryptPasswordEncoder.matches(updatePw.getCurPw(), manager.getMnPw())){
+        if (!bCryptPasswordEncoder.matches(updatePw.getCurPw(), manager.getMnPw())) {
             log.info("현재 비밀번호가 일치하지 않습니다.");
+            return "현재 비밀번호가 일치하지 않습니다.";
         }
-        if(!updatePw.getNewPw().equals(updatePw.getNewPwCheck())){
+        if (!updatePw.getNewPw().equals(updatePw.getNewPwCheck())) {
             log.info("새로운 비밀번호가 일치하지 않습니다.");
+            return "새로운 비밀번호가 일치하지 않습니다.";
         }
-        managerService.updatePw(manager, bCryptPasswordEncoder.encode(updatePw.getNewPw()));
-        return "/login";
+        if (bCryptPasswordEncoder.matches(updatePw.getCurPw(), manager.getMnPw()) && updatePw.getNewPw().equals(updatePw.getNewPwCheck())) {
+            managerService.updatePw(manager, bCryptPasswordEncoder.encode(updatePw.getNewPw()));
+            return "비밀번호가 변경되었습니다.";
+        }
+        return "비밀번호가 변경되지 않았습니다. 다시 시도하세요.";
     }
 }

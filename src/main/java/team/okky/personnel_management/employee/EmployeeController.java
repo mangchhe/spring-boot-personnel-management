@@ -16,39 +16,39 @@ public class EmployeeController {
     private final EmployeeService employeeService;
 
     @GetMapping("/employee")
-    public EmployeeDTO.ListIndexPage viewByName(@RequestParam(required = false) String name,
-                                                  @RequestParam(required = false) String deptName,
-                                                  @RequestParam(value = "page", defaultValue = "1") Integer pageNo){
-        List<EmployeeDTO.ListIndex> list = null;
+    public EmployeeDTO.IndexWithPage viewByName(@RequestParam(required = false) String name,
+                                                @RequestParam(required = false) String deptName,
+                                                @RequestParam(value = "page", defaultValue = "1") Integer pageNo){
+        List<EmployeeDTO.Index> list = null;
         PageResultDTO pageResultDTO = null;
         PageRequestDTO pageRequestDTO = new PageRequestDTO(pageNo);
 
         if(name != null){
             list = employeeService.viewAllByName(name, pageRequestDTO);
-            pageResultDTO = employeeService.viewAllByNameForPage(name, pageNo);
+            pageResultDTO = employeeService.viewPageByName(name, pageNo);
         }
         else if(deptName != null){
             list = employeeService.viewAllByDept(deptName, pageRequestDTO);
-            pageResultDTO = employeeService.viewAllByDeptNameForPage(deptName, pageNo);
+            pageResultDTO = employeeService.viewPageByDeptName(deptName, pageNo);
         }
         else{
             list = employeeService.viewAll(pageRequestDTO);
-            pageResultDTO = employeeService.viewAllForPage(pageNo);
+            pageResultDTO = employeeService.viewPage(pageNo);
         }
-        return EmployeeDTO.ListIndexPage.builder()
+        return EmployeeDTO.IndexWithPage.builder()
                 .list(list)
                 .pageResultDTO(pageResultDTO)
                 .build();
     }
 
     @PostMapping("/employee")
-    public void viewAddEmployee(@RequestBody EmployeeDTO.AddEmployee addEmployee){
-        employeeService.createEmployee(addEmployee);
+    public void viewAddEmployee(@RequestBody EmployeeDTO.AddForm addForm){
+        employeeService.createEmployee(addForm);
     }
 
     @PutMapping("/employee")
-    public void viewUpdateEmployee(@RequestBody EmployeeDTO.UpdateEmployee updateEmployee){
-        employeeService.updateEmployee(updateEmployee);
+    public void viewUpdateEmployee(@RequestBody EmployeeDTO.UpdateForm updateForm){
+        employeeService.updateEmployee(updateForm);
     }
 
 }

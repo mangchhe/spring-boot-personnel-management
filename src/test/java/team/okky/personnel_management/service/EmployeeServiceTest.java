@@ -42,9 +42,9 @@ class EmployeeServiceTest {
             employeeRepository.save(employee);
         }
         //when
-        List<EmployeeDTO.ListIndex> result = employeeService.viewAll(new PageRequestDTO(11));
+        List<EmployeeDTO.Index> result = employeeService.viewAll(new PageRequestDTO(11));
         //then
-        assertThat(105).isEqualTo(employeeRepository.findAllOrderByJoinDateTotal());
+        assertThat(105).isEqualTo(employeeRepository.findTotal());
         assertThat(5).isEqualTo(result.size());
 
     }
@@ -68,7 +68,7 @@ class EmployeeServiceTest {
             employeeRepository.save(employee2);
         }
         //when
-        List<EmployeeDTO.ListIndex> result = employeeService.viewAllByName("테스터", new PageRequestDTO(1));
+        List<EmployeeDTO.Index> result = employeeService.viewAllByName("테스터", new PageRequestDTO(1));
         //then
         assertThat(result).extracting("empName")
                 .containsAll(findNameList);
@@ -79,31 +79,28 @@ class EmployeeServiceTest {
     @Test
     public void 직원_부서_검색() throws Exception {
         //given
-        List<String> findDeptNameList = new ArrayList<>();
+        Department department = Department.builder()
+                .deptName("인사과")
+                .build();
+        Department department2 = Department.builder()
+                .deptName("인사과2")
+                .build();
         for (int i = 0; i < 3; i++) {
             Employee employee = Employee.builder()
-                    .department(
-                            Department.builder()
-                            .deptName("인사과")
-                            .build())
+                    .department(department)
                     .build();
             Employee employee2 = Employee.builder()
-                    .department(
-                            Department.builder()
-                                    .deptName("인사과 + i")
-                                    .build()
-                    )
+                    .department(department2)
                     .build();
-            findDeptNameList.add("인사과");
             employeeRepository.save(employee);
             employeeRepository.save(employee2);
         }
         //when
-        List<EmployeeDTO.ListIndex> result = employeeService.viewAllByDept("인사과", new PageRequestDTO(1));
+        List<EmployeeDTO.Index> result = employeeService.viewAllByDept("인사과", new PageRequestDTO(1));
         //then
         assertThat(result).extracting("deptName")
-                .containsAll(findDeptNameList);
-        assertThat(result.size()).isEqualTo(findDeptNameList.size());
+                .containsOnly("인사과");
+        assertThat(result.size()).isEqualTo(3);
     }
 
     @Test
@@ -114,12 +111,12 @@ class EmployeeServiceTest {
                 .build();
         departmentRepository.save(department);
         //when
-        employeeService.createEmployee(EmployeeDTO.AddEmployee.builder()
+        employeeService.createEmployee(EmployeeDTO.AddForm.builder()
                 .empName("테스터")
                 .deptId(department.getDeptId())
                 .build());
         //then
-        assertThat(employeeRepository.findAllByName("테스터", new PageRequestDTO(1))).isNotEmpty();
+        assertThat(employeeRepository.findAllByEmpName("테스터", new PageRequestDTO(1))).isNotEmpty();
     }
     
     @Test
@@ -135,7 +132,7 @@ class EmployeeServiceTest {
         assertThat("010-1234-5678").isEqualTo(employee.getEmpPhoneNum());
         assertThat(LocalDate.now().minusDays(1)).isEqualTo(employee.getEmpJoinDate());
         employeeService.updateEmployee(
-                EmployeeDTO.UpdateEmployee.builder()
+                EmployeeDTO.UpdateForm.builder()
                         .empId(employee.getEmpId())
                         .empPhoneNum("010-5678-1234")
                         .empJoinDate(LocalDate.now())

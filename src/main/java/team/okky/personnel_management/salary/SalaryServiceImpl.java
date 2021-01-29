@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.okky.personnel_management.employee.Employee;
+import team.okky.personnel_management.employee.EmployeePosition;
 import team.okky.personnel_management.utils.dto.PageRequestDTO;
 import team.okky.personnel_management.utils.dto.PageResultDTO;
 import team.okky.personnel_management.employee.EmployeeRepository;
@@ -22,14 +23,14 @@ public class SalaryServiceImpl implements SalaryService {
     private final EvaluationRepository evaluationRepository;
     private final EmployeeRepository employeeRepository;
     private static List<SalaryDTO.updateForm> checkChange = new ArrayList<>();
-    private Map<String, Integer> salaryMap = new HashMap<>();
+    private Map<EmployeePosition, Integer> salaryMap = new HashMap<>();
 
     @Override
     public List<SalaryDTO.indexSalary> viewAll(PageRequestDTO pageRequestDTO) {
 
         List<SalaryDTO.indexSalary> list = new ArrayList<>();
 
-        for (Employee e : employeeRepository.findAllOrderByJoinDate(pageRequestDTO)) {
+        for (Employee e : employeeRepository.findAll(pageRequestDTO)) {
             list.add(salaryListPerEmployee(e));
         }
         return list;
@@ -38,14 +39,14 @@ public class SalaryServiceImpl implements SalaryService {
     @Override
     public PageResultDTO viewAllForPage(int pageNo){
         return new PageResultDTO(
-                employeeRepository.findAllOrderByJoinDateTotal(),
+                employeeRepository.findTotal(),
                 pageNo);
     }
 
     @Override
     public List<SalaryDTO.indexSalary> viewAllByName(String empName,PageRequestDTO pageRequestDTO){
         List<SalaryDTO.indexSalary> list = new ArrayList<>();
-        for (Employee e : employeeRepository.findAllByName(empName,pageRequestDTO)) {
+        for (Employee e : employeeRepository.findAllByEmpName(empName,pageRequestDTO)) {
             list.add(salaryListPerEmployee(e));
         }
         return list;
@@ -54,14 +55,14 @@ public class SalaryServiceImpl implements SalaryService {
     @Override
     public PageResultDTO viewAllByNameForPage(String empName, int pageNo){
         return new PageResultDTO(
-                employeeRepository.findAllByNameTotal(empName),
+                employeeRepository.findTotalByName(empName),
                 pageNo);
     }
 
     @Override
     public List<SalaryDTO.indexSalary> findByName(String empName){
         List<SalaryDTO.indexSalary> list = new ArrayList<>();
-        for (Employee e : employeeRepository.findByEmpName(empName)) {
+        for (Employee e : employeeRepository.findAllByEmpName(empName)) {
             list.add(salaryListPerEmployee(e));
         }
         return list;
@@ -69,13 +70,15 @@ public class SalaryServiceImpl implements SalaryService {
 
     @Override
     public SalaryDTO.indexSalary salaryListPerEmployee(Employee e){
-        salaryMap.put("사원", 3000);
-        salaryMap.put("대리", 3500);
-        salaryMap.put("차장", 4000);
-        salaryMap.put("과장", 4500);
-        salaryMap.put("본부장", 5000);
-        salaryMap.put("부장", 5500);
-        salaryMap.put("사장", 6000);
+        salaryMap.put(EmployeePosition.valueOf("DEFAULT"), 0);
+        salaryMap.put(EmployeePosition.valueOf("INTERN"), 2800);
+        salaryMap.put(EmployeePosition.valueOf("STAFF"), 3000);
+        salaryMap.put(EmployeePosition.valueOf("SENIOR_STAFF"), 3500);
+        salaryMap.put(EmployeePosition.valueOf("ASSISTANT_MANAGER"), 4000);
+        salaryMap.put(EmployeePosition.valueOf("MANAGER"), 4500);
+        salaryMap.put(EmployeePosition.valueOf("DEPUTY_GENERAL_MANAGER"), 5000);
+        salaryMap.put(EmployeePosition.valueOf("GENERAL_MANAGER"), 5500);
+        salaryMap.put(EmployeePosition.valueOf("EXECUTIVES"), 7000);
 
         Long evalScore = evaluationRepository.currentIncentive(e.getEmpName()).longValue();
 
@@ -83,7 +86,7 @@ public class SalaryServiceImpl implements SalaryService {
                 .empId(e.getEmpId())
                 .empName(e.getEmpName())
                 .deptName(e.getDepartment().getDeptName())
-                .empPosition(e.getEmpPosition())
+                .empPosition(e.getEmpPosition().getPosition())
                 .salary(salaryMap.get(e.getEmpPosition()))
                 .incentive((int) (evalScore * 2.4))
                 .build();

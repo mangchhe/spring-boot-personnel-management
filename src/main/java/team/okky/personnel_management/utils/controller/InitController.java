@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import team.okky.personnel_management.department.Department;
 import team.okky.personnel_management.department.DepartmentRepository;
 import team.okky.personnel_management.employee.Employee;
+import team.okky.personnel_management.employee.EmployeePosition;
 import team.okky.personnel_management.employee.EmployeeRepository;
 import team.okky.personnel_management.evaluation.EvaluationRepository;
 import team.okky.personnel_management.attendance.AttendanceService;
@@ -17,6 +18,9 @@ import team.okky.personnel_management.manager.Manager;
 import team.okky.personnel_management.manager.ManagerService;
 import team.okky.personnel_management.sick.Sick;
 import team.okky.personnel_management.sick.SickRepository;
+import team.okky.personnel_management.transfer.Transfer;
+import team.okky.personnel_management.transfer.TransferDTO;
+import team.okky.personnel_management.transfer.TransferService;
 import team.okky.personnel_management.vacation.Vacation;
 import team.okky.personnel_management.vacation.VacationRepository;
 import team.okky.personnel_management.work.Work;
@@ -36,6 +40,7 @@ public class InitController {
     private final WorkRepository workRepository;
     private final EvaluationRepository evaluationRepository;
     private final ManagerService managerService;
+    private final TransferService transferService;
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
@@ -43,7 +48,7 @@ public class InitController {
     @Transactional
     @ResponseBody
     public void init() {
-        String[] position = new String[]{"대리", "사원", "부장", "본부장", "사장", "차장", "과장"};
+        String[] position = new String[]{"임원", "부장", "차장", "과장", "대리", "주임", "사원"};
         String[] comment = new String[]{"BEST","SOSO","BAD"};
         int score = 0;
         List<Manager> managerList = new ArrayList<>();
@@ -84,7 +89,7 @@ public class InitController {
                 managerList.add(manager);
             }
             Employee employee = Employee.builder()
-                    .empPosition(position[i % 7])
+                    .empPosition(EmployeePosition.findByEmployeePosition(position[i % 7]))
                     .empName("테스터" + i)
                     .department(
                             departmentList.get(i / 10)
@@ -130,6 +135,15 @@ public class InitController {
                     .employee(employeeList.get(i))
                     .work(workList.get(i%5==0?++j:j))
                     .build());
+
+            TransferDTO.AddForm addForm = TransferDTO.AddForm.builder()
+                    .employeeId(employee.getEmpId())
+                    .transferPosition(position[(i+1) % 7])
+                    .transferDate(LocalDate.now().plusDays(i))
+                    .departmentName(departmentList.get(i % 5).getDeptName())
+                    .build();
+            //when
+            Transfer result = transferService.craeteTransfer(addForm);
 
         }
 

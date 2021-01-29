@@ -8,15 +8,13 @@ import java.util.List;
 
 public interface EmployeeService {
 
-    public List<EmployeeDTO.ListIndex> viewAll(PageRequestDTO pageRequestDTO);
-    public PageResultDTO viewAllForPage(int pageNo);
-    public List<EmployeeDTO.ListIndex> viewAllByName(String name, PageRequestDTO pageRequestDTO);
-    public PageResultDTO viewAllByNameForPage(String name, int pageNo);
-    public List<EmployeeDTO.ListIndex> viewAllByDept(String deptName, PageRequestDTO pageRequestDTO);
-    public PageResultDTO viewAllByDeptNameForPage(String deptName, int pageNo);
-    public Employee createEmployee(EmployeeDTO.AddEmployee addEmployee);
-    public Employee updateEmployee(EmployeeDTO.UpdateEmployee updateEmployee);
-
-
+    public Employee createEmployee(EmployeeDTO.AddForm addForm);
+    public Employee updateEmployee(EmployeeDTO.UpdateForm updateForm);
+    public List<EmployeeDTO.Index> viewAll(PageRequestDTO pageRequestDTO);
+    public PageResultDTO viewPage(int pageNo);
+    public List<EmployeeDTO.Index> viewAllByName(String name, PageRequestDTO pageRequestDTO);
+    public PageResultDTO viewPageByName(String name, int pageNo);
+    public List<EmployeeDTO.Index> viewAllByDept(String deptName, PageRequestDTO pageRequestDTO);
+    public PageResultDTO viewPageByDeptName(String deptName, int pageNo);
 
 }

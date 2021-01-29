@@ -14,7 +14,19 @@ public class AttendanceDTO {
 
     @Builder
     @Getter @Setter
-    @EqualsAndHashCode
+    public static class Index {
+        private LocalDate attDate;
+        private LocalTime attOnTime;
+        private LocalTime attOffTime;
+        private AttendanceStatus attStatus;
+        private String empName;
+        private String empPosition;
+        private String deptName;
+        private String dayOfWeek;
+    }
+
+    @Builder
+    @Getter @Setter
     public static class Status {
         private int onCnt;
         private int offCnt;
@@ -25,22 +37,10 @@ public class AttendanceDTO {
     }
 
     @Getter @Setter
-    public static class StatusAndList {
+    public static class StatusAndIndexWithPage {
         private AttendanceDTO.Status status;
-        private List<ListAll> attendanceList;
+        private List<Index> attendanceList;
         private PageResultDTO pageResultDTO;
     }
 
-    @Builder
-    @Getter @Setter
-    public static class ListAll {
-        private LocalDate attDate;
-        private LocalTime attOnTime;
-        private LocalTime attOffTime;
-        private AttendanceStatus attStatus;
-        private String empName;
-        private String empPosition;
-        private String deptName;
-        private String dayOfWeek;
-    }
 }

@@ -1,12 +1,17 @@
 package team.okky.personnel_management.manager;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
+@Transactional
+@Slf4j
 public class MangerServiceImpl implements ManagerService {
 
     private final ManagerRepository managerRepository;
@@ -16,9 +21,17 @@ public class MangerServiceImpl implements ManagerService {
      * @param manager
      */
     @Override
-    @Transactional(readOnly = false)
     public void save(Manager manager){
         managerRepository.save(manager);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Manager> findByEmail(String email){return managerRepository.findByEmail(email);}
+
+    @Override
+    public void updatePw(Manager manager, String newPw){
+        manager.updatePw(newPw);
     }
 
 }

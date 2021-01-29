@@ -134,7 +134,7 @@ public class WorkService {
         int i=0;
         int score = 0;
         for(Employee e: empList){
-            e.setWork(newWork);
+            e.changeWork(newWork);
             if(comment[i%3].equals("BEST")){
                 score = 90;
             }

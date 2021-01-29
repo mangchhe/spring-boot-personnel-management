@@ -3,6 +3,7 @@ package team.okky.personnel_management.service;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import team.okky.personnel_management.department.Department;
 import team.okky.personnel_management.employee.Employee;
@@ -79,22 +80,19 @@ class EmployeeServiceTest {
     @Test
     public void 직원_부서_검색() throws Exception {
         //given
-        List<String> findDeptNameList = new ArrayList<>();
+        Department department = Department.builder()
+                .deptName("인사과")
+                .build();
+        Department department2 = Department.builder()
+                .deptName("인사과2")
+                .build();
         for (int i = 0; i < 3; i++) {
             Employee employee = Employee.builder()
-                    .department(
-                            Department.builder()
-                            .deptName("인사과")
-                            .build())
+                    .department(department)
                     .build();
             Employee employee2 = Employee.builder()
-                    .department(
-                            Department.builder()
-                                    .deptName("인사과 + i")
-                                    .build()
-                    )
+                    .department(department2)
                     .build();
-            findDeptNameList.add("인사과");
             employeeRepository.save(employee);
             employeeRepository.save(employee2);
         }
@@ -102,8 +100,8 @@ class EmployeeServiceTest {
         List<EmployeeDTO.ListIndex> result = employeeService.viewAllByDept("인사과", new PageRequestDTO(1));
         //then
         assertThat(result).extracting("deptName")
-                .containsAll(findDeptNameList);
-        assertThat(result.size()).isEqualTo(findDeptNameList.size());
+                .containsOnly("인사과");
+        assertThat(result.size()).isEqualTo(3);
     }
 
     @Test

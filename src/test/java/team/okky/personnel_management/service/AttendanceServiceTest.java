@@ -266,7 +266,7 @@ class AttendanceServiceTest {
             Employee employee = Employee.builder()
                     .empName("테스터")
                     .department(Department.builder()
-                            .deptName("인사과")
+                            .deptName("인사과" + i)
                             .build())
                     .build();
             employeelist.add(employee);

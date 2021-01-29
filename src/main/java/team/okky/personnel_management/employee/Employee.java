@@ -56,7 +56,7 @@ public class Employee {
 
     @Builder
     public Employee(EmployeePosition empPosition, String empName, String empPhoneNum, LocalDate empJoinDate, Work work, Department department, Manager manager) {
-        this.empPosition = empPosition;
+        this.empPosition = empPosition == null ? EmployeePosition.DEFAULT : empPosition;
         this.empName = empName;
         this.empPhoneNum = empPhoneNum;
         this.empJoinDate = empJoinDate;

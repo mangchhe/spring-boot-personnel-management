@@ -53,6 +53,7 @@ public class Transfer {
     }
 
     public TransferDTO.Info entityToInfo(){
+        LocalDate nowDate = LocalDate.now();
         return TransferDTO.Info.builder()
                 .employeeName(getEmployee().getEmpName())
                 .curDepartmentName(getCurDepartment().getDeptName())
@@ -61,6 +62,7 @@ public class Transfer {
                 .transferPosition(getTransPosition().getPosition())
                 .approveDate(getApproveDate())
                 .appointDate(getAppointDate())
+                .isEnd(getAppointDate().isBefore(nowDate) || getAppointDate().isEqual(nowDate))
                 .build();
     }
 }

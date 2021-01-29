@@ -20,6 +20,7 @@ public class TransferDTO {
         String transferPosition;
         LocalDate approveDate;
         LocalDate appointDate;
+        Boolean isEnd;
     }
 
     @Builder

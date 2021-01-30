@@ -88,6 +88,7 @@ function AttendanceContainer() {
     e.preventDefault();
     if (!date && !word) {
       fetchAttendanceWithPage('/attendance');
+      setPageInfo({ ...pageInfo, currentPage: 1 });
       setShowPagination(true);
     }
     if (date && !word) {
@@ -133,11 +134,11 @@ function AttendanceContainer() {
 
   const handlePageChange = (e) => {
     const pageNum = parseInt(e.target.firstChild.nodeValue);
+    fetchAttendance(`/attendance?page=${pageNum}`);
     setPageInfo({
       ...pageInfo,
       currentPage: pageNum,
     });
-    fetchAttendance(`/attendance?page=${pageInfo.currentPage}`);
   };
 
   return (

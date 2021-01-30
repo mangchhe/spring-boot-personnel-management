@@ -120,6 +120,8 @@ function Attendance({
             count={pageInfo.totalPage}
             page={pageInfo.currentPage}
             onChange={handlePageChange}
+            hidePrevButton
+            hideNextButton
           />
         </PaginationContainer>
       )}

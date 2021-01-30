@@ -45,11 +45,8 @@ function Login({ history }) {
     axios
       .post('/login', loginData)
       .then((response) => {
-        console.log(response);
         if (response.headers.authorization) {
           localStorage.setItem('token', response.headers.authorization);
-          let token = localStorage.getItem('token');
-          axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
           history.push('./attendance');
         } else {
           alert(`로그인이 완료되지 않았습니다.`);

@@ -45,7 +45,7 @@ public class SalaryController {
 
         SalaryDTO.SalaryForm salaryForm = SalaryDTO.SalaryForm.builder()
                 .deptName(selectEmployee.getDepartment().getDeptName())
-                .position(selectEmployee.getEmpPosition())
+                .position(selectEmployee.getEmpPosition().getPosition())
                 .empName(selectEmployee.getEmpName())
                 .salary(salaryPerEmp.get(0).getSalary())
                 .incentive(salaryPerEmp.get(0).getIncentive())
@@ -54,7 +54,7 @@ public class SalaryController {
         return salaryForm;
     }
 
-    @PostMapping("/salary/{empId}/edit")
+    @PutMapping("/salary/{empId}/edit")
     public String update(@PathVariable Long empId, @RequestBody SalaryDTO.updateForm form){
         SalaryDTO.updateForm salaryPerEmp = SalaryDTO.updateForm.builder()
                 .empId(empId)

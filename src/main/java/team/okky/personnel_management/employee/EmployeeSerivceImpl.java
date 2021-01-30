@@ -19,14 +19,47 @@ public class EmployeeSerivceImpl implements EmployeeService{
     private final DepartmentRepository departmentRepository;
 
     /**
+     * 사원 등록
+     * @param addForm
+     * @return 등록된 사원
+     */
+    @Override
+    @Transactional(readOnly = false)
+    public Employee createEmployee(EmployeeDTO.AddForm addForm){
+        Employee employee = Employee.builder()
+                .empName(addForm.getEmpName())
+                .department(departmentRepository.findOne(addForm.getDeptId()))
+                .empPosition(EmployeePosition.findByEmployeePosition(addForm.getEmpPosition()))
+                .empJoinDate(addForm.getEmpJoinDate())
+                .empPhoneNum(addForm.getEmpPhoneNum())
+                .build();
+        employeeRepository.save(employee);
+        return employee;
+    }
+
+    /**
+     * 사원 정보 변경
+     * @param updateForm
+     * @return 변경된 사원
+     */
+    @Override
+    @Transactional(readOnly = false)
+    public Employee updateEmployee(EmployeeDTO.UpdateForm updateForm){
+        Employee employee = employeeRepository.findOne(updateForm.getEmpId());
+        employee.changePhoneNum(updateForm.getEmpPhoneNum());
+        employee.changeJoinDate(updateForm.getEmpJoinDate());
+        return employee;
+    }
+
+    /**
      * 전체 직원 목록 보여주기
      * @detail 직원 입사일 기준으로 내림차순
      * @return 직원 정보가 담긴 목록
      */
     @Override
-    public List<EmployeeDTO.ListIndex> viewAll(PageRequestDTO pageRequestDTO){
-        return employeeRepository.findAllOrderByJoinDate(pageRequestDTO).stream()
-                .map(Employee::entityToListIndex)
+    public List<EmployeeDTO.Index> viewAll(PageRequestDTO pageRequestDTO){
+        return employeeRepository.findAll(pageRequestDTO).stream()
+                .map(Employee::entityToIndex)
                 .collect(Collectors.toList());
     }
 
@@ -36,9 +69,9 @@ public class EmployeeSerivceImpl implements EmployeeService{
      * @return 전체 직원 페이징 정보
      */
     @Override
-    public PageResultDTO viewAllForPage(int pageNo){
+    public PageResultDTO viewPage(int pageNo){
         return new PageResultDTO(
-                employeeRepository.findAllOrderByJoinDateTotal(),
+                employeeRepository.findTotal(),
                 pageNo);
     }
 
@@ -48,9 +81,9 @@ public class EmployeeSerivceImpl implements EmployeeService{
      * @return 해당하는 이름만 담은 사원 목록, 동명이인 포함
      */
     @Override
-    public List<EmployeeDTO.ListIndex> viewAllByName(String name, PageRequestDTO pageRequestDTO){
-        return employeeRepository.findAllByName(name, pageRequestDTO).stream()
-                .map(Employee::entityToListIndex)
+    public List<EmployeeDTO.Index> viewAllByName(String name, PageRequestDTO pageRequestDTO){
+        return employeeRepository.findAllByEmpName(name, pageRequestDTO).stream()
+                .map(Employee::entityToIndex)
                 .collect(Collectors.toList());
     }
 
@@ -61,9 +94,9 @@ public class EmployeeSerivceImpl implements EmployeeService{
      * @return 이름으로 검색한 직원 페이징 정보
      */
     @Override
-    public PageResultDTO viewAllByNameForPage(String name, int pageNo){
+    public PageResultDTO viewPageByName(String name, int pageNo){
         return new PageResultDTO(
-                employeeRepository.findAllByNameTotal(name),
+                employeeRepository.findTotalByName(name),
                 pageNo);
     }
 
@@ -73,9 +106,9 @@ public class EmployeeSerivceImpl implements EmployeeService{
      * @return 해당 부서를 검색한 직원 목록
      */
     @Override
-    public List<EmployeeDTO.ListIndex> viewAllByDept(String deptName, PageRequestDTO pageRequestDTO){
-        return employeeRepository.findAllByDept(deptName, pageRequestDTO).stream()
-                .map(Employee::entityToListIndex)
+    public List<EmployeeDTO.Index> viewAllByDept(String deptName, PageRequestDTO pageRequestDTO){
+        return employeeRepository.findAllByDeptName(deptName, pageRequestDTO).stream()
+                .map(Employee::entityToIndex)
                 .collect(Collectors.toList());
     }
 
@@ -86,43 +119,10 @@ public class EmployeeSerivceImpl implements EmployeeService{
      * @return 부서이름으로 검색한 직원 페이징 정보
      */
     @Override
-    public PageResultDTO viewAllByDeptNameForPage(String deptName, int pageNo){
+    public PageResultDTO viewPageByDeptName(String deptName, int pageNo){
         return new PageResultDTO(
-                employeeRepository.findAllByDeptTotal(deptName),
+                employeeRepository.findTotalByDeptName(deptName),
                 pageNo);
-    }
-
-    /**
-     * 사원 등록
-     * @param addEmployee
-     * @return 등록된 사원
-     */
-    @Override
-    @Transactional(readOnly = false)
-    public Employee createEmployee(EmployeeDTO.AddEmployee addEmployee){
-        Employee employee = Employee.builder()
-                .empName(addEmployee.getEmpName())
-                .department(departmentRepository.findOne(addEmployee.getDeptId()))
-                .empPosition(addEmployee.getEmpPosition())
-                .empJoinDate(addEmployee.getEmpJoinDate())
-                .empPhoneNum(addEmployee.getEmpPhoneNum())
-                .build();
-        employeeRepository.save(employee);
-        return employee;
-    }
-
-    /**
-     * 사원 정보 변경
-     * @param updateEmployee
-     * @return 변경된 사원
-     */
-    @Override
-    @Transactional(readOnly = false)
-    public Employee updateEmployee(EmployeeDTO.UpdateEmployee updateEmployee){
-        Employee employee = employeeRepository.findOne(updateEmployee.getEmpId());
-        employee.changePhoneNum(updateEmployee.getEmpPhoneNum());
-        employee.changeJoinDate(updateEmployee.getEmpJoinDate());
-        return employee;
     }
 
 }

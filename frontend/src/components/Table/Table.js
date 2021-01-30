@@ -2,6 +2,7 @@ import React from 'react';
 import AttendanceRow from './AttendanceRow';
 import EmployeeRow from './EmployeeRow';
 import PayrollRow from './PayrollRow';
+import PersonnelStatusRow from './PersonnelStatusRow';
 import styled from 'styled-components';
 
 const StyledTable = styled.table`
@@ -20,6 +21,7 @@ const rowComponents = {
   attendance: AttendanceRow,
   personnelInformation: EmployeeRow,
   payroll: PayrollRow,
+  personnelStatus: PersonnelStatusRow,
 };
 
 function Table({ page, headerArr, dataArr, ...rest }) {

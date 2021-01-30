@@ -43,16 +43,17 @@ function EvalModal({
               onChange={handleSelectEmp}
               className={styles.empSelect}
             >
-              {empLists.map((empList, index) => {
-                return (
-                  <EmpOption
-                    key={index}
-                    data={empList}
-                    selectedEmp={selectedEmp}
-                    handleSelectDept={handleSelectEmp}
-                  />
-                );
-              })}
+              {empLists &&
+                empLists.map((empList, index) => {
+                  return (
+                    <EmpOption
+                      key={index}
+                      data={empList}
+                      selectedEmp={selectedEmp}
+                      handleSelectDept={handleSelectEmp}
+                    />
+                  );
+                })}
             </select>
           </label>
           <label className={styles.label}>

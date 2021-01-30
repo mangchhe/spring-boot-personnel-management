@@ -32,44 +32,50 @@ public class EmployeeRepository {
         return employee;
     }
 
-    public List<Employee> findAllOrderByJoinDate(PageRequestDTO pageRequestDTO){
+    public List<Employee> findAll(PageRequestDTO pageRequestDTO){
         return em.createQuery("select e from Employee e order by e.empJoinDate desc", Employee.class)
                 .setFirstResult(pageRequestDTO.getPage())
                 .setMaxResults(pageRequestDTO.getSize())
                 .getResultList();
     }
 
-    public int findAllOrderByJoinDateTotal(){
+    public int findTotal(){
         return em.createQuery("select count(e.empId) from Employee e", Long.class)
                 .getSingleResult().intValue();
     }
 
-    public List<Employee> findAllByName(String name, PageRequestDTO pageRequestDTO){
-        return em.createQuery("select e from Employee e where e.empName = :name", Employee.class)
-                .setParameter("name", name)
-                .setFirstResult(pageRequestDTO.getPage())
-                .setMaxResults(pageRequestDTO.getSize())
-                .getResultList();
-    }
-
-    public List<Employee> findByEmpName(String empName){
+    public List<Employee> findAllByEmpName(String empName){
         return em.createQuery("select e from Employee e where e.empName = :name", Employee.class)
                 .setParameter("name", empName)
                 .getResultList();
     }
 
-    public int findAllByNameTotal(String name){
+    public List<Employee> findAllByEmpName(String name, PageRequestDTO pageRequestDTO){
+        return em.createQuery("select e from Employee e where e.empName = :name", Employee.class)
+                .setParameter("name", name)
+                .setFirstResult(pageRequestDTO.getPage())
+                .setMaxResults(pageRequestDTO.getSize())
+                .getResultList();
+    }
+
+    public int findTotalByName(String name){
         return em.createQuery("select count(e.empId) from Employee e where e.empName = :name", Long.class)
                 .setParameter("name", name)
                 .getSingleResult().intValue();
     }
 
-    public List<Employee> findAllByDept(String deptName, PageRequestDTO pageRequestDTO){
+    public List<Employee> findAllByDeptName(String deptName, PageRequestDTO pageRequestDTO){
         return em.createQuery("select e from Employee e where e.department.deptName = :deptName", Employee.class)
                 .setParameter("deptName", deptName)
                 .setFirstResult(pageRequestDTO.getPage())
                 .setMaxResults(pageRequestDTO.getSize())
                 .getResultList();
+    }
+
+    public int findTotalByDeptName(String deptName){
+        return em.createQuery("select count(e.empId) from Employee e where e.department.deptName = :deptName", Long.class)
+                .setParameter("deptName", deptName)
+                .getSingleResult().intValue();
     }
 
     public List<Employee> findAllByDeptId(Long deptId){
@@ -79,11 +85,6 @@ public class EmployeeRepository {
                 .getResultList();
     }
 
-    public int findAllByDeptTotal(String deptName){
-        return em.createQuery("select count(e.empId) from Employee e where e.department.deptName = :deptName", Long.class)
-                .setParameter("deptName", deptName)
-                .getSingleResult().intValue();
-    }
 
 
 }

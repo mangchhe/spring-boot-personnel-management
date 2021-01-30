@@ -54,16 +54,17 @@ function WorkModal({
               onChange={handleSelectDept}
               className={styles.deptSelect}
             >
-              {deptLists.map((deptList, index) => {
-                return (
-                  <DeptOption
-                    key={index}
-                    data={deptList}
-                    selectedDept={selectedDept}
-                    handleSelectDept={handleSelectDept}
-                  />
-                );
-              })}
+              {deptLists &&
+                deptLists.map((deptList, index) => {
+                  return (
+                    <DeptOption
+                      key={index}
+                      data={deptList}
+                      selectedDept={selectedDept}
+                      handleSelectDept={handleSelectDept}
+                    />
+                  );
+                })}
             </select>
           </label>
           <label className={styles.label}>

@@ -17,6 +17,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -48,11 +49,11 @@ public class AttendanceServiceImpl implements AttendanceService{
         }
         // 오늘 휴가인 사람 체크
         for(Vacation v : vacationRepository.findAllByDate(LocalDate.now())){
-            attendanceRepository.findAllByEmployeeAndDate(v.getEmployee(), LocalDate.now()).get(0).setAttStatus(AttendanceStatus.VACATION);
+            attendanceRepository.findAllByEmployeeAndDate(v.getEmployee(), LocalDate.now()).get(0).changeAttStatus(AttendanceStatus.VACATION);
         }
         // 오늘 병가인 사람 체크
         for(Sick s : sickRepository.findAllByDate(LocalDate.now())){
-            attendanceRepository.findAllByEmployeeAndDate(s.getEmployee(), LocalDate.now()).get(0).setAttStatus(AttendanceStatus.SICK);
+            attendanceRepository.findAllByEmployeeAndDate(s.getEmployee(), LocalDate.now()).get(0).changeAttStatus(AttendanceStatus.SICK);
         }
         return attendanceRepository.findAllByDate(LocalDate.now());
     }
@@ -69,12 +70,12 @@ public class AttendanceServiceImpl implements AttendanceService{
 
         // 출근 시간 전이라면
         if(LocalTime.now().isBefore(AttendanceTime.ON_TIME.getLocalTime())) {
-            attendanceList.get(0).setAttStatus(AttendanceStatus.ON);
-            attendanceList.get(0).setAttOnTime(LocalTime.now());
-            // 출근 시간 이후라면
+            attendanceList.get(0).changeAttStatus(AttendanceStatus.ON);
+            attendanceList.get(0).changeAttOnTime(LocalTime.now());
+        // 출근 시간 이후라면
         }else{
-            attendanceList.get(0).setAttStatus(AttendanceStatus.LATE);
-            attendanceList.get(0).setAttOnTime(LocalTime.now());
+            attendanceList.get(0).changeAttStatus(AttendanceStatus.LATE);
+            attendanceList.get(0).changeAttOnTime(LocalTime.now());
         }
         return attendanceList.get(0);
     }
@@ -88,9 +89,8 @@ public class AttendanceServiceImpl implements AttendanceService{
     @Transactional(readOnly = false)
     public Attendance offWork(Employee employee){
         List<Attendance> attendanceList = attendanceRepository.findAllByEmployeeAndDate(employee, LocalDate.now());
-        attendanceList.get(0).setAttStatus(AttendanceStatus.OFF);
-        attendanceList.get(0).setAttOnTime(LocalTime.now());
-
+        attendanceList.get(0).changeAttStatus(AttendanceStatus.OFF);
+        attendanceList.get(0).changeAttOffTime(LocalTime.now());
         return attendanceList.get(0);
     }
 
@@ -101,12 +101,10 @@ public class AttendanceServiceImpl implements AttendanceService{
      * @return 최근 날짜, 최근 시각 정렬 된 사원 근태 이력
      */
     @Override
-    public List<AttendanceDTO.ListAll> viewAll(PageRequestDTO pageRequestDTO){
-        List<AttendanceDTO.ListAll> list = new ArrayList<>();
-        for (Attendance a : attendanceRepository.findAllOrderByDateAndTime(pageRequestDTO)){
-            list.add(a.entityToListAll());
-        }
-        return list;
+    public List<AttendanceDTO.Index> findAll(PageRequestDTO pageRequestDTO){
+        return attendanceRepository.findAll(pageRequestDTO).stream()
+                .map(Attendance::entityToIndex)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -115,9 +113,9 @@ public class AttendanceServiceImpl implements AttendanceService{
      * @return 전체 직원 근태 목록 페이징 정보
      */
     @Override
-    public PageResultDTO viewAllForPage(int pageNo){
+    public PageResultDTO findPage(int pageNo){
         return new PageResultDTO(
-                attendanceRepository.findAllOrderByDateAndTimeTotal(),
+                attendanceRepository.findTotal(),
                 pageNo);
     }
 
@@ -127,8 +125,7 @@ public class AttendanceServiceImpl implements AttendanceService{
      * @return 모든 사원들의 출근 상태
      */
     @Override
-    public AttendanceDTO.Status viewStatus(){
-
+    public AttendanceDTO.Status findAllOnlyStatus(){
         HashMap<AttendanceStatus, Integer> statusMap = new HashMap<>();
         for(Attendance a : attendanceRepository.findAllByDate(LocalDate.now())) {
             statusMap.put(a.getAttStatus(), statusMap.getOrDefault(a.getAttStatus(), 0) + 1);
@@ -150,12 +147,10 @@ public class AttendanceServiceImpl implements AttendanceService{
      * @return 각 상태에 해당하는 사원 목록
      */
     @Override
-    public List<AttendanceDTO.ListAll> viewStatusDetail(AttendanceStatus status){
-        List<AttendanceDTO.ListAll> list = new ArrayList<>();
-        for(Attendance a : attendanceRepository.findAllByStatus(status)){
-            list.add(a.entityToListAll());
-        }
-        return list;
+    public List<AttendanceDTO.Index> findAllByStatus(AttendanceStatus status){
+        return attendanceRepository.findAllByStatus(status).stream()
+                .map(Attendance::entityToIndex)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -165,13 +160,10 @@ public class AttendanceServiceImpl implements AttendanceService{
      * @return 해당하는 날짜만 담은 근태 이력
      */
     @Override
-    public List<AttendanceDTO.ListAll> viewByDate(LocalDate date){
-        List<AttendanceDTO.ListAll> list = new ArrayList<>();
-
-        for (Attendance a : attendanceRepository.findAllByDate(date)){
-            list.add(a.entityToListAll());
-        }
-        return list;
+    public List<AttendanceDTO.Index> findAllByDate(LocalDate date){
+        return attendanceRepository.findAllByDate(date).stream()
+                .map(Attendance::entityToIndex)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -181,13 +173,10 @@ public class AttendanceServiceImpl implements AttendanceService{
      * @return 해당하는 이름만 담은 근태 이력
      */
     @Override
-    public List<AttendanceDTO.ListAll> viewByName(Long id){
-        List<AttendanceDTO.ListAll> list = new ArrayList<>();
-
-        for (Attendance a : attendanceRepository.findAllById(id)){
-            list.add(a.entityToListAll());
-        }
-        return list;
+    public List<AttendanceDTO.Index> findAllByName(Long id){
+        return attendanceRepository.findAllById(id).stream()
+                .map(Attendance::entityToIndex)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -198,12 +187,9 @@ public class AttendanceServiceImpl implements AttendanceService{
      * @return 해당 날짜와 이름만 담은 근태 이력
      */
     @Override
-    public List<AttendanceDTO.ListAll> viewByDateAndName(LocalDate date, Long id){
-        List<AttendanceDTO.ListAll> list = new ArrayList<>();
-
-        for (Attendance a : attendanceRepository.findAllByDateAndId(date, id)){
-            list.add(a.entityToListAll());
-        }
-        return list;
+    public List<AttendanceDTO.Index> findAllByDateAndName(LocalDate date, Long id){
+        return attendanceRepository.findAllByDateAndId(date ,id).stream()
+                .map(Attendance::entityToIndex)
+                .collect(Collectors.toList());
     }
 }

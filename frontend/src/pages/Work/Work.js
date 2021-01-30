@@ -8,7 +8,7 @@ import { FaPlus } from 'react-icons/fa';
 
 const Work = function () {
   const [input, setInput] = useState('');
-  const [datas, setData] = useState([{ data: '' }]);
+  const [datas, setData] = useState([]);
   const [option, setOption] = useState('workName');
 
   //로딩 및 에러처리
@@ -25,7 +25,7 @@ const Work = function () {
     workEndDate: '',
   });
 
-  const [deptLists, setDeptLists] = useState([{ dept: '' }]);
+  const [deptLists, setDeptLists] = useState([]);
   const [selectedDept, setSelectedDept] = useState('');
 
   const { workName, workCharger, workStartDate, workEndDate } = modalInput;

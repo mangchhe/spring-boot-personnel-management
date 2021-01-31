@@ -3,27 +3,37 @@ package team.okky.personnel_management.config.jwt;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import team.okky.personnel_management.access.Access;
+import team.okky.personnel_management.access.AccessService;
 import team.okky.personnel_management.config.auth.PrincipalDetails;
 import team.okky.personnel_management.manager.Manager;
+import team.okky.personnel_management.manager.ManagerRepository;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.Date;
 
-@RequiredArgsConstructor
 @Slf4j
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authenticationManager;
+    private final ManagerRepository managerRepository;
+    private final AccessService accessService;
+
+    public JwtAuthenticationFilter(AuthenticationManager authenticationManager, ManagerRepository managerRepository, AccessService accessService) {
+        this.authenticationManager = authenticationManager;
+        this.managerRepository = managerRepository;
+        this.accessService = accessService;
+    }
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
@@ -32,6 +42,16 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             
             ObjectMapper objectMapper = new ObjectMapper();
             Manager manager = objectMapper.readValue(request.getInputStream(), Manager.class);
+
+            String ip = request.getHeader("X-FORWARDED-FOR");
+            if(ip==null){ip = request.getRemoteAddr();}
+            Access access = Access.builder()
+                    .accessDate(LocalDateTime.now())
+                    .accessArea(ip)
+                    .manager(managerRepository.findByEmail(manager.getMnEmail()).get(0))
+                    .build();
+
+            accessService.save(access);
 
             UsernamePasswordAuthenticationToken authenticationToken =
                     new UsernamePasswordAuthenticationToken(

@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.filter.CorsFilter;
+import team.okky.personnel_management.access.AccessService;
 import team.okky.personnel_management.config.exception.AuthenticationException;
 import team.okky.personnel_management.config.exception.AuthorizationException;
 import team.okky.personnel_management.config.jwt.JwtAuthenticationFilter;
@@ -22,6 +23,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final CorsFilter corsFilter;
     private final ManagerRepository managerRepository;
+    private final AccessService accessService;
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder(){
@@ -34,7 +36,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .addFilter(corsFilter)
-                .addFilter(new JwtAuthenticationFilter(authenticationManager()))
+                .addFilter(new JwtAuthenticationFilter(authenticationManager(), managerRepository, accessService))
                 .addFilter(new JwtAuthorizationFilter(authenticationManager(), managerRepository))
                 .formLogin().disable()
                 .httpBasic().disable()

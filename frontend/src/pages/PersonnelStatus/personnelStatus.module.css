@@ -111,3 +111,11 @@
   top: 20px;
   cursor: pointer;
 }
+
+.pagination {
+  text-align: center;
+  margin-top: 5em;
+  margin-bottom: 3em;
+  display: flex;
+  justify-content: center;
+}

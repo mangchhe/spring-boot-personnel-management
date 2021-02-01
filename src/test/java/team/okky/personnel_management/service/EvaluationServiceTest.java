@@ -92,7 +92,7 @@ public class EvaluationServiceTest {
         evalSearch.setName("");
 
         //when
-        List<EvaluationDTO.evalBlock> evalBlocks = evaluationService.findAll(evalSearch);
+        List<EvaluationDTO.EvalBlock> evalBlocks = evaluationService.findAll(evalSearch);
 
         //then
         Assertions.assertEquals(size,evalBlocks.size());
@@ -117,15 +117,15 @@ public class EvaluationServiceTest {
 
 
         //when
-        List<EvaluationDTO.evalBlock> findEvalBlock1 = evaluationService.findAll(workSearch1);
-        List<EvaluationDTO.evalBlock> findEvalBlock2 = evaluationService.findAll(workSearch2);
-        List<EvaluationDTO.evalBlock> findEvalBlock3 = evaluationService.findAll(workSearch3);
+        List<EvaluationDTO.EvalBlock> findEvalBlock1 = evaluationService.findAll(workSearch1);
+        List<EvaluationDTO.EvalBlock> findEvalBlock2 = evaluationService.findAll(workSearch2);
+        List<EvaluationDTO.EvalBlock> findEvalBlock3 = evaluationService.findAll(workSearch3);
 
         //then
         if(!findEvalBlock1.get(0).getEvalInfo().getWorkName().equals("업무0")){
             Assertions.fail("해당 업무명으로 검색되지 않았습니다.");
         }
-        for(EvaluationDTO.evalPerWork e: findEvalBlock2.get(0).getEvalPerWorkList()){
+        for(EvaluationDTO.EvalPerWork e: findEvalBlock2.get(0).getEvalPerWorkList()){
             if(!e.getEmpName().contains("테스터0")){
                 Assertions.fail("해당 직원명으로 검색되지 않았습니다.");
             }
@@ -138,8 +138,8 @@ public class EvaluationServiceTest {
     @Test
     public void 성과수정()throws Exception{
         //given
-        EvaluationDTO.evalBlock selectEvalBlock = evaluationService.findOneByEvalBlock(workRepository.findAll().get(0).getWorkId());
-        List<EvaluationDTO.evalPerWork> evalPerWorks = selectEvalBlock.getEvalPerWorkList();
+        EvaluationDTO.EvalBlock selectEvalBlock = evaluationService.findOneByEvalBlock(workRepository.findAll().get(0).getWorkId());
+        List<EvaluationDTO.EvalPerWork> evalPerWorks = selectEvalBlock.getEvalPerWorkList();
 
         int score = 100;
         String comment = "BEST";

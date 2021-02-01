@@ -2,6 +2,7 @@ package team.okky.personnel_management.access;
 
 import lombok.*;
 import team.okky.personnel_management.manager.Manager;
+import team.okky.personnel_management.manager.ManagerDTO;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -21,4 +22,12 @@ public class Access {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="mn_id")
     private Manager manager;
+
+    public ManagerDTO.AccessRecord allAccessRecord(){
+        return ManagerDTO.AccessRecord.builder()
+                .accessDate(getAccessDate())
+                .accessArea(getAccessArea())
+                .build();
+    }
+
 }

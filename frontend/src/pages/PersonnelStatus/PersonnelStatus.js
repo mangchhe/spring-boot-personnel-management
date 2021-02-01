@@ -20,7 +20,10 @@ function PersonnelStatus() {
     currentPage: 1,
     totalPage: 5,
   });
+  const [input, setInput] = useState('');
+  const [option, setOption] = useState('employee');
   const [datas, setDatas] = useState([]);
+  const [showPage, setShowPage] = useState(true);
 
   const fetchPersonnelStatus = () => {
     axios.get(`transfer?page=${page.currentPage}`).then((response) => {
@@ -28,29 +31,64 @@ function PersonnelStatus() {
       setDatas(transList);
     });
   };
-  const handlePageChange = (e) => {
-    const currentPage = parseInt(e.target.textContent);
-    setPage({ ...page, currentPage: currentPage });
+
+  const fetchSearchResult = () => {
+    axios.get(`transfer?${option}=${input}`).then((response) => {
+      const { transList } = response.data;
+      setDatas(transList);
+    });
   };
+
   useEffect(() => {
     fetchPersonnelStatus();
   }, [page]);
 
+  const handleSelectChange = (e) => {
+    setOption(e.target.value);
+  };
+  const handleInputChange = (e) => {
+    setInput(e.target.value);
+  };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (!input) {
+      alert('검색어를 입력해주세요');
+      return;
+    }
+
+    fetchSearchResult();
+    setShowPage(false);
+  };
+
+  const handlePageChange = (e) => {
+    const currentPage = parseInt(e.target.textContent);
+    setPage({ ...page, currentPage: currentPage });
+  };
+
   return (
     <div className={styles.container}>
-      <PersonnelStatusInput />
+      <PersonnelStatusInput
+        handleSubmit={handleSubmit}
+        optionValue={option}
+        handleSelectChange={handleSelectChange}
+        input={input}
+        handleInputChange={handleInputChange}
+      />
       <div className={styles.addButtonWrap}>
         <button className={styles.addButton}>발령</button>
       </div>
       <Table page="personnelStatus" headerArr={HEADER_ARR} dataArr={datas} />
       <div className={styles.pagination}>
-        <Pagination
-          count={page.totalPage}
-          page={page.currentPage}
-          onChange={handlePageChange}
-          hidePrevButton
-          hideNextButton
-        />
+        {showPage && (
+          <Pagination
+            count={page.totalPage}
+            page={page.currentPage}
+            onChange={handlePageChange}
+            hidePrevButton
+            hideNextButton
+          />
+        )}
       </div>
     </div>
   );

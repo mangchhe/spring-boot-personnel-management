@@ -91,11 +91,11 @@ const Evaluation = function () {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!input) {
+      alert(`검색어를 입력해주세요`);
       return;
     }
 
     fetchSearchResult();
-    console.log(datas);
   };
 
   const correctModalOpen = async (e) => {

@@ -16,9 +16,9 @@ const PersonnelStatusInput = function ({
           onChange={handleSelectChange}
           className={styles.selectBox}
         >
-          <option value="workName">업무명</option>
-          <option value="empName">직원이름</option>
-          <option value="deptName">부서</option>
+          <option value="employee">이름</option>
+          <option value="position">직급</option>
+          <option value="department">부서</option>
         </select>
         <input
           value={input}

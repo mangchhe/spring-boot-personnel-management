@@ -86,6 +86,7 @@ const Work = function () {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!input) {
+      alert('검색어를 입력해주세요');
       return;
     }
 

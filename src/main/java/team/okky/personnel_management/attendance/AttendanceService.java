@@ -18,7 +18,7 @@ public interface AttendanceService {
     public AttendanceDTO.Status findAllOnlyStatus();
     public List<AttendanceDTO.Index> findAllByStatus(AttendanceStatus status);
     public List<AttendanceDTO.Index> findAllByDate(LocalDate date);
-    public List<AttendanceDTO.Index> findAllByName(Long id);
-    public List<AttendanceDTO.Index> findAllByDateAndName(LocalDate date, Long id);
+    public List<AttendanceDTO.Index> findAllById(Long id);
+    public List<AttendanceDTO.Index> findAllByEmpIdAndDate(Long id, LocalDate date);
 
 }

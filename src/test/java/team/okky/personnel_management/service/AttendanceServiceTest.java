@@ -88,7 +88,9 @@ class AttendanceServiceTest {
     @Test
     public void 출근() throws Exception {
         //given
-        Employee employee = Employee.builder().build();
+        Employee employee = Employee.builder()
+                .department(new Department())
+                .build();
         employeeRepository.save(employee);
 
         attendanceRepository.save(
@@ -117,7 +119,9 @@ class AttendanceServiceTest {
     @Test
     public void 퇴근() throws Exception {
         //given
-        Employee employee = Employee.builder().build();
+        Employee employee = Employee.builder()
+                .department(new Department())
+                .build();
         employeeRepository.save(employee);
 
         attendanceService.autoCreateAttendance();
@@ -189,7 +193,9 @@ class AttendanceServiceTest {
         int on = 0, off = 0, absence = 10, late = 0, vacation = 0, sick = 0;
 
         for (int i = 0; i < 10; i++) {
-            Employee employee = Employee.builder().build();
+            Employee employee = Employee.builder()
+                    .department(new Department())
+                    .build();
             employeelist.add(employee);
             employeeRepository.save(employee);
 
@@ -383,10 +389,10 @@ class AttendanceServiceTest {
 
         //when, then
         for (int i = 0; i < 3; i++) {
-            if(!attendanceService.findAllByName(employee.getEmpId()).get(i).getEmpName().equals("테스터1")){
+            if(!attendanceService.findAllById(employee.getEmpId()).get(i).getEmpName().equals("테스터1")){
                 Assertions.fail("해당이름 검색에 문제가 있습니다.(1)");
             }
-            if(!attendanceService.findAllByName(employee2.getEmpId()).get(i).getEmpName().equals("테스터2")){
+            if(!attendanceService.findAllById(employee2.getEmpId()).get(i).getEmpName().equals("테스터2")){
                 Assertions.fail("해당이름 검색에 문제가 있습니다.(2)");
             }
         }
@@ -419,7 +425,7 @@ class AttendanceServiceTest {
             attendanceRepository.save(attendance2);
         }
         //when, then
-        for(AttendanceDTO.Index list : attendanceService.findAllByDateAndName(LocalDate.now(), employee.getEmpId())){
+        for(AttendanceDTO.Index list : attendanceService.findAllByEmpIdAndDate(employee.getEmpId(), LocalDate.now())){
             Assertions.assertEquals(list.getEmpName(), "테스터");
             Assertions.assertEquals(list.getAttDate(), LocalDate.now());
         }

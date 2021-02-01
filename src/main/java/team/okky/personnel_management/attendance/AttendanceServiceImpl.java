@@ -14,7 +14,6 @@ import team.okky.personnel_management.vacation.VacationRepository;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -173,7 +172,7 @@ public class AttendanceServiceImpl implements AttendanceService{
      * @return 해당하는 이름만 담은 근태 이력
      */
     @Override
-    public List<AttendanceDTO.Index> findAllByName(Long id){
+    public List<AttendanceDTO.Index> findAllById(Long id){
         return attendanceRepository.findAllById(id).stream()
                 .map(Attendance::entityToIndex)
                 .collect(Collectors.toList());
@@ -187,8 +186,8 @@ public class AttendanceServiceImpl implements AttendanceService{
      * @return 해당 날짜와 이름만 담은 근태 이력
      */
     @Override
-    public List<AttendanceDTO.Index> findAllByDateAndName(LocalDate date, Long id){
-        return attendanceRepository.findAllByDateAndId(date ,id).stream()
+    public List<AttendanceDTO.Index> findAllByEmpIdAndDate(Long id, LocalDate date){
+        return attendanceRepository.findAllByEmpIdAndDate(id, date).stream()
                 .map(Attendance::entityToIndex)
                 .collect(Collectors.toList());
     }

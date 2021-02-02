@@ -126,7 +126,7 @@ public class AttendanceServiceImpl implements AttendanceService{
     @Override
     public AttendanceDTO.Status findAllOnlyStatus(){
         HashMap<AttendanceStatus, Integer> statusMap = new HashMap<>();
-        for(Attendance a : attendanceRepository.findAllByDate(LocalDate.now())) {
+        for(Attendance a : attendanceRepository.findAllByNowDate()) {
             statusMap.put(a.getAttStatus(), statusMap.getOrDefault(a.getAttStatus(), 0) + 1);
         }
 

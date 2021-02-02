@@ -47,6 +47,12 @@ public class AttendanceRepository {
                 .getResultList();
     }
 
+    public List<Attendance> findAllByNowDate(){
+        return em.createQuery("select a from Attendance a where a.attDate = :att_date", Attendance.class)
+                .setParameter("att_date", LocalDate.now())
+                .getResultList();
+    }
+
     public List<Attendance> findAllById(Long id){
         return em.createQuery("select a from Attendance a join fetch a.employee e join fetch e.department where e.empId = :emp_id", Attendance.class)
                 .setParameter("emp_id", id)

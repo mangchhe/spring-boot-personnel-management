@@ -89,9 +89,8 @@ public class TransferRepository {
     }
 
     public List<Transfer> findAllByNowAppointDate(){
-        LocalDate nowDate = LocalDate.now();
         return em.createQuery("select t from Transfer t join fetch t.employee where t.appointDate = :nowDate", Transfer.class)
-                .setParameter("nowDate", nowDate)
+                .setParameter("nowDate", LocalDate.now())
                 .getResultList();
     }
 

@@ -45,7 +45,7 @@ public class TransferRepository {
     }
 
     public List<Transfer> findAllByEmpName(String empName, PageRequestDTO pageRequestDTO){
-        return em.createQuery("select t from Transfer t join fetch t.curDepartment join fetch t.transDepartment where t.employee.empName = :empName order by t.appointDate desc", Transfer.class)
+        return em.createQuery("select t from Transfer t join fetch t.employee join fetch t.curDepartment join fetch t.transDepartment where t.employee.empName = :empName order by t.appointDate desc", Transfer.class)
                 .setParameter("empName", empName)
                 .setFirstResult(pageRequestDTO.getPage())
                 .setMaxResults(pageRequestDTO.getSize())
@@ -59,7 +59,7 @@ public class TransferRepository {
     }
 
     public List<Transfer> findAllByDeptName(String deptName, PageRequestDTO pageRequestDTO){
-        return em.createQuery("select t from Transfer t join fetch t.employee join fetch t.transDepartment where t.curDepartment.deptName = :deptName order by t.appointDate desc", Transfer.class)
+        return em.createQuery("select t from Transfer t join fetch t.employee join fetch t.curDepartment join fetch t.transDepartment where t.curDepartment.deptName = :deptName order by t.appointDate desc", Transfer.class)
                 .setParameter("deptName", deptName)
                 .setFirstResult(pageRequestDTO.getPage())
                 .setMaxResults(pageRequestDTO.getSize())

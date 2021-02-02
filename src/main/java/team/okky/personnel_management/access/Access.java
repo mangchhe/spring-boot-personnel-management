@@ -23,8 +23,8 @@ public class Access {
     @JoinColumn(name="mn_id")
     private Manager manager;
 
-    public ManagerDTO.AccessRecord allAccessRecord(){
-        return ManagerDTO.AccessRecord.builder()
+    public AccessDTO.AccessRecord allAccessRecord(){
+        return AccessDTO.AccessRecord.builder()
                 .accessDate(getAccessDate())
                 .accessArea(getAccessArea())
                 .build();

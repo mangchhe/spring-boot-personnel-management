@@ -9,13 +9,13 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import team.okky.personnel_management.access.Access;
+import team.okky.personnel_management.access.AccessDTO;
 import team.okky.personnel_management.access.AccessRepository;
-import team.okky.personnel_management.access.GeoLocationDTO;
-import team.okky.personnel_management.access.GeoService;
 import team.okky.personnel_management.config.auth.PrincipalDetails;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,7 +28,6 @@ public class ManagerController {
     private final ManagerService managerService;
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-    private final GeoService geoService;
 
     @GetMapping("/profile")
     public ManagerDTO.Profile profile(@AuthenticationPrincipal PrincipalDetails principalDetails){
@@ -43,18 +42,26 @@ public class ManagerController {
     }
 
     @GetMapping("/profile/accessRecord")
-    public List<ManagerDTO.AccessRecord> accessRecord(@AuthenticationPrincipal PrincipalDetails principalDetails){
+    public List<AccessDTO.AccessRecordWithGeo> accessRecord(@AuthenticationPrincipal PrincipalDetails principalDetails){
         String mnEmail = principalDetails.getUsername();
         List<Access> accessList = accessRepository.findCurrentAccessByEmail(mnEmail);
-        return accessList.stream().map(Access::allAccessRecord).collect(Collectors.toList());
+        List<AccessDTO.AccessRecord> accessRecord = accessList.stream().map(Access::allAccessRecord).collect(Collectors.toList());
+        InetAddress ipAddress = null;
+        List<AccessDTO.AccessRecordWithGeo> list = new ArrayList<>();
 
-//        List<ManagerDTO.AccessRecordWithGeo> accessRecordWithGeoList;
-//        ManagerDTO.AccessRecordWithGeo.builder()
-//                .accessRecord()
-//                .geoLocation(geoService.findCity())
-//                .build();
-//
-//        return
+        for(AccessDTO.AccessRecord a : accessRecord){
+            try {
+                ipAddress = InetAddress.getByName(a.getAccessArea());
+                AccessDTO.AccessRecordWithGeo accessRecordWithGeo = AccessDTO.AccessRecordWithGeo.builder()
+                        .accessRecord(a)
+                        .geoLocation(managerService.findCity(ipAddress))
+                        .build();
+                list.add(accessRecordWithGeo);
+            } catch (UnknownHostException e) {
+                log.info("client ip를 가져오지 못하였습니다.");
+            }
+        }
+        return list;
     }
 
     @PutMapping("/profile")

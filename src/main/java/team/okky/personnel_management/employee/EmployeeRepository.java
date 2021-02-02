@@ -65,7 +65,7 @@ public class EmployeeRepository {
     }
 
     public List<Employee> findAllByDeptName(String deptName, PageRequestDTO pageRequestDTO){
-        return em.createQuery("select e from Employee e where e.department.deptName = :deptName", Employee.class)
+        return em.createQuery("select e from Employee e join fetch e.department where e.department.deptName = :deptName", Employee.class)
                 .setParameter("deptName", deptName)
                 .setFirstResult(pageRequestDTO.getPage())
                 .setMaxResults(pageRequestDTO.getSize())
@@ -84,7 +84,5 @@ public class EmployeeRepository {
                 .setMaxResults(5)
                 .getResultList();
     }
-
-
 
 }

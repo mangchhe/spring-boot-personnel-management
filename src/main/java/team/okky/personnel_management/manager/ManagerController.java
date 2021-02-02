@@ -54,7 +54,7 @@ public class ManagerController {
                 ipAddress = InetAddress.getByName(a.getAccessArea());
                 AccessDTO.AccessRecordWithGeo accessRecordWithGeo = AccessDTO.AccessRecordWithGeo.builder()
                         .accessRecord(a)
-                        .geoLocation(managerService.findCity(ipAddress))
+                        .subdivisionName(managerService.findCity(ipAddress))
                         .build();
                 list.add(accessRecordWithGeo);
             } catch (UnknownHostException e) {

@@ -19,13 +19,6 @@ public class AccessDTO {
     @Getter @Setter
     public static class AccessRecordWithGeo {
         private AccessRecord accessRecord;
-        private GeoLocation geoLocation;
-    }
-
-    @Builder
-    @Getter @Setter
-    public static class GeoLocation {
         private String subdivisionName;
-        private String cityName;
     }
 }

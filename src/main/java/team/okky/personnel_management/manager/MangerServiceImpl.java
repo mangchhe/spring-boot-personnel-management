@@ -47,16 +47,12 @@ public class MangerServiceImpl implements ManagerService {
      */
     @Override
     @Transactional(readOnly = true)
-    public AccessDTO.GeoLocation findCity(InetAddress ipAddress) {
+    public String findCity(InetAddress ipAddress) {
         CityResponse response = geoReader.city(ipAddress);
 
         Subdivision subdivision = response.getMostSpecificSubdivision();
-        City city = response.getCity();
 
-        return AccessDTO.GeoLocation.builder()
-                .subdivisionName(subdivision.getName())
-                .cityName(city.getName())
-                .build();
+        return subdivision.getName();
     }
 
 }

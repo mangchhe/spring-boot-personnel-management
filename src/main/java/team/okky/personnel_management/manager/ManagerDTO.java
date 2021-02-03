@@ -10,7 +10,7 @@ public class ManagerDTO {
 
     @Builder
     @Getter @Setter
-    public static class profile{
+    public static class Profile{
         private String mnEmail;
         private LocalDateTime currentAccessDate;
         private String accessArea;
@@ -18,7 +18,7 @@ public class ManagerDTO {
 
     @Builder
     @Getter @Setter
-    public static class updatePw{
+    public static class UpdatePw{
         private String curPw;
         private String newPw;
         private String newPwCheck;

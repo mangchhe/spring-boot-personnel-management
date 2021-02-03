@@ -15,13 +15,13 @@ public class EvaluationDTO {
     }
 
     @Getter @Setter
-    public static class evalBlock{
+    public static class EvalBlock{
         private EvaluationDTO.EvalInfo evalInfo;
-        private List<evalPerWork> evalPerWorkList = new ArrayList<>();
+        private List<EvalPerWork> evalPerWorkList = new ArrayList<>();
     }
 
     @Builder @Getter @Setter
-    public static class evalPerWork{
+    public static class EvalPerWork{
         private Long evalId;
         private String comment;
         private int score;

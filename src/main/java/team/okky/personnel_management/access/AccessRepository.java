@@ -31,10 +31,9 @@ public class AccessRepository {
         return access;
     }
 
-    public Access findCurrentAccessByEmail(String email){
+    public List<Access> findCurrentAccessByEmail(String email){
         return em.createQuery("select a from Access a where a.manager.mnEmail =:email order by a.accessDate desc",Access.class)
                 .setParameter("email",email)
-                .setMaxResults(1)
-                .getSingleResult();
+                .getResultList();
     }
 }

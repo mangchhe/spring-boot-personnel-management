@@ -40,7 +40,7 @@ public class BeanConfiguration {
 
     @Component
     public class GeoReader{
-        private static final String DATABASE_CITY_PATH = "C:\\Users\\user\\study\\GeoLite2-City.mmdb";
+        private static final String DATABASE_CITY_PATH = "GeoLite2-City.mmdb";
         private DatabaseReader reader;
 
         public GeoReader() throws IOException {

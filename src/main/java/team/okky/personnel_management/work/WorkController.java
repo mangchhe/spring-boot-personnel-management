@@ -20,15 +20,15 @@ public class WorkController {
     private final EmployeeRepository employeeRepository;
 
     @GetMapping("/work/create")
-    public WorkForm.workAndDept createWorkForm(){
-        WorkForm.workAndDept workAndDept = new WorkForm.workAndDept();
+    public WorkForm.WorkAndDept createWorkForm(){
+        WorkForm.WorkAndDept workAndDept = new WorkForm.WorkAndDept();
         workAndDept.setWork(Work.builder().build());
         workAndDept.setDepartmentList(departmentRepository.findAll());
         return workAndDept;
     }
 
     @PostMapping("/work/create")
-    public String create(@RequestBody WorkForm.workCreateForm workForm){
+    public String create(@RequestBody WorkForm.WorkCreateForm workForm){
         Department department = departmentRepository.findOne(workForm.getWorkDept());
         List<Employee> empList = employeeRepository.findAllByDeptId(department.getDeptId());
 
@@ -56,9 +56,9 @@ public class WorkController {
     }
 
     @GetMapping("/work/{workId}/edit")
-    public WorkForm.workUpdateForm updateWorkForm(@PathVariable("workId") Long workId){
+    public WorkForm.WorkUpdateForm updateWorkForm(@PathVariable("workId") Long workId){
 
-        WorkForm.workUpdateForm form = new WorkForm.workUpdateForm();
+        WorkForm.WorkUpdateForm form = new WorkForm.WorkUpdateForm();
         Work work = workService.findOne(workId);
         form.setWorkName(work.getWorkName());
         form.setDefaultDeptName(work.getDepartment().getDeptName());
@@ -71,7 +71,7 @@ public class WorkController {
     }
 
     @PutMapping("/work/{workId}/edit")
-    public String update(@PathVariable Long workId,@RequestBody WorkForm.workCreateForm form ){
+    public String update(@PathVariable Long workId,@RequestBody WorkForm.WorkCreateForm form ){
         workService.update(workId,form.getWorkName(),form.getWorkDept(),form.getWorkChargeName(),
                 form.getWorkStartDate(),form.getWorkEndDate());
         return "redirect:/work";

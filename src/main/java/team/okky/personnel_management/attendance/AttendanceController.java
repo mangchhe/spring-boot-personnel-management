@@ -19,7 +19,7 @@ public class AttendanceController {
 
     @GetMapping("/attendance")
     public AttendanceDTO.StatusAndIndexWithPage viewIndex(@RequestParam(value = "page", defaultValue = "1") Integer pageNo,
-                                                          @RequestParam(required = false) Long name,
+                                                          @RequestParam(value = "name", required = false) Long id,
                                                           @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam(required = false) LocalDate date){
 
         PageRequestDTO pageRequestDTO = new PageRequestDTO(pageNo);
@@ -27,14 +27,14 @@ public class AttendanceController {
 
         List<AttendanceDTO.Index> attendanceList = null;
 
-        if(name == null && date != null) {
+        if(id == null && date != null) {
             attendanceList = attendanceService.findAllByDate(date);
         }
-        else if(name != null && date == null){
-            attendanceList = attendanceService.findAllByName(name);
+        else if(id != null && date == null){
+            attendanceList = attendanceService.findAllById(id);
         }
-        else if(name != null && date != null){
-            attendanceList = attendanceService.findAllByDateAndName(date, name);
+        else if(id != null && date != null){
+            attendanceList = attendanceService.findAllByEmpIdAndDate(id, date);
         }else{
             attendanceList = attendanceService.findAll(pageRequestDTO);
             statusAndList.setPageResultDTO(attendanceService.findPage(pageNo));

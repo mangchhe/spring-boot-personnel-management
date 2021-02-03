@@ -26,7 +26,7 @@ public class EvaluationService {
         return evaluationRepository.findOne(id);
     }
 
-    public EvaluationDTO.evalBlock findOneByEvalBlock(Long evalBlockId){
+    public EvaluationDTO.EvalBlock findOneByEvalBlock(Long evalBlockId){
         SearchDTO evalSearch = new SearchDTO();
         evalSearch.setNameType("workName");
         Work work = workRepository.findOne(evalBlockId);
@@ -34,10 +34,10 @@ public class EvaluationService {
         return findAll(evalSearch).get(0);
     }
 
-    public List<EvaluationDTO.evalBlock> findAll(SearchDTO evalSearch) {
-        List<EvaluationDTO.evalBlock> list = new ArrayList<>();
-        EvaluationDTO.evalBlock evalBlock = new EvaluationDTO.evalBlock();
-        List<EvaluationDTO.evalPerWork> evalPerWorkList = new ArrayList<>();
+    public List<EvaluationDTO.EvalBlock> findAll(SearchDTO evalSearch) {
+        List<EvaluationDTO.EvalBlock> list = new ArrayList<>();
+        EvaluationDTO.EvalBlock evalBlock = new EvaluationDTO.EvalBlock();
+        List<EvaluationDTO.EvalPerWork> evalPerWorkList = new ArrayList<>();
         List<Long> workIdList = workRepository.findWorkId();
 
         String nameType = evalSearch.getNameType();
@@ -48,13 +48,13 @@ public class EvaluationService {
             List<Evaluation> evalByEmpName = evaluationRepository.findByEmpName(name);
 
             for (Evaluation e : evalByEmpName) {
-                List<EvaluationDTO.evalPerWork> findEvalPerWork = new ArrayList<>();
+                List<EvaluationDTO.EvalPerWork> findEvalPerWork = new ArrayList<>();
                 findEvalPerWork.add(addEvalPerWorkList(e));
 
                 Work work = workRepository.findOne(e.getWork().getWorkId());
                 EvaluationDTO.EvalInfo evalInfo = addEvalInfo(work);
 
-                EvaluationDTO.evalBlock evalBlockAll = new EvaluationDTO.evalBlock();
+                EvaluationDTO.EvalBlock evalBlockAll = new EvaluationDTO.EvalBlock();
                 evalBlockAll.setEvalInfo(evalInfo);
                 evalBlockAll.setEvalPerWorkList(findEvalPerWork);
                 list.add(evalBlockAll);
@@ -77,7 +77,7 @@ public class EvaluationService {
             List<Work> workByDeptName = workRepository.findByDeptName(name);
 
             for (Work w : workByDeptName) {
-                List<EvaluationDTO.evalPerWork> evalPerWorkById = new ArrayList<>();
+                List<EvaluationDTO.EvalPerWork> evalPerWorkById = new ArrayList<>();
                 for (Evaluation e : evaluationRepository.findByWorkName(w.getWorkName())) {
                    evalPerWorkById.add(addEvalPerWorkList(e));
                 }
@@ -85,7 +85,7 @@ public class EvaluationService {
                 Work work = workRepository.findOne(w.getWorkId());
                 EvaluationDTO.EvalInfo evalInfo = addEvalInfo(work);
 
-                EvaluationDTO.evalBlock evalBlockAll = new EvaluationDTO.evalBlock();
+                EvaluationDTO.EvalBlock evalBlockAll = new EvaluationDTO.EvalBlock();
                 evalBlockAll.setEvalInfo(evalInfo);
                 evalBlockAll.setEvalPerWorkList(evalPerWorkById);
                 list.add(evalBlockAll);
@@ -93,7 +93,7 @@ public class EvaluationService {
         }
         else {
             for (Long workId : workIdList) {
-                List<EvaluationDTO.evalPerWork> evalPerWorkById = new ArrayList<>();
+                List<EvaluationDTO.EvalPerWork> evalPerWorkById = new ArrayList<>();
                 for (Evaluation e : evaluationRepository.findAll(workId)) {
                     evalPerWorkById.add(addEvalPerWorkList(e));
                 }
@@ -101,7 +101,7 @@ public class EvaluationService {
                 Work work = workRepository.findOne(workId);
                 EvaluationDTO.EvalInfo evalInfo = addEvalInfo(work);
 
-                EvaluationDTO.evalBlock evalBlockAll = new EvaluationDTO.evalBlock();
+                EvaluationDTO.EvalBlock evalBlockAll = new EvaluationDTO.EvalBlock();
                 evalBlockAll.setEvalInfo(evalInfo);
                 evalBlockAll.setEvalPerWorkList(evalPerWorkById);
                 list.add(evalBlockAll);
@@ -110,8 +110,8 @@ public class EvaluationService {
     return list;
     }
 
-    public EvaluationDTO.evalPerWork addEvalPerWorkList(Evaluation e){
-        EvaluationDTO.evalPerWork evalPerWork = EvaluationDTO.evalPerWork.builder()
+    public EvaluationDTO.EvalPerWork addEvalPerWorkList(Evaluation e){
+        EvaluationDTO.EvalPerWork evalPerWork = EvaluationDTO.EvalPerWork.builder()
                 .evalId(e.getEvalId())
                 .empName(e.getEmployee().getEmpName())
                 .score(e.getEvalResultScore())

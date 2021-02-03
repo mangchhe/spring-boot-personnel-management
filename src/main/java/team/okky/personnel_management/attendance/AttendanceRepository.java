@@ -30,30 +30,42 @@ public class AttendanceRepository {
     }
 
     public List<Attendance> findAll(PageRequestDTO pageRequestDTO){
-        return em.createQuery("select a from Attendance a order by a.attDate desc, a.attOnTime desc", Attendance.class)
+        return em.createQuery("select a from Attendance a left join fetch a.employee e join fetch e.department order by a.attDate desc, a.attOnTime desc", Attendance.class)
                 .setFirstResult(pageRequestDTO.getPage())
                 .setMaxResults(pageRequestDTO.getSize())
                 .getResultList();
     }
 
     public int findTotal(){
-        return em.createQuery("select count(a.attID) from Attendance a", Long.class)
+        return em.createQuery("select count(a) from Attendance a", Long.class)
                 .getSingleResult().intValue();
     }
 
     public List<Attendance> findAllByDate(LocalDate date){
-        return em.createQuery("select a from Attendance a where a.attDate = :att_date", Attendance.class)
+        return em.createQuery("select a from Attendance a join fetch a.employee e join fetch e.department where a.attDate = :att_date", Attendance.class)
                 .setParameter("att_date", date)
                 .getResultList();
     }
 
+    public List<Attendance> findAllByNowDate(){
+        return em.createQuery("select a from Attendance a where a.attDate = :att_date", Attendance.class)
+                .setParameter("att_date", LocalDate.now())
+                .getResultList();
+    }
+
     public List<Attendance> findAllById(Long id){
-        return em.createQuery("select a from Attendance a where a.employee.empId = :emp_id", Attendance.class)
+        return em.createQuery("select a from Attendance a join fetch a.employee e join fetch e.department where e.empId = :emp_id", Attendance.class)
                 .setParameter("emp_id", id)
                 .getResultList();
     }
 
-    public List<Attendance> findAllByDateAndId(LocalDate date, Long id){
+    public List<Attendance> findAllByStatus(AttendanceStatus status){
+        return em.createQuery("select a from Attendance a join fetch a.employee e join fetch e.department where a.attStatus = :status", Attendance.class)
+                .setParameter("status", status)
+                .getResultList();
+    }
+
+    public List<Attendance> findAllByEmpIdAndDate(Long id, LocalDate date){
         return em.createQuery("select a from Attendance a where a.employee.empId = :emp_id and a.attDate = :att_date", Attendance.class)
                 .setParameter("emp_id", id)
                 .setParameter("att_date", date)
@@ -67,10 +79,5 @@ public class AttendanceRepository {
                 .getResultList();
     }
 
-    public List<Attendance> findAllByStatus(AttendanceStatus status){
-        return em.createQuery("select a from Attendance a where a.attStatus = :status", Attendance.class)
-                .setParameter("status", status)
-                .getResultList();
-    }
 
 }

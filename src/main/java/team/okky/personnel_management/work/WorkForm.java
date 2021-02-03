@@ -11,13 +11,13 @@ import java.util.List;
 public class WorkForm {
 
     @Getter @Setter
-    public static class workAndDept{
+    public static class WorkAndDept{
         private Work work;
         private List<Department> departmentList;
     }
 
     @Getter @Setter
-    public static class workCreateForm{
+    public static class WorkCreateForm{
         private String workName;
         private Long workDept;
         private String workChargeName;
@@ -26,7 +26,7 @@ public class WorkForm {
     }
 
     @Getter @Setter
-    public static class workUpdateForm{
+    public static class WorkUpdateForm{
         private String workName;
         private String defaultDeptName;
         private String workChargeName;

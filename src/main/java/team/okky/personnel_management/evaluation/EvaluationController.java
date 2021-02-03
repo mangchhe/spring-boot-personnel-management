@@ -14,7 +14,7 @@ public class EvaluationController {
     private final EvaluationService evaluationService;
 
     @GetMapping("/evaluation")
-    public List<EvaluationDTO.evalBlock> list(@RequestParam("nameType") String nameType,
+    public List<EvaluationDTO.EvalBlock> list(@RequestParam("nameType") String nameType,
                                               @RequestParam("name") String name){
         SearchDTO evalSearch = new SearchDTO();
         evalSearch.setNameType(nameType);
@@ -23,9 +23,9 @@ public class EvaluationController {
     }
 
     @GetMapping("/evaluation/{evalBlockId}/edit")
-    public EvaluationDTO.evalBlock updateEvalForm(@PathVariable("evalBlockId") Long evalBlockId){
-        EvaluationDTO.evalBlock evalBlock= evaluationService.findOneByEvalBlock(evalBlockId);
-        EvaluationDTO.evalBlock form = new EvaluationDTO.evalBlock();
+    public EvaluationDTO.EvalBlock updateEvalForm(@PathVariable("evalBlockId") Long evalBlockId){
+        EvaluationDTO.EvalBlock evalBlock= evaluationService.findOneByEvalBlock(evalBlockId);
+        EvaluationDTO.EvalBlock form = new EvaluationDTO.EvalBlock();
         form.setEvalInfo(evalBlock.getEvalInfo());
         form.setEvalPerWorkList(evalBlock.getEvalPerWorkList());
 
@@ -33,7 +33,7 @@ public class EvaluationController {
     }
 
     @PutMapping("/evaluation/{evalBlockId}/edit")
-    public String update(@PathVariable("evalBlockId") Long evalBlockId,@RequestBody EvaluationDTO.evalPerWork evalPerWork) {
+    public String update(@PathVariable("evalBlockId") Long evalBlockId,@RequestBody EvaluationDTO.EvalPerWork evalPerWork) {
         evaluationService.update(evalPerWork.getEvalId(),evalPerWork.getScore(),evalPerWork.getComment());
         return "redirect:/evaluation";
     }

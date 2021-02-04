@@ -49,29 +49,6 @@
   cursor: pointer;
 }
 
-.modal {
-  position: absolute;
-  width: 500px;
-  height: 400px;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: #f1f1f1;
-  box-sizing: border-box;
-  padding: 40px;
-  text-align: left;
-  outline: none;
-}
-
-.overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.7);
-}
-
 .label {
   width: 100%;
   padding-left: 3px;
@@ -79,37 +56,18 @@
   font-size: 13px;
 }
 
+.modalSelect {
+  width: 90%;
+  padding-left: 5px;
+  margin: 5px;
+}
 .addInput {
-  width: 100%;
-  margin-bottom: 5px;
+  width: 80%;
+  height: 27px;
+  margin: 5px;
   padding-left: 5px;
   box-sizing: border-box;
   outline: none;
-}
-
-.deptSelect {
-  width: 100%;
-  margin-bottom: 5px;
-}
-
-.modalSubmitButton {
-  margin-top: 20px;
-  cursor: pointer;
-  background: #2d93f0;
-  width: 100px;
-  padding: 0.6em;
-  border: none;
-  border-radius: 5px;
-  color: white;
-  outline: none;
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-}
-
-.modalCloseButton {
-  position: absolute;
-  right: 20px;
-  top: 20px;
-  cursor: pointer;
 }
 
 .pagination {
@@ -118,4 +76,47 @@
   margin-bottom: 3em;
   display: flex;
   justify-content: center;
+}
+
+.searchEmpButton {
+  cursor: pointer;
+  background-color: #a9a9a9;
+  color: white;
+  border-radius: 3px;
+  padding: 0.3em 1em;
+}
+
+.submitButtonContainer {
+  text-align: right;
+}
+.submitButton {
+  cursor: pointer;
+  background-color: #2d93f0;
+  color: white;
+  border-radius: 3px;
+  padding: 0.3em 1em;
+  margin-top: 10px;
+}
+
+.empLists {
+  width: 90%;
+  margin: 5px;
+  padding-left: 5px;
+  height: 60px;
+  overflow-y: scroll;
+}
+
+.empLi {
+  font-size: 14px;
+  cursor: pointer;
+}
+
+ol {
+  display: none;
+}
+
+.dateInput {
+  margin: 5px;
+  width: 90%;
+  padding-left: 5px;
 }

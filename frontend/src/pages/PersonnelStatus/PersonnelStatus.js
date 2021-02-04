@@ -4,6 +4,7 @@ import Table from '../../components/Table/Table';
 import styles from './personnelStatus.module.css';
 import axios from 'axios';
 import Pagination from '@material-ui/lab/Pagination';
+import PersonnelStatusModal from './PersonnelStatusModal';
 
 const HEADER_ARR = [
   '이름',
@@ -24,6 +25,7 @@ function PersonnelStatus() {
   const [option, setOption] = useState('employee');
   const [datas, setDatas] = useState([]);
   const [showPage, setShowPage] = useState(true);
+  const [showModal, setShowModal] = useState(false);
 
   const fetchPersonnelStatus = () => {
     axios.get(`transfer?page=${page.currentPage}`).then((response) => {
@@ -66,6 +68,13 @@ function PersonnelStatus() {
     setPage({ ...page, currentPage: currentPage });
   };
 
+  const handleModalOpen = () => {
+    setShowModal(true);
+  };
+  const handleModalClose = () => {
+    setShowModal(false);
+  };
+
   return (
     <div className={styles.container}>
       <PersonnelStatusInput
@@ -76,7 +85,9 @@ function PersonnelStatus() {
         handleInputChange={handleInputChange}
       />
       <div className={styles.addButtonWrap}>
-        <button className={styles.addButton}>발령</button>
+        <button onClick={handleModalOpen} className={styles.addButton}>
+          발령
+        </button>
       </div>
       <Table page="personnelStatus" headerArr={HEADER_ARR} dataArr={datas} />
       <div className={styles.pagination}>
@@ -90,6 +101,11 @@ function PersonnelStatus() {
           />
         )}
       </div>
+      <PersonnelStatusModal
+        showModal={showModal}
+        handleModalClose={handleModalClose}
+        fetchData={fetchPersonnelStatus}
+      />
     </div>
   );
 }

@@ -8,7 +8,7 @@ const AuthRoute = ({ component: Component, ...rest }) => {
   useEffect(() => {
     let token = localStorage.getItem('token');
     if (token) {
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      axios.defaults.headers.common['Authorization'] = `${token}`;
       setIsAuthenticated(true);
     } else {
       setIsAuthenticated(false);

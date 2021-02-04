@@ -70,7 +70,7 @@ public class InitController {
                             .workName("업무" + i)
                             .workChargeName("담당자" + i)
                             .workStartDate(LocalDate.of(2020,  12, i + 1))
-                            .workEndDate(LocalDate.of(2021, 1, 10+i))
+                            .workEndDate(LocalDate.of(2021, 2, i + 1))
                             .department(departmentList.get(i/2))
                             .build();
             workRepository.save(work);

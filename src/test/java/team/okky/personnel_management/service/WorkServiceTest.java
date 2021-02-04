@@ -1,7 +1,8 @@
 package team.okky.personnel_management.service;
 
 
-import org.junit.jupiter.api.Assertions;
+
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,12 +11,13 @@ import org.springframework.transaction.annotation.Transactional;
 import team.okky.personnel_management.department.Department;
 import team.okky.personnel_management.employee.Employee;
 import team.okky.personnel_management.evaluation.Evaluation;
-import team.okky.personnel_management.utils.dto.SearchDTO;
 import team.okky.personnel_management.department.DepartmentRepository;
 import team.okky.personnel_management.employee.EmployeeRepository;
+import team.okky.personnel_management.utils.dto.PageRequestDTO;
+import team.okky.personnel_management.utils.dto.PageResultDTO;
 import team.okky.personnel_management.work.Work;
-import team.okky.personnel_management.work.WorkFindDto;
 import team.okky.personnel_management.evaluation.EvaluationRepository;
+import team.okky.personnel_management.work.WorkDTO;
 import team.okky.personnel_management.work.WorkRepository;
 import team.okky.personnel_management.work.WorkService;
 
@@ -112,8 +114,6 @@ public class WorkServiceTest {
 
     @Test
     public void 업무전체검색() throws Exception {
-        //given
-
         //when,then
         for(Work w : workList){
             if(w.getDepartment().getDeptId()==null) {
@@ -132,15 +132,33 @@ public class WorkServiceTest {
     @Test
     public void 업무상세검색() throws Exception{
         //given
-        SearchDTO workSearch = new SearchDTO();
-
-        workSearch.setNameType("deptName");
-        workSearch.setName("부서1");
-
-        List<WorkFindDto> findWorks = workService.filteringList(workSearch);
-
+        PageResultDTO pageResultDTO = null;
+        PageRequestDTO pageRequestDTO = new PageRequestDTO(1);
         //when
-        assertThat(findWorks.get(0).getDeptName()).isEqualTo("부서1");
+        List<WorkDTO.indexWork> work1 =  workService.viewAllByWorkName("업무1",pageRequestDTO);
+        List<WorkDTO.indexWork> work2 = workService.viewAllByDeptName("부서1",pageRequestDTO);
+        List<WorkDTO.indexWork> work3 = workService.viewAllByEmpName("테스터1",pageRequestDTO);
+        //then
+        if(work1.isEmpty()){
+            Assertions.fail("업무명으로 검색된 내용이 없습니다.");
+        }
+        else{
+            assertThat(work1.get(0).getWorkName()).isEqualTo("업무1");
+        }
+
+        if(work2.isEmpty()){
+            Assertions.fail("부서명으로 검색된 내용이 없습니다.");
+        }
+        else{
+            assertThat(work2.get(0).getDeptName()).isEqualTo("부서1");
+        }
+
+        if(work3.isEmpty()){
+            Assertions.fail("직원명으로 검색된 내용이 없습니다.");
+        }
+        else{
+            assertTrue(work3.get(0).getEmployees().contains("테스터1"));
+        }
     }
 
     @Test

@@ -25,8 +25,8 @@ public class SalaryDTO {
     @AllArgsConstructor
     @Getter @Setter
     public static class indexPage {
-        List<indexSalary> list;
-        PageResultDTO pageResultDTO;
+        private List<indexSalary> list;
+        private PageResultDTO pageResultDTO;
     }
 
     @Builder

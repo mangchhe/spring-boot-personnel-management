@@ -177,7 +177,7 @@ const Work = function () {
         </button>
       </div>
       <WorkModal
-        modal={addModal}
+        showModal={addModal}
         handleModalInput={handleModalInput}
         handleSelectDept={handleSelectDept}
         handleWork={addWork}
@@ -186,7 +186,7 @@ const Work = function () {
         workCharger={workCharger}
         workStartDate={workStartDate}
         workEndDate={workEndDate}
-        modalClose={addModalClose}
+        handleModalClose={addModalClose}
         deptLists={deptLists}
         buttonText="업무추가"
       />
@@ -197,7 +197,7 @@ const Work = function () {
         className={styles.block}
       />
       <WorkModal
-        modal={correctModal}
+        showModal={correctModal}
         handleModalInput={handleModalInput}
         handleSelectDept={handleSelectDept}
         handleWork={correctWork}
@@ -206,7 +206,7 @@ const Work = function () {
         workCharger={workCharger}
         workStartDate={workStartDate}
         workEndDate={workEndDate}
-        modalClose={correctModalClose}
+        handleModalClose={correctModalClose}
         deptLists={deptLists}
         buttonText="업무수정"
       />

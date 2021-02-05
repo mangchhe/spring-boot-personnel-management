@@ -50,29 +50,6 @@
   cursor: pointer;
 }
 
-.modal {
-  position: absolute;
-  width: 500px;
-  height: 290px;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: #f1f1f1;
-  box-sizing: border-box;
-  padding: 35px;
-  text-align: left;
-  outline: none;
-}
-
-.overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.7);
-}
-
 .label {
   width: 100%;
   padding-left: 3px;
@@ -81,34 +58,28 @@
 }
 
 .addInput {
-  width: 100%;
-  margin-bottom: 5px;
+  width: 90%;
+  height: 27px;
+  margin: 5px;
   padding-left: 5px;
   box-sizing: border-box;
   outline: none;
 }
 
-.empSelect {
-  width: 100%;
-  margin-bottom: 5px;
+.modalSelect {
+  width: 90%;
+  padding-left: 5px;
+  margin: 5px;
 }
 
+.submitButtonContainer {
+  text-align: right;
+}
 .modalSubmitButton {
-  margin-top: 20px;
   cursor: pointer;
-  background: #2d93f0;
-  width: 100px;
-  padding: 0.6em;
-  border: none;
-  border-radius: 5px;
+  background-color: #2d93f0;
   color: white;
-  outline: none;
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-}
-
-.modalCloseButton {
-  position: absolute;
-  right: 20px;
-  top: 20px;
-  cursor: pointer;
+  border-radius: 3px;
+  padding: 0.3em 1em;
+  margin-top: 10px;
 }

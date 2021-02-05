@@ -1,5 +1,6 @@
 import React from 'react';
-import Modal from 'react-modal';
+import Rodal from 'rodal';
+import 'rodal/lib/rodal.css';
 import styles from './eval.module.css';
 
 const EmpOption = ({ data }) => {
@@ -8,40 +9,45 @@ const EmpOption = ({ data }) => {
 
 const Button = ({ buttonText }) => {
   return (
-    <button type="submit" className={styles.modalSubmitButton}>
-      {buttonText}
-    </button>
+    <div className={styles.submitButtonContainer}>
+      <button type="submit" className={styles.modalSubmitButton}>
+        {buttonText}
+      </button>
+    </div>
   );
 };
 
-Modal.setAppElement('#modal_root');
-
 function EvalModal({
-  modal,
+  showModal,
   handleModalInput,
   handleSelectEmp,
   handleWork,
   selectedEmp,
   score,
   comment,
-  modalClose,
+  handleModalClose,
   empLists,
   buttonText,
 }) {
+  const customStyles = {
+    height: 'auto',
+    bottom: 'auto',
+    top: '30%',
+  };
   return (
     <>
-      <Modal
-        isOpen={modal}
-        className={styles.modal}
-        overlayClassName={styles.overlay}
+      <Rodal
+        visible={showModal}
+        onClose={handleModalClose}
+        customStyles={customStyles}
       >
         <form onSubmit={handleWork}>
-          <label className={styles.label}>
-            직원
+          <label className={styles.label}>직원</label>
+          <div>
             <select
               value={selectedEmp}
               onChange={handleSelectEmp}
-              className={styles.empSelect}
+              className={styles.modalSelect}
             >
               {empLists &&
                 empLists.map((empList, index) => {
@@ -55,31 +61,28 @@ function EvalModal({
                   );
                 })}
             </select>
-          </label>
-          <label className={styles.label}>
-            점수
+          </div>
+          <label className={styles.label}>점수</label>
+          <div>
             <input
               value={score}
               name="score"
               onChange={handleModalInput}
               className={styles.addInput}
             />
-          </label>
-          <label className={styles.label}>
-            코멘트
+          </div>
+          <label className={styles.label}>코멘트</label>
+          <div>
             <input
               value={comment}
               name="comment"
               onChange={handleModalInput}
               className={styles.addInput}
             />
-          </label>
+          </div>
           <Button buttonText={buttonText}></Button>
         </form>
-        <button onClick={modalClose} className={styles.modalCloseButton}>
-          닫기
-        </button>
-      </Modal>
+      </Rodal>
     </>
   );
 }

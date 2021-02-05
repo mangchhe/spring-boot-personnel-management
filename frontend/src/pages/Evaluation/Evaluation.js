@@ -155,16 +155,16 @@ const Evaluation = function () {
         className={styles.block}
       />
       <EvalModal
-        modal={correctModal}
+        showModal={correctModal}
         handleModalInput={handleModalInput}
         handleSelectEmp={handleSelectEmp}
         handleWork={correctEval}
         selectedEmp={selectedEmp}
         score={score}
         comment={comment}
-        modalClose={correctModalClose}
+        handleModalClose={correctModalClose}
         empLists={empLists}
-        buttonText="업무수정"
+        buttonText="수정"
       />
     </div>
   );

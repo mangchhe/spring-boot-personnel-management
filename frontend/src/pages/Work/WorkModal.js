@@ -1,5 +1,6 @@
 import React from 'react';
-import Modal from 'react-modal';
+import Rodal from 'rodal';
+import 'rodal/lib/rodal.css';
 import styles from './work.module.css';
 
 const DeptOption = ({ data }) => {
@@ -14,10 +15,8 @@ const Button = ({ buttonText }) => {
   );
 };
 
-Modal.setAppElement('#modal_root');
-
 function WorkModal({
-  modal,
+  showModal,
   handleModalInput,
   handleSelectDept,
   handleWork,
@@ -26,16 +25,21 @@ function WorkModal({
   workCharger,
   workStartDate,
   workEndDate,
-  modalClose,
+  handleModalClose,
   deptLists,
   buttonText,
 }) {
+  const customStyles = {
+    height: 'auto',
+    bottom: 'auto',
+    top: '30%',
+  };
   return (
     <>
-      <Modal
-        isOpen={modal}
-        className={styles.modal}
-        overlayClassName={styles.overlay}
+      <Rodal
+        visible={showModal}
+        onClose={handleModalClose}
+        customStyles={customStyles}
       >
         <form onSubmit={handleWork}>
           <label className={styles.label}>
@@ -98,10 +102,7 @@ function WorkModal({
           </label>
           <Button buttonText={buttonText}></Button>
         </form>
-        <button onClick={modalClose} className={styles.modalCloseButton}>
-          닫기
-        </button>
-      </Modal>
+      </Rodal>
     </>
   );
 }

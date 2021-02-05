@@ -9,7 +9,8 @@ const POSITION_LISTS = ['사원', '주임', '대리', '과장', '차장', '부�
 function PersonnelStatusModal({ showModal, handleModalClose, fetchData }) {
   const [input, setInput] = useState('');
   const [searchResults, setSearchResults] = useState([]);
-  const [selectedEmployee, setSelectedEmployee] = useState('');
+  const [selectedEmpId, setSelectedEmpId] = useState('');
+  const [selectedEmpName, setSelectedEmpName] = useState('');
   const [deptLists, setDeptLists] = useState([]);
   const [selectedDept, setSelectedDept] = useState('부서1');
   const [selectedPos, setSelectedPos] = useState('사원');
@@ -35,14 +36,16 @@ function PersonnelStatusModal({ showModal, handleModalClose, fetchData }) {
   };
 
   const saveEmployee = (e) => {
-    setSelectedEmployee(e.target.id);
+    e.preventDefault();
+    setSelectedEmpId(e.target.id);
+    setSelectedEmpName(e.target.dataset.name);
   };
 
   const addPersonnelStatus = (e) => {
     e.preventDefault();
     axios
       .post('/transfer', {
-        employeeId: parseInt(selectedEmployee),
+        employeeId: parseInt(selectedEmpId),
         departmentName: selectedDept,
         transferPosition: selectedPos,
         transferDate: selectedDate,
@@ -77,12 +80,12 @@ function PersonnelStatusModal({ showModal, handleModalClose, fetchData }) {
     >
       <div className={styles.modal}>
         <div>
-          <label className={styles.label}>직원이름</label>
+          <label className={styles.label}>발령할 직원을 검색해주세요</label>
           <div>
             <input
               className={styles.addInput}
               onChange={handleModalInput}
-              placeholder="발령할 직원 이름을 검색해주세요"
+              placeholder="직원 이름 검색"
               value={input}
             />
             <button
@@ -106,7 +109,7 @@ function PersonnelStatusModal({ showModal, handleModalClose, fetchData }) {
                         className={styles.empLi}
                         id={result.empId}
                         key={index}
-                        value={result.empName}
+                        data-name={result.empName}
                       >
                         {result.empName} <span />
                         {result.deptName} <span />
@@ -118,6 +121,12 @@ function PersonnelStatusModal({ showModal, handleModalClose, fetchData }) {
               </ul>
             </div>
           </>
+        )}
+        {selectedEmpId && (
+          <div>
+            <label className={styles.label}>직원이름</label>
+            <div className={styles.selectedEmp}>{selectedEmpName}</div>
+          </div>
         )}
         <form onSubmit={addPersonnelStatus}>
           <label className={styles.label}>발령부서</label>

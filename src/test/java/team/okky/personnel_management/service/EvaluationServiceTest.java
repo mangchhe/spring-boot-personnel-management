@@ -1,19 +1,19 @@
 package team.okky.personnel_management.service;
 
-import org.junit.jupiter.api.Assertions;
+
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import team.okky.personnel_management.department.Department;
 import team.okky.personnel_management.employee.Employee;
 import team.okky.personnel_management.evaluation.Evaluation;
+import team.okky.personnel_management.evaluation.EvaluationService;
+import team.okky.personnel_management.utils.dto.PageRequestDTO;
 import team.okky.personnel_management.work.Work;
 import team.okky.personnel_management.evaluation.EvaluationDTO;
-import team.okky.personnel_management.utils.dto.SearchDTO;
-import team.okky.personnel_management.evaluation.EvaluationService;
 import team.okky.personnel_management.department.DepartmentRepository;
 import team.okky.personnel_management.employee.EmployeeRepository;
 import team.okky.personnel_management.evaluation.EvaluationRepository;
@@ -85,67 +85,40 @@ public class EvaluationServiceTest {
     }
 
     @Test
-    public void 성과목록조회() throws Exception {
-        //given
-        SearchDTO evalSearch = new SearchDTO();
-        evalSearch.setNameType("workName");
-        evalSearch.setName("");
-
+    public void 성과목록_조회()throws Exception{
         //when
-        List<EvaluationDTO.EvalBlock> evalBlocks = evaluationService.findAll(evalSearch);
+        PageRequestDTO pageRequestDTO = new PageRequestDTO(1);
+        List<EvaluationDTO.EvalBlock> findByWorkName = evaluationService.viewAllByWorkName("업무1",pageRequestDTO);
+        List<EvaluationDTO.EvalBlock> findByDeptName = evaluationService.viewAllByDeptName("부서1",pageRequestDTO);
+        List<EvaluationDTO.EvalBlock> findByEmpName = evaluationService.viewAllByEmpName("테스터1",pageRequestDTO);
+        List<EvaluationDTO.EvalBlock> findAll = evaluationService.viewAll(pageRequestDTO);
 
         //then
-        Assertions.assertEquals(size,evalBlocks.size());
-
-    }
-
-    @Test
-    public void 성과목록_상세조회()throws Exception{
-        //given
-        SearchDTO workSearch1 = new SearchDTO();
-        SearchDTO workSearch2 = new SearchDTO();
-        SearchDTO workSearch3 = new SearchDTO();
-
-        workSearch1.setNameType("workName");
-        workSearch1.setName("업무0");
-
-        workSearch2.setNameType("empName");
-        workSearch2.setName("테스터0");
-
-        workSearch3.setNameType("deptName");
-        workSearch3.setName("부서1");
-
-
-        //when
-        List<EvaluationDTO.EvalBlock> findEvalBlock1 = evaluationService.findAll(workSearch1);
-        List<EvaluationDTO.EvalBlock> findEvalBlock2 = evaluationService.findAll(workSearch2);
-        List<EvaluationDTO.EvalBlock> findEvalBlock3 = evaluationService.findAll(workSearch3);
-
-        //then
-        if(!findEvalBlock1.get(0).getEvalInfo().getWorkName().equals("업무0")){
+        if(!findByWorkName.get(0).getEvalInfo().getWorkName().equals("업무1")){
             Assertions.fail("해당 업무명으로 검색되지 않았습니다.");
         }
-        for(EvaluationDTO.EvalPerWork e: findEvalBlock2.get(0).getEvalPerWorkList()){
-            if(!e.getEmpName().contains("테스터0")){
-                Assertions.fail("해당 직원명으로 검색되지 않았습니다.");
-            }
-        }
-        if(!findEvalBlock3.get(0).getEvalInfo().getDeptName().equals("부서1")){
+        if(!findByDeptName.get(0).getEvalInfo().getDeptName().equals("부서1")){
             Assertions.fail("해당 부서명으로 검색되지 않았습니다.");
         }
+        for(EvaluationDTO.EvalPerWork e: findByEmpName.get(0).getEvalListPerWork()){
+            if(e.getEmpName().equals("테스터1")){
+                Assertions.assertThat(e.getEmpName()).isEqualTo("테스터1");
+            }
+        }
+        Assertions.assertThat(findAll.size()).isEqualTo(10);
     }
 
     @Test
     public void 성과수정()throws Exception{
         //given
-        EvaluationDTO.EvalBlock selectEvalBlock = evaluationService.findOneByEvalBlock(workRepository.findAll().get(0).getWorkId());
-        List<EvaluationDTO.EvalPerWork> evalPerWorks = selectEvalBlock.getEvalPerWorkList();
-
         int score = 100;
         String comment = "BEST";
 
         //when
-        Evaluation updateEval = evaluationService.update(evalPerWorks.get(0).getEvalId(),score,comment);
+        EvaluationDTO.EvalBlock selectEvalBlock = evaluationService.findByWorkName("업무1").get(0);
+        List<EvaluationDTO.EvalPerWork> evalListPerWork = selectEvalBlock.getEvalListPerWork();
+
+        Evaluation updateEval = evaluationService.update(evalListPerWork.get(0).getEvalId(),score,comment);
 
         //then
         assertEquals(score,updateEval.getEvalResultScore());

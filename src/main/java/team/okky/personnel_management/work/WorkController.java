@@ -9,11 +9,9 @@ import team.okky.personnel_management.department.DepartmentService;
 import team.okky.personnel_management.employee.Employee;
 import team.okky.personnel_management.utils.dto.PageRequestDTO;
 import team.okky.personnel_management.utils.dto.PageResultDTO;
-import team.okky.personnel_management.utils.dto.SearchDTO;
 import team.okky.personnel_management.department.DepartmentRepository;
 import team.okky.personnel_management.employee.EmployeeRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller

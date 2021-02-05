@@ -3,6 +3,7 @@ package team.okky.personnel_management.evaluation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import team.okky.personnel_management.employee.Employee;
+import team.okky.personnel_management.utils.dto.PageRequestDTO;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -23,20 +24,20 @@ public class EvaluationRepository {
         return em.find(Evaluation.class, id);
     }
 
-    public List<Evaluation> findAll(Long workId){
-        return em.createQuery("select e from Evaluation e join Work w on e.work = w and w.workId = :workId")
+    public List<Evaluation> findAllEvalPerWork(Long workId){
+        return em.createQuery("select e from Evaluation e join fetch e.work where e.work.workId = :workId")
                 .setParameter("workId",workId)
                 .getResultList();
     }
 
     public List<Evaluation> findByWorkName(String workName){
-        return em.createQuery("select e from Evaluation e join Work w on e.work = w and w.workName = :workName")
+        return em.createQuery("select e from Evaluation e join fetch e.work where e.work.workName = :workName order by e.work.workEndDate desc")
                 .setParameter("workName",workName)
                 .getResultList();
     }
 
     public List<Evaluation> findByEmpName(String empName){
-        return em.createQuery("select e from Evaluation e join Employee em on e.employee = em and em.empName =: empName")
+        return em.createQuery("select e from Evaluation e join fetch e.employee where e.employee.empName =: empName order by e.work.workEndDate desc")
                 .setParameter("empName",empName)
                 .getResultList();
     }

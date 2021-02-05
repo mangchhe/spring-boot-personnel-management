@@ -59,12 +59,6 @@ public class WorkRepository {
                 .getResultList();
     }
 
-    public List<Work> findByDeptName(String deptName){
-        return em.createQuery("select w from Work w join fetch w.department where w.department.deptName = :name")
-                .setParameter("name",deptName)
-                .getResultList();
-    }
-
     public int findTotalByDeptName(String deptName){
         return em.createQuery("select count(w) from Work w join fetch w.department where w.department.deptName = :name",Long.class)
                 .setParameter("name",deptName)
@@ -88,7 +82,7 @@ public class WorkRepository {
                 .getSingleResult().intValue();
     }
 
-    public List<Long> findWorkId(){
+    public List<Long> findAllWorkId(){
         return em.createQuery("select w.workId from Work w")
                 .getResultList();
     }

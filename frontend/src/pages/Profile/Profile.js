@@ -116,7 +116,7 @@ function Profile() {
         <Label>접속지역</Label>
         <Info>{userInfo.accessArea}</Info>
       </Row>
-      <Row>
+      {/* <Row>
         <Label>비밀번호 변경</Label>
         <Info>
           <form onSubmit={handleSubmit}>
@@ -150,7 +150,7 @@ function Profile() {
             <Button type="submit">수정</Button>
           </form>
         </Info>
-      </Row>
+      </Row> */}
     </Container>
   );
 }

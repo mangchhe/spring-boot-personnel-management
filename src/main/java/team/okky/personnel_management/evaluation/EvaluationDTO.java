@@ -1,6 +1,8 @@
 package team.okky.personnel_management.evaluation;
 
 import lombok.*;
+import team.okky.personnel_management.utils.dto.PageResultDTO;
+import team.okky.personnel_management.work.WorkDTO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,10 +16,10 @@ public class EvaluationDTO {
         private String workName;
     }
 
-    @Getter @Setter
+    @Builder @Getter @Setter
     public static class EvalBlock{
         private EvaluationDTO.EvalInfo evalInfo;
-        private List<EvalPerWork> evalPerWorkList = new ArrayList<>();
+        private List<EvalPerWork> evalListPerWork = new ArrayList<>();
     }
 
     @Builder @Getter @Setter
@@ -27,6 +29,12 @@ public class EvaluationDTO {
         private int score;
         private String empName;
 
+    }
+
+    @Builder @Getter
+    public static class IndexPage{
+        private List<EvaluationDTO.EvalBlock> list;
+        private PageResultDTO pageResultDTO;
     }
 
 }

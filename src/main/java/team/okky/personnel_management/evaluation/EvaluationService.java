@@ -1,138 +1,24 @@
 package team.okky.personnel_management.evaluation;
-
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import team.okky.personnel_management.utils.dto.PageRequestDTO;
 import team.okky.personnel_management.work.Work;
-import team.okky.personnel_management.utils.dto.SearchDTO;
-import team.okky.personnel_management.work.WorkRepository;
+import team.okky.personnel_management.work.WorkDTO;
 
-import java.util.ArrayList;
 import java.util.List;
 
-@Service
-@RequiredArgsConstructor
-@Transactional(readOnly = true)
-public class EvaluationService {
-    private final EvaluationRepository evaluationRepository;
-    private final WorkRepository workRepository;
+public interface EvaluationService {
+    public Evaluation save(Evaluation evaluation);
+    public Evaluation findOne(Long id);
+    public List<EvaluationDTO.EvalBlock> findByWorkName(String name);
 
-    @Transactional
-    public Evaluation save(Evaluation evaluation) {
-        return evaluationRepository.save(evaluation);
-    }
+    public List<EvaluationDTO.EvalBlock> viewAllByWorkName(String name, PageRequestDTO pageRequestDTO);
+    public List<EvaluationDTO.EvalBlock> viewAllByDeptName(String name,PageRequestDTO pageRequestDTO);
+    public List<EvaluationDTO.EvalBlock> viewAllByEmpName(String name,PageRequestDTO pageRequestDTO);
+    public List<EvaluationDTO.EvalBlock> viewAll(PageRequestDTO pageRequestDTO);
 
-    public Evaluation findOne(Long id) {
-        return evaluationRepository.findOne(id);
-    }
+    public List<EvaluationDTO.EvalBlock> addEvalBlock(List<WorkDTO.indexWork> workList);
+    public EvaluationDTO.EvalPerWork addEvalListPerWork(Evaluation e);
+    public EvaluationDTO.EvalInfo addEvalInfo(Work work);
 
-    public EvaluationDTO.EvalBlock findOneByEvalBlock(Long evalBlockId){
-        SearchDTO evalSearch = new SearchDTO();
-        evalSearch.setNameType("workName");
-        Work work = workRepository.findOne(evalBlockId);
-        evalSearch.setName(work.getWorkName());
-        return findAll(evalSearch).get(0);
-    }
-
-    public List<EvaluationDTO.EvalBlock> findAll(SearchDTO evalSearch) {
-        List<EvaluationDTO.EvalBlock> list = new ArrayList<>();
-        EvaluationDTO.EvalBlock evalBlock = new EvaluationDTO.EvalBlock();
-        List<EvaluationDTO.EvalPerWork> evalPerWorkList = new ArrayList<>();
-        List<Long> workIdList = workRepository.findWorkId();
-
-        String nameType = evalSearch.getNameType();
-        String name = evalSearch.getName();
-
-
-        if(nameType.equals("empName")&& !name.isEmpty()) {
-            List<Evaluation> evalByEmpName = evaluationRepository.findByEmpName(name);
-
-            for (Evaluation e : evalByEmpName) {
-                List<EvaluationDTO.EvalPerWork> findEvalPerWork = new ArrayList<>();
-                findEvalPerWork.add(addEvalPerWorkList(e));
-
-                Work work = workRepository.findOne(e.getWork().getWorkId());
-                EvaluationDTO.EvalInfo evalInfo = addEvalInfo(work);
-
-                EvaluationDTO.EvalBlock evalBlockAll = new EvaluationDTO.EvalBlock();
-                evalBlockAll.setEvalInfo(evalInfo);
-                evalBlockAll.setEvalPerWorkList(findEvalPerWork);
-                list.add(evalBlockAll);
-            }
-        }
-        else if(nameType.equals("workName")&& !name.isEmpty()){
-            List<Evaluation> evalByWorkName = evaluationRepository.findByWorkName(name);
-            for (Evaluation e : evalByWorkName) {
-                evalPerWorkList.add(addEvalPerWorkList(e));
-            }
-
-            Work work = workRepository.findOne(evalByWorkName.get(0).getWork().getWorkId());
-            EvaluationDTO.EvalInfo evalInfo = addEvalInfo(work);
-
-            evalBlock.setEvalInfo(evalInfo);
-            evalBlock.setEvalPerWorkList(evalPerWorkList);
-            list.add(evalBlock);
-        }
-        else if(nameType.equals("deptName")&& !name.isEmpty()){
-            List<Work> workByDeptName = workRepository.findByDeptName(name);
-
-            for (Work w : workByDeptName) {
-                List<EvaluationDTO.EvalPerWork> evalPerWorkById = new ArrayList<>();
-                for (Evaluation e : evaluationRepository.findByWorkName(w.getWorkName())) {
-                   evalPerWorkById.add(addEvalPerWorkList(e));
-                }
-
-                Work work = workRepository.findOne(w.getWorkId());
-                EvaluationDTO.EvalInfo evalInfo = addEvalInfo(work);
-
-                EvaluationDTO.EvalBlock evalBlockAll = new EvaluationDTO.EvalBlock();
-                evalBlockAll.setEvalInfo(evalInfo);
-                evalBlockAll.setEvalPerWorkList(evalPerWorkById);
-                list.add(evalBlockAll);
-            }
-        }
-        else {
-            for (Long workId : workIdList) {
-                List<EvaluationDTO.EvalPerWork> evalPerWorkById = new ArrayList<>();
-                for (Evaluation e : evaluationRepository.findAll(workId)) {
-                    evalPerWorkById.add(addEvalPerWorkList(e));
-                }
-
-                Work work = workRepository.findOne(workId);
-                EvaluationDTO.EvalInfo evalInfo = addEvalInfo(work);
-
-                EvaluationDTO.EvalBlock evalBlockAll = new EvaluationDTO.EvalBlock();
-                evalBlockAll.setEvalInfo(evalInfo);
-                evalBlockAll.setEvalPerWorkList(evalPerWorkById);
-                list.add(evalBlockAll);
-            }
-        }
-    return list;
-    }
-
-    public EvaluationDTO.EvalPerWork addEvalPerWorkList(Evaluation e){
-        EvaluationDTO.EvalPerWork evalPerWork = EvaluationDTO.EvalPerWork.builder()
-                .evalId(e.getEvalId())
-                .empName(e.getEmployee().getEmpName())
-                .score(e.getEvalResultScore())
-                .comment(e.getEvalComment())
-                .build();
-        return evalPerWork;
-    }
-
-    public EvaluationDTO.EvalInfo addEvalInfo(Work work){
-        EvaluationDTO.EvalInfo evalInfo = EvaluationDTO.EvalInfo.builder()
-                .evalBlockId(work.getWorkId())
-                .deptName(work.getDepartment().getDeptName())
-                .workName(work.getWorkName())
-                .build();
-        return evalInfo;
-    }
-
-    @Transactional
-    public Evaluation update(Long evalId,int score,String comment){
-        Evaluation evaluation = evaluationRepository.findOne(evalId);
-        evaluation.change(score,comment);
-        return evaluation;
-    }
+    public Evaluation update(Long evalId,int score,String comment);
 }
+

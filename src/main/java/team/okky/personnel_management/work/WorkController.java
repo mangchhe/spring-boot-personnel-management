@@ -4,8 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import team.okky.personnel_management.department.Department;
+import team.okky.personnel_management.department.DepartmentDTO;
+import team.okky.personnel_management.department.DepartmentService;
 import team.okky.personnel_management.employee.Employee;
-import team.okky.personnel_management.utils.dto.SearchDTO;
+import team.okky.personnel_management.utils.dto.PageRequestDTO;
+import team.okky.personnel_management.utils.dto.PageResultDTO;
 import team.okky.personnel_management.department.DepartmentRepository;
 import team.okky.personnel_management.employee.EmployeeRepository;
 
@@ -18,17 +21,15 @@ public class WorkController {
     private final WorkService workService;
     private final DepartmentRepository departmentRepository;
     private final EmployeeRepository employeeRepository;
+    private final DepartmentService departmentService;
 
     @GetMapping("/work/create")
-    public WorkForm.WorkAndDept createWorkForm(){
-        WorkForm.WorkAndDept workAndDept = new WorkForm.WorkAndDept();
-        workAndDept.setWork(Work.builder().build());
-        workAndDept.setDepartmentList(departmentRepository.findAll());
-        return workAndDept;
+    public List<DepartmentDTO.Name> createWorkForm(){
+        return departmentService.viewIdAndName();
     }
 
     @PostMapping("/work/create")
-    public String create(@RequestBody WorkForm.WorkCreateForm workForm){
+    public String create(@RequestBody WorkDTO.WorkCreateForm workForm){
         Department department = departmentRepository.findOne(workForm.getWorkDept());
         List<Employee> empList = employeeRepository.findAllByDeptId(department.getDeptId());
 
@@ -40,38 +41,56 @@ public class WorkController {
                 .workEndDate(workForm.getWorkEndDate())
                 .build();
         workService.save(work);
-        workService.updateWork(empList,work);
+        workService.allocationNewWork(empList,work);
 
         return "redirect:/work";
     }
 
     @GetMapping("/work")
-    public List<WorkFindDto> list(@RequestParam("nameType") String nameType,
-                                  @RequestParam("name") String name){
-        SearchDTO workSearchDTO = new SearchDTO();
-        workSearchDTO.setNameType(nameType);
-        workSearchDTO.setName(name);
+    public WorkDTO.IndexPage list(@RequestParam("nameType") String nameType,
+                                  @RequestParam("name") String name,@RequestParam(value = "page", defaultValue = "1") Integer pageNo){
+        List<WorkDTO.indexWork> list = null;
+        PageResultDTO pageResultDTO = null;
+        PageRequestDTO pageRequestDTO = new PageRequestDTO(pageNo);
 
-        return workService.filteringList(workSearchDTO);
+        if(nameType.equals("workName") && !name.isEmpty()){
+            list = workService.viewAllByWorkName(name,pageRequestDTO);
+            pageResultDTO = workService.viewAllByWorkNameForPage(name,pageNo);
+        }
+        else if(nameType.equals("deptName") && !name.isEmpty()){
+            list = workService.viewAllByDeptName(name,pageRequestDTO);
+            pageResultDTO = workService.viewAllByDeptNameForPage(name,pageNo);
+        }
+        else if(nameType.equals("empName")&& !name.isEmpty()){
+            list = workService.viewAllByEmpName(name,pageRequestDTO);
+            pageResultDTO = workService.viewAllByEmpNameForPage(name,pageNo);
+        }
+        else{
+            list = workService.viewAll(pageRequestDTO);
+            pageResultDTO = workService.viewAllForPage(pageNo);
+        }
+        return WorkDTO.IndexPage.builder()
+                .list(list)
+                .pageResultDTO(pageResultDTO)
+                .build();
+
     }
 
     @GetMapping("/work/{workId}/edit")
-    public WorkForm.WorkUpdateForm updateWorkForm(@PathVariable("workId") Long workId){
-
-        WorkForm.WorkUpdateForm form = new WorkForm.WorkUpdateForm();
+    public WorkDTO.WorkUpdateForm updateWorkForm(@PathVariable("workId") Long workId){
         Work work = workService.findOne(workId);
-        form.setWorkName(work.getWorkName());
-        form.setDefaultDeptName(work.getDepartment().getDeptName());
-        form.setWorkChargeName(work.getWorkChargeName());
-        form.setWorkStartDate(work.getWorkStartDate());
-        form.setWorkEndDate(work.getWorkEndDate());
-        form.setDepartmentList(departmentRepository.findAll());
-
-        return form;
+        return WorkDTO.WorkUpdateForm.builder()
+                .workName(work.getWorkName())
+                .defaultDeptName(work.getDepartment().getDeptName())
+                .workChargeName(work.getWorkChargeName())
+                .workStartDate(work.getWorkStartDate())
+                .workEndDate(work.getWorkEndDate())
+                .departmentList(departmentService.viewIdAndName())
+                .build();
     }
 
     @PutMapping("/work/{workId}/edit")
-    public String update(@PathVariable Long workId,@RequestBody WorkForm.WorkCreateForm form ){
+    public String update(@PathVariable Long workId,@RequestBody WorkDTO.WorkCreateForm form ){
         workService.update(workId,form.getWorkName(),form.getWorkDept(),form.getWorkChargeName(),
                 form.getWorkStartDate(),form.getWorkEndDate());
         return "redirect:/work";

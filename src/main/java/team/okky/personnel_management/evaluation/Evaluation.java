@@ -1,6 +1,7 @@
 package team.okky.personnel_management.evaluation;
 
 import lombok.*;
+import team.okky.personnel_management.employee.EmployeeDTO;
 import team.okky.personnel_management.work.Work;
 import team.okky.personnel_management.employee.Employee;
 

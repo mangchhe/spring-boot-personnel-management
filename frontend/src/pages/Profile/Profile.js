@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
+import Rodal from 'rodal';
+import 'rodal/lib/rodal.css';
 
 const Container = styled.div`
   margin: 0 20%;
@@ -62,6 +64,15 @@ const Button = styled.button`
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 `;
 
+const MoreButton = styled.button`
+  margin-left: 1em;
+  color: white;
+  background-color: ${({ theme }) => theme.palette['grey']};
+  padding: 0.4em;
+  cursor: pointer;
+  border-radius: 5px;
+`;
+
 function Profile() {
   const [userInfo, setUserInfo] = useState({
     accessArea: '',
@@ -73,6 +84,7 @@ function Profile() {
     newPw: '',
     newPwCheck: '',
   });
+  const [showModal, setShowModal] = useState(false);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -95,6 +107,17 @@ function Profile() {
       .catch((err) => console.log(err));
   };
 
+  const handleShowMore = () => {
+    setShowModal(true);
+    axios.get('/profile/accessRecord').then((res) => {
+      console.log(res.data);
+    });
+  };
+
+  const handleModalClose = () => {
+    setShowModal(false);
+  };
+
   useEffect(() => {
     fetchUserInfo();
   }, []);
@@ -110,7 +133,10 @@ function Profile() {
       </Row>
       <Row>
         <Label>접속날짜</Label>
-        <Info>{userInfo.currentAccessDate}</Info>
+        <Info>
+          <span>{userInfo.currentAccessDate}</span>
+          <MoreButton onClick={handleShowMore}>더보기</MoreButton>
+        </Info>
       </Row>
       <Row>
         <Label>접속지역</Label>
@@ -151,6 +177,7 @@ function Profile() {
           </form>
         </Info>
       </Row>
+      <Rodal visible={showModal} onClose={handleModalClose}></Rodal>
     </Container>
   );
 }

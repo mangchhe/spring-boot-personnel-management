@@ -19,7 +19,7 @@ const HEADER_ARR = [
 function PersonnelStatus() {
   const [page, setPage] = useState({
     currentPage: 1,
-    totalPage: 5,
+    totalPage: 1,
   });
   const [input, setInput] = useState('');
   const [option, setOption] = useState('employee');
@@ -27,6 +27,12 @@ function PersonnelStatus() {
   const [showPage, setShowPage] = useState(true);
   const [showModal, setShowModal] = useState(false);
 
+  const fetchPageData = () => {
+    axios.get(`transfer?page=1`).then((response) => {
+      const { pageResultDTO } = response.data;
+      setPage({ ...page, totalPage: pageResultDTO.totalPage });
+    });
+  };
   const fetchPersonnelStatus = () => {
     axios.get(`transfer?page=${page.currentPage}`).then((response) => {
       const { transList } = response.data;
@@ -40,6 +46,10 @@ function PersonnelStatus() {
       setDatas(transList);
     });
   };
+
+  useEffect(() => {
+    fetchPageData();
+  }, []);
 
   useEffect(() => {
     fetchPersonnelStatus();

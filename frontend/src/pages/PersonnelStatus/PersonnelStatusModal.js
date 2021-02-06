@@ -50,7 +50,8 @@ function PersonnelStatusModal({ showModal, handleModalClose, fetchData }) {
         transferPosition: selectedPos,
         transferDate: selectedDate,
       })
-      .then(() => {
+      .then((response) => {
+        console.log(response);
         fetchData();
         handleModalClose();
       });

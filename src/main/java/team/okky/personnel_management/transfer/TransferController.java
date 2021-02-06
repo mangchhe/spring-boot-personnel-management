@@ -48,7 +48,7 @@ public class TransferController {
     }
 
     @PostMapping("/transfer")
-    public void tranferForm(@ModelAttribute TransferDTO.AddForm addForm){
+    public void tranferForm(@RequestBody TransferDTO.AddForm addForm){
         transferService.craeteTransfer(addForm);
     }
 

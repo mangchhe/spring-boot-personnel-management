@@ -38,10 +38,9 @@ function Login({ history }) {
 
   const loginUser = async () => {
     const loginData = {
-      mnEmail: 'test10@okky.kr',
-      mnPw: '1234',
+      mnEmail: userId,
+      mnPw: userPw,
     };
-    alert(`"test10@okky.kr",'1234'`);
     axios
       .post('/login', loginData)
       .then((response) => {
@@ -59,11 +58,11 @@ function Login({ history }) {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    // if (!userId || !userPw) {
-    //   alert('필수 항목을 작성하세요!');
-    // } else {
-    loginUser();
-    // }
+    if (!userId || !userPw) {
+      alert('필수 항목을 작성하세요!');
+    } else {
+      loginUser();
+    }
   };
 
   return (

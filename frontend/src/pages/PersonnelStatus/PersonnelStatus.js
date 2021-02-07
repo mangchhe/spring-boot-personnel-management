@@ -85,6 +85,9 @@ function PersonnelStatus() {
     setShowModal(false);
   };
 
+  const setPageShown = () => {
+    setShowPage(true);
+  };
   return (
     <div className={styles.container}>
       <PersonnelStatusInput
@@ -115,6 +118,7 @@ function PersonnelStatus() {
         showModal={showModal}
         handleModalClose={handleModalClose}
         fetchData={fetchPersonnelStatus}
+        showPage={setPageShown}
       />
     </div>
   );

@@ -18,13 +18,6 @@ const Work = function () {
   const [showPage, setShowPage] = useState(true);
   const [option, setOption] = useState('workName');
 
-  const fetchPageData = () => {
-    axios.get(`/work?nameType=workName&name=&page=1`).then((response) => {
-      const { pageResultDTO } = response.data;
-      setPage({ ...page, totalPage: pageResultDTO.totalPage });
-    });
-  };
-
   //로딩 및 에러처리
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -44,7 +37,14 @@ const Work = function () {
 
   const { workName, workCharger, workStartDate, workEndDate } = modalInput;
 
-  const fetchusers = async () => {
+  const fetchPageData = () => {
+    axios.get(`/work?nameType=workName&name=&page=1`).then((response) => {
+      const { pageResultDTO } = response.data;
+      setPage({ ...page, totalPage: pageResultDTO.totalPage });
+    });
+  };
+
+  const fetchUsers = async () => {
     try {
       setLoading(true);
       setError(null);
@@ -52,7 +52,6 @@ const Work = function () {
         `/work?nameType=workName&name=&page=${page.currentPage}`,
       );
       setData(response.data.list);
-      setPage({ ...page, totalPage: response.data.pageResultDTO.totalPage });
     } catch (e) {
       setError(e);
     }
@@ -64,9 +63,9 @@ const Work = function () {
       setLoading(true);
       setError(null);
       const response = await axios.get(
-        `/work?nameType=${option}&name=${input}`,
+        `/work?nameType=${option}&name=${input}&page=1`,
       );
-      setData(response.data);
+      setData(response.data.list);
     } catch (e) {
       setError(e);
     }
@@ -78,16 +77,20 @@ const Work = function () {
       const response = await axios.get(`/department/name`);
       const responsedDeptList = response.data;
       setDeptLists(responsedDeptList);
-      setSelectedDept(responsedDeptList[0].deptName);
+      setSelectedDept(responsedDeptList[0].deptId);
     } catch (e) {
       console.log('부서데이터를 가져오는데 문제가 있습니다.');
     }
   };
 
   useEffect(() => {
-    fetchusers();
+    fetchPageData();
     fetchDept();
   }, []);
+
+  useEffect(() => {
+    fetchUsers();
+  }, [page]);
 
   if (loading) return <div>Loading..</div>;
   if (error) return <div>Error Occurred</div>;
@@ -114,6 +117,7 @@ const Work = function () {
   const handlePageChange = (e) => {
     const currentPage = parseInt(e.target.textContent);
     setPage({ ...page, currentPage: currentPage });
+    fetchUsers();
   };
 
   const addModalOpen = () => {
@@ -158,7 +162,8 @@ const Work = function () {
           workEndDate: workEndDate,
         })
         .then(() => {
-          fetchusers();
+          setShowPage(true);
+          fetchUsers();
           setAddModal(false);
         });
     } catch (e) {
@@ -177,7 +182,7 @@ const Work = function () {
           workEndDate: workEndDate,
         })
         .then(() => {
-          fetchusers();
+          fetchUsers();
           setCorrectModal(false);
         });
     } catch (e) {

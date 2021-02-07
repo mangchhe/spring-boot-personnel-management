@@ -6,7 +6,12 @@ import axios from 'axios';
 
 const POSITION_LISTS = ['사원', '주임', '대리', '과장', '차장', '부장', '임원'];
 
-function PersonnelStatusModal({ showModal, handleModalClose, fetchData }) {
+function PersonnelStatusModal({
+  showModal,
+  handleModalClose,
+  fetchData,
+  showPage,
+}) {
   const [input, setInput] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [selectedEmpId, setSelectedEmpId] = useState('');
@@ -52,6 +57,7 @@ function PersonnelStatusModal({ showModal, handleModalClose, fetchData }) {
       })
       .then((response) => {
         console.log(response);
+        showPage();
         fetchData();
         handleModalClose();
       });

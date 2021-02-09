@@ -4,8 +4,14 @@ import styles from './eval.module.css';
 import axios from 'axios';
 import EvalInput from './EvalInput';
 import EvalModal from './EvalModal';
+import Pagination from '@material-ui/lab/Pagination';
 
 const Evaluation = function () {
+  const [page, setPage] = useState({
+    currentPage: 1,
+    totalPage: 1,
+  });
+  const [showPage, setShowPage] = useState(true);
   const [input, setInput] = useState('');
   const [datas, setData] = useState([]);
   const [option, setOption] = useState('workName');
@@ -25,16 +31,31 @@ const Evaluation = function () {
 
   const { score, comment } = modalInput;
 
+  const fetchPageData = () => {
+    axios.get(`/evaluation?nameType=workName&name=&page=1`).then((response) => {
+      const { pageResultDTO } = response.data;
+      setPage({ ...page, totalPage: pageResultDTO.totalPage });
+    });
+  };
+
   const fetchDatas = async () => {
     try {
       setLoading(true);
       setError(null);
-      const response = await axios.get(`/evaluation?nameType=workName&name=`);
-      setData(response.data);
+      const response = await axios.get(
+        `/evaluation?nameType=workName&name=&page=${page.currentPage}`,
+      );
+      setData(response.data.list);
     } catch (e) {
       setError(e);
     }
     setLoading(false);
+  };
+
+  const handlePageChange = (e) => {
+    const currentPage = parseInt(e.target.textContent);
+    setPage({ ...page, currentPage: currentPage });
+    fetchDatas();
   };
 
   const fetchSearchResult = async () => {
@@ -42,9 +63,9 @@ const Evaluation = function () {
       setLoading(true);
       setError(null);
       const response = await axios.get(
-        `/evaluation?nameType=${option}&name=${input}`,
+        `/evaluation?nameType=${option}&name=${input}&page=1`,
       );
-      setData(response.data);
+      setData(response.data.list);
     } catch (e) {
       setError(e);
     }
@@ -54,7 +75,7 @@ const Evaluation = function () {
   const fetchEmp = async () => {
     try {
       const response = await axios.get(`/evaluation/${evalBlockId}/edit`);
-      const responsedEmp = response.data.evalPerWorkList;
+      const responsedEmp = response.data.evalListPerWork;
       setEmpLists(responsedEmp);
       setSelectedEmp(responsedEmp[0].evalId);
     } catch (e) {
@@ -63,6 +84,7 @@ const Evaluation = function () {
   };
 
   const mounted = useRef();
+
   useEffect(() => {
     if (!mounted.current) {
       mounted.current = true;
@@ -72,10 +94,12 @@ const Evaluation = function () {
   }, [evalBlockId]);
 
   useEffect(() => {
-    fetchDatas();
+    fetchPageData();
   }, []);
 
-  useEffect(() => {}, [empLists]);
+  useEffect(() => {
+    fetchDatas();
+  }, [page]);
 
   if (loading) return <div>Loading..</div>;
   if (error) return <div>Error Occurred</div>;
@@ -96,6 +120,7 @@ const Evaluation = function () {
     }
 
     fetchSearchResult();
+    setShowPage(false);
   };
 
   const correctModalOpen = async (e) => {
@@ -130,8 +155,8 @@ const Evaluation = function () {
           score: score,
         })
         .then(() => {
+          setShowPage(true);
           fetchDatas();
-
           setCorrectModal(false);
         });
     } catch (e) {
@@ -154,6 +179,17 @@ const Evaluation = function () {
         modalOpen={correctModalOpen}
         className={styles.block}
       />
+      <div className={styles.pagination}>
+        {showPage && (
+          <Pagination
+            count={page.totalPage}
+            page={page.currentPage}
+            onChange={handlePageChange}
+            hidePrevButton
+            hideNextButton
+          />
+        )}
+      </div>
       <EvalModal
         showModal={correctModal}
         handleModalInput={handleModalInput}

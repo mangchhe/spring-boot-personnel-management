@@ -8,7 +8,7 @@ import java.util.List;
 public interface TransferService {
 
     public List<Transfer> autoAppointTransfer();
-    public Transfer craeteTransfer(TransferDTO.AddForm addForm);
+    public Transfer createTransfer(TransferDTO.AddForm addForm);
     public List<TransferDTO.Index> findAll(PageRequestDTO pageRequestDTO);
     public PageResultDTO findPage(int pageNo);
     public List<TransferDTO.Index> findAllByEmpName(String empName, PageRequestDTO pageRequestDTO);

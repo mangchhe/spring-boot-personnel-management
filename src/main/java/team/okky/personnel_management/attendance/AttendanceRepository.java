@@ -42,7 +42,7 @@ public class AttendanceRepository {
     }
 
     public List<Attendance> findAllByDate(LocalDate date){
-        return em.createQuery("select a from Attendance a join fetch a.employee e join fetch e.department where a.attDate = :att_date", Attendance.class)
+        return em.createQuery("select a from Attendance a left join fetch a.employee e left join fetch e.department where a.attDate = :att_date", Attendance.class)
                 .setParameter("att_date", date)
                 .getResultList();
     }

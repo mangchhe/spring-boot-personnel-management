@@ -100,7 +100,7 @@ class TransferServiceTest {
                 .departmentName(transDepartment.getDeptName())
                 .build();
         //when
-        Transfer result = transferService.craeteTransfer(addForm);
+        Transfer result = transferService.createTransfer(addForm);
         //then
         Assertions.assertThat(result).isEqualTo(transferRepository.findAll(new PageRequestDTO(1)).get(0));
     }

@@ -49,7 +49,7 @@ public class TransferController {
 
     @PostMapping("/transfer")
     public void tranferForm(@RequestBody TransferDTO.AddForm addForm){
-        transferService.craeteTransfer(addForm);
+        transferService.createTransfer(addForm);
     }
 
 }

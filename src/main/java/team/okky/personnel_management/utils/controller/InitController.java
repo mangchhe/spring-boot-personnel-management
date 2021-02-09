@@ -18,7 +18,6 @@ import team.okky.personnel_management.manager.Manager;
 import team.okky.personnel_management.manager.ManagerService;
 import team.okky.personnel_management.sick.Sick;
 import team.okky.personnel_management.sick.SickRepository;
-import team.okky.personnel_management.transfer.Transfer;
 import team.okky.personnel_management.transfer.TransferDTO;
 import team.okky.personnel_management.transfer.TransferService;
 import team.okky.personnel_management.vacation.Vacation;
@@ -142,18 +141,18 @@ public class InitController {
                     .transferDate(LocalDate.now().plusDays(i))
                     .departmentName(departmentList.get(i % 5).getDeptName())
                     .build();
-            //when
-            Transfer result = transferService.craeteTransfer(addForm);
+
+            transferService.createTransfer(addForm);
 
         }
 
         attendanceService.autoCreateAttendance();
 
-        attendanceService.onWork(employeeList.get(0));
-        attendanceService.onWork(employeeList.get(1));
-        attendanceService.onWork(employeeList.get(2));
-        attendanceService.offWork(employeeList.get(2));
+        int size = (int) (Math.random() * 40) + 5;
 
-
+        for (int i = 0; i < size; i++) {
+            attendanceService.onWork(employeeList.get((int) (Math.random() * 50)));
+            attendanceService.offWork(employeeList.get((int) (Math.random() * 50)));
+        }
     }
 }

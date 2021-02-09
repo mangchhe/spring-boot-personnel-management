@@ -45,7 +45,7 @@ public class TransferSeriveImpl implements TransferService{
      */
     @Override
     @Transactional(readOnly = false)
-    public Transfer craeteTransfer(TransferDTO.AddForm addForm) {
+    public Transfer createTransfer(TransferDTO.AddForm addForm) {
         Employee employee = employeeRepository.findOne(addForm.employeeId);
         Transfer transfer = Transfer.builder()
                 .employee(employee)

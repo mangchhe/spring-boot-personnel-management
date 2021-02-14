@@ -121,7 +121,7 @@ public class AttendanceServiceImpl implements AttendanceService{
     /**
      * 전체 직원 출근 현황 보여주기
      * detail, 출근, 결근, 지각, 휴가, 병가, 퇴근
-     * @return 모든 사원들의 출근 상태
+     * @return 오늘 날짜 모든 사원들의 출근 상태
      */
     @Override
     public AttendanceDTO.Status findAllOnlyStatus(){

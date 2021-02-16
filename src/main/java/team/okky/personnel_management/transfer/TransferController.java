@@ -14,6 +14,14 @@ public class TransferController {
 
     private final TransferService transferService;
 
+    /**
+     * 인사 이동 목록 뷰, 사원이름&사원직급&부서이름 검색
+     * @param empName
+     * @param deptName
+     * @param empPosition
+     * @param pageNo
+     * @return 검색된 인사 이동 목록
+     */
     @GetMapping("/transfer")
     public TransferDTO.IndexWithPage transfer(@RequestParam(value = "employee", required = false) String empName,
                                               @RequestParam(value = "department", required = false) String deptName,
@@ -47,6 +55,10 @@ public class TransferController {
                 .build();
     }
 
+    /**
+     * 인사 이동 추가
+     * @param addForm
+     */
     @PostMapping("/transfer")
     public void tranferForm(@RequestBody TransferDTO.AddForm addForm){
         transferService.createTransfer(addForm);

@@ -17,6 +17,13 @@ public class AttendanceController {
 
     private final AttendanceService attendanceService;
 
+    /**
+     * 근태 목록 메인 뷰, 이름&날짜 검색
+     * @param pageNo
+     * @param id
+     * @param date
+     * @return 검색된 근태 목록, 오늘 날짜 모든 직원에 대한 근태 상태
+     */
     @GetMapping("/attendance")
     public AttendanceDTO.StatusAndIndexWithPage viewIndex(@RequestParam(value = "page", defaultValue = "1") Integer pageNo,
                                                           @RequestParam(value = "name", required = false) Long id,
@@ -46,6 +53,11 @@ public class AttendanceController {
         return statusAndList;
     }
 
+    /**
+     * 출석, 결석, 지각, 휴가 등 상태에 따른 상세 뷰
+     * @param status
+     * @return 오늘 날짜로 해당하는 상태의 근태 목록
+     */
     @GetMapping("/attendance/status/{status}")
     public List<AttendanceDTO.Index> viewStatusDetail(@PathVariable String status){
 

@@ -55,7 +55,6 @@ const Evaluation = function () {
   const handlePageChange = (e) => {
     const currentPage = parseInt(e.target.textContent);
     setPage({ ...page, currentPage: currentPage });
-    fetchDatas();
   };
 
   const fetchSearchResult = async () => {

@@ -117,7 +117,6 @@ const Work = function () {
   const handlePageChange = (e) => {
     const currentPage = parseInt(e.target.textContent);
     setPage({ ...page, currentPage: currentPage });
-    fetchUsers();
   };
 
   const addModalOpen = () => {
